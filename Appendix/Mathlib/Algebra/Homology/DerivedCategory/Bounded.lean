@@ -8,6 +8,7 @@ import Appendix.Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Appendix.Mathlib.Algebra.Homology.HomotopyCategory.Bounded
 import Appendix.Mathlib.Algebra.Homology.DerivedCategory.Basic
 import Appendix.Mathlib.CategoryTheory.Triangulated.Subcategory
+import Appendix.Mathlib.CategoryTheory.Shift.ShiftSequence
 
 /-!
 # D^b
@@ -68,43 +69,71 @@ instance : (Qh : _ ⥤ Bounded C).IsTriangulated := by
   dsimp only [Qh]
   infer_instance
 
-instance : (HomotopyCategory.subcategoryAcyclic C).IsLeftLocalizing (HomotopyCategory.Bounded.ι C)
+-- The category of acyclic objects is neither left nor right localizing for the inclusion
+-- of the subcategory of bounded objects, but the localization still exists!
+-- You have to go through bounded above (or below) objects to get things that are
+-- left/right localizing at each step.
+/-
+instance : (HomotopyCategory.subcategoryAcyclic C).P.IsLeftLocalizing (HomotopyCategory.Bounded.ι C)
     where
   fac {L K} φ hK := by
     obtain ⟨K : CochainComplex C ℤ⟩ := K
-    obtain ⟨⟨L : CochainComplex C ℤ⟩, n, (hn : L.IsStrictlyLE n)⟩ := L
+    obtain ⟨⟨L : CochainComplex C ℤ⟩, n, (hn : L.IsStrictlyLE n), m, (hm : L.IsStrictlyGE m)⟩ := L
     obtain ⟨φ, rfl⟩ : ∃ (ψ : L ⟶ K), φ = (HomotopyCategory.quotient _ _).map ψ := by
       obtain ⟨ψ⟩ := φ
       exact ⟨ψ, rfl⟩
     let M : HomotopyCategory.Bounded C :=
-      ⟨(HomotopyCategory.quotient C (ComplexShape.up ℤ)).obj (K.truncLE n), n, by
-        change (K.truncLE n).IsStrictlyLE n
-        infer_instance⟩
-    have hM : (HomotopyCategory.subcategoryAcyclic C) ((HomotopyCategory.Bounded.ι C).obj M) := by
+      ⟨(HomotopyCategory.quotient C (ComplexShape.up ℤ)).obj ((K.truncLE n).truncGE m), n, by
+        change ((K.truncLE n).truncGE _).IsStrictlyLE n
+        infer_instance,
+        m, by
+        change ((K.truncLE n).truncGE _).IsStrictlyGE _
+        infer_instance
+        ⟩
+    have hM : (HomotopyCategory.subcategoryAcyclic C).P ((HomotopyCategory.Bounded.ι C).obj M) := by
       dsimp [M, HomotopyCategory.Bounded.ι]
       rw [HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic,
-        K.acyclic_truncLE_iff n (n + 1) (by omega)]
+        (K.truncLE n).acyclic_truncGE_iff (m - 1) m (by omega)]
+--        K.acyclic_truncLE_iff n (n + 1) (by omega)]
       erw [HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic] at hK
-      exact ⟨fun i _ => by simpa only [HomologicalComplex.exactAt_iff_isZero_homology] using hK i⟩
+      rw [CochainComplex.isLE_iff]
+      intro i _
+      by_cases hi : i ≤ n
+      · rw [HomologicalComplex.exactAt_iff_isZero_homology]
+        have := K.quasiIsoAt_ιTruncLE (ComplexShape.embeddingUpIntLE n) (j' := i)
+          (j := (n - i).natAbs)
+          (by dsimp; rw [← Int.eq_natAbs_of_nonneg (a := n - i) (by omega)]; omega)
+        rw [quasiIsoAt_iff_isIso_homologyMap] at this
+        refine Limits.IsZero.of_iso ?_ (asIso (HomologicalComplex.homologyMap
+          (HomologicalComplex.ιTruncLE K (ComplexShape.embeddingUpIntLE n)) i))
+        rw [← HomologicalComplex.exactAt_iff_isZero_homology]
+        exact hK i
+      · apply (K.truncLE n).exactAt_of_isSupported (ComplexShape.embeddingUpIntLE n)
+        intro
+        dsimp
+        omega
     have : IsIso (L.ιTruncLE n) := by
       rw [CochainComplex.isIso_ιTruncLE_iff]
       infer_instance
-    refine ⟨M, hM, (HomotopyCategory.quotient C (ComplexShape.up ℤ)).map (K.ιTruncLE n),
-      (HomotopyCategory.quotient C (ComplexShape.up ℤ)).map
-        (inv (L.ιTruncLE n) ≫ CochainComplex.truncLEMap φ n), ?_⟩
+    refine ⟨M, hM, ?_, ?_, ?_⟩
+
+    --(HomotopyCategory.quotient C (ComplexShape.up ℤ)).map (K.ιTruncLE n),
+    --  (HomotopyCategory.quotient C (ComplexShape.up ℤ)).map
+    --    (inv (L.ιTruncLE n) ≫ CochainComplex.truncLEMap φ n), ?_⟩
     erw [← (HomotopyCategory.quotient C (ComplexShape.up ℤ)).map_comp]
     simp
+-/
 
 variable (C)
 
 noncomputable def QhCompιIsoιCompQh :
     Qh ⋙ Bounded.ι ≅ HomotopyCategory.Bounded.ι C ⋙ DerivedCategory.Qh := Iso.refl _
 
-instance : (Qh (C := C)).EssSurj := by
-  suffices ∀ (X : DerivedCategory C) (n : ℤ) (_ : X.IsGE n),
+instance : (Qh (C := C)).EssSurj := by sorry
+/-  suffices ∀ (X : DerivedCategory C) (n : ℤ) (_ : X.IsGE n),
     ∃ (K : CochainComplex C ℤ) (_ : K.IsStrictlyGE n),
       Nonempty (DerivedCategory.Q.obj K ≅ X) from ⟨by
-        rintro ⟨X, n, hn⟩
+        rintro ⟨X, ⟨m, hm⟩, ⟨n, hn⟩⟩
         obtain ⟨K, e, h⟩ := hn
         exact ⟨⟨(HomotopyCategory.quotient C (ComplexShape.up ℤ)).obj K, n, h⟩,
           ⟨Bounded.ι.preimageIso ((quotientCompQhIso C).app _ ≪≫ e.symm)⟩⟩⟩
@@ -114,19 +143,24 @@ instance : (Qh (C := C)).EssSurj := by
     apply t.isGE_of_iso (Q.objObjPreimageIso X).symm
   exact ⟨(Q.objPreimage X).truncGE n, inferInstance,
     ⟨(asIso (Q.map ((Q.objPreimage X).πTruncGE n))).symm ≪≫ Q.objObjPreimageIso X⟩⟩
+-/
 
-instance : Qh.IsLocalization (HomotopyCategory.Bounded.subcategoryAcyclic C).trW :=
-  (HomotopyCategory.subcategoryAcyclic C).isLocalization_of_isLeftLocalizing
-    (HomotopyCategory.Bounded.ι C) (QhCompιIsoιCompQh C)
+instance : Qh.IsLocalization (HomotopyCategory.Bounded.subcategoryAcyclic C).W := sorry
+/-  (HomotopyCategory.subcategoryAcyclic C).isLocalization_of_isLeftLocalizing
+    (HomotopyCategory.Bounded.ι C) (QhCompιIsoιCompQh C)-/
 
 instance : Qh.IsLocalization (HomotopyCategory.Bounded.quasiIso C) := by
   rw [HomotopyCategory.Bounded.quasiIso_eq_subcategoryAcyclic_trW]
   infer_instance
 
+instance : (DerivedCategory.Bounded.ι (C := C)).CommShift ℤ := sorry
+
+instance : (DerivedCategory.Bounded.ι (C := C)).IsTriangulated := sorry
+
 noncomputable def singleFunctors : SingleFunctors C (Bounded C) ℤ :=
   SingleFunctors.lift (DerivedCategory.singleFunctors C) Bounded.ι
       (fun n => t.bounded.lift (DerivedCategory.singleFunctor C n)
-      (fun _ => ⟨n, inferInstance⟩))
+      (fun _ => sorry/-⟨n, inferInstance⟩-/))
       (fun _ => Iso.refl _)
 
 noncomputable abbrev singleFunctor (n : ℤ) : C ⥤ Bounded C := (singleFunctors C).functor n
@@ -148,12 +182,12 @@ instance (n : ℤ) : (homologyFunctor C n).IsHomological := by
 
 instance : (Qh (C := C)).mapArrow.EssSurj :=
   Localization.essSurj_mapArrow _
-    (HomotopyCategory.Bounded.subcategoryAcyclic C).trW
+    (HomotopyCategory.Bounded.subcategoryAcyclic C).W
 
 variable {C}
 
-abbrev TStructure.t : TStructure (DerivedCategory.Bounded C) :=
-  (DerivedCategory.TStructure.t (C := C)).b.tStructure DerivedCategory.TStructure.t
+noncomputable abbrev TStructure.t : TStructure (DerivedCategory.Bounded C) :=
+  (DerivedCategory.TStructure.t (C := C)).bounded.tStructure DerivedCategory.TStructure.t
 
 abbrev IsGE (X : Bounded C) (n : ℤ) : Prop := Bounded.TStructure.t.IsGE X n
 abbrev IsLE (X : Bounded C) (n : ℤ) : Prop := Bounded.TStructure.t.IsLE X n
@@ -176,9 +210,9 @@ instance (X : Bounded C) (n : ℤ) [X.IsLE n] : (ι.obj X).IsLE n := by
   rw [isLE_ι_obj_iff]
   infer_instance
 
-noncomputable instance : (DerivedCategory.Bounded.homologyFunctor C 0).ShiftSequence  ℤ := by
+noncomputable instance : (DerivedCategory.Bounded.homologyFunctor C 0).ShiftSequence ℤ := by
   dsimp [homologyFunctor]
-  infer_instance
+  exact Functor.ShiftSequence.comp_left _ _ _
 
 instance (X : C) (n : ℤ) : ((singleFunctor C n).obj X).IsGE n := by
   rw [← isGE_ι_obj_iff]

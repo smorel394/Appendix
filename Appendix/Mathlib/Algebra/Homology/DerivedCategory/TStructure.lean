@@ -310,6 +310,59 @@ noncomputable instance : (t : TStructure (DerivedCategory C)).homology₀.ShiftS
 
 end TStructure
 
+lemma isIso_Q_map_iff {K L : CochainComplex C ℤ} (φ : K ⟶ L) :
+    IsIso (Q.map φ) ↔
+      ∀ (n : ℤ), IsIso ((HomologicalComplex.homologyFunctor C _ n).map φ) := by
+  simp only [isIso_Q_map_iff_quasiIso, quasiIso_iff,
+    quasiIsoAt_iff_isIso_homologyMap]
+  rfl
+
+lemma isIso_Q_map_iff' {K L : CochainComplex C ℤ} (φ : K ⟶ L) :
+    IsIso (Q.map φ) ↔ HomologicalComplex.quasiIso _ _ φ := by
+  rw [isIso_Q_map_iff_quasiIso]
+  rfl
+
+instance {K L : CochainComplex C ℤ} (φ : K ⟶ L) [QuasiIso φ] : IsIso (Q.map φ) := by
+  simpa only [isIso_Q_map_iff_quasiIso]
+
+lemma isIso_iff {K L : DerivedCategory C} (f : K ⟶ L) :
+    IsIso f ↔ ∀ (n : ℤ), IsIso ((homologyFunctor C n).map f) := by sorry
+/-  constructor
+  · intro hf n
+    infer_instance
+  · intro hf
+    let g := (Functor.mapArrow Qh).objPreimage (Arrow.mk f)
+    refine' ((MorphismProperty.RespectsIso.isomorphisms (DerivedCategory C)).arrow_iso_iff
+      ((Functor.mapArrow Qh).objObjPreimageIso (Arrow.mk f))).1 _
+    change IsIso (Qh.map g.hom)
+    rw [isIso_Qh_map_iff, HomotopyCategory.mem_quasiIso_iff]
+    intro n
+    have e : Arrow.mk ((homologyFunctor C n).map f) ≅
+        Arrow.mk ((HomotopyCategory.homologyFunctor _ _ n).map g.hom) :=
+      ((homologyFunctor C n).mapArrow.mapIso
+        (((Functor.mapArrow Qh).objObjPreimageIso (Arrow.mk f)).symm)) ≪≫
+        ((Functor.mapArrowFunctor _ _).mapIso (homologyFunctorFactorsh C n)).app (Arrow.mk g.hom)
+    exact ((MorphismProperty.RespectsIso.isomorphisms C).arrow_iso_iff e).1 (hf n)
+-/
+
+open scoped ZeroObject
+
+lemma isZero_iff (K : DerivedCategory C) :
+    IsZero K ↔ ∀ (n : ℤ), IsZero ((homologyFunctor C n).obj K) := by
+  constructor
+  · intro hK n
+    rw [IsZero.iff_id_eq_zero, ← ((homologyFunctor C n).map_id K),
+      (IsZero.iff_id_eq_zero K).1 hK, Functor.map_zero]
+  · intro hK
+    have : IsIso (0 : K ⟶ 0) := by
+      rw [isIso_iff]
+      intro n
+      refine' ⟨0, _, _⟩
+      · apply (hK n).eq_of_src
+      · rw [zero_comp, ← (homologyFunctor C n).map_id, id_zero,
+          Functor.map_zero]
+    exact IsZero.of_iso (isZero_zero _) (asIso (0 : K ⟶ 0))
+
 open DerivedCategory.TStructure
 
 variable (C)
@@ -323,5 +376,8 @@ variable {C}
 abbrev Minus.ι : Minus C ⥤ DerivedCategory C := t.minus.P.ι
 abbrev Plus.ι : Plus C ⥤ DerivedCategory C := t.plus.P.ι
 abbrev Bounded.ι : Bounded C ⥤ DerivedCategory C := t.bounded.P.ι
+
+instance : (Bounded.ι (C := C)).Faithful := ObjectProperty.faithful_ι _
+instance : (Bounded.ι (C := C)).Full := ObjectProperty.full_ι _
 
 end DerivedCategory
