@@ -5,8 +5,10 @@ Authors: Joël Riou
 -/
 import Mathlib.Algebra.Homology.DerivedCategory.FullyFaithful
 import Mathlib.Algebra.Homology.DerivedCategory.ShortExact
-import Mathlib.Algebra.Homology.Embedding.CochainComplex
+import Appendix.Mathlib.Algebra.Homology.Embedding.CochainComplex
+import Appendix.Mathlib.Algebra.Homology.DerivedCategory.Basic
 import Appendix.Mathlib.CategoryTheory.Triangulated.TStructure.Homology
+import Appendix.Mathlib.CategoryTheory.Triangulated.Subcategory
 
 /-!
 # The canonical t-structure on the derived category
@@ -25,7 +27,7 @@ namespace DerivedCategory
 variable {C : Type u} [Category.{v} C] [Abelian C] [HasDerivedCategory.{w} C]
 
 /-- The canonical t-structure on `DerivedCategory C`. -/
-def TStructure.t : TStructure (DerivedCategory C) where
+noncomputable def TStructure.t : TStructure (DerivedCategory C) where
   le n X := ∃ (K : CochainComplex C ℤ) (_ : X ≅ DerivedCategory.Q.obj K), K.IsStrictlyLE n
   ge n X := ∃ (K : CochainComplex C ℤ) (_ : X ≅ DerivedCategory.Q.obj K), K.IsStrictlyGE n
   le_isClosedUnderIsomorphisms n :=
@@ -152,12 +154,12 @@ instance (K : CochainComplex C ℤ) (n : ℤ) [K.IsLE n] :
 instance (X : C) (n : ℤ) : ((singleFunctor C n).obj X).IsGE n := by
   let e := (singleFunctorIsoCompQ C n).app X
   dsimp only [Functor.comp_obj] at e
-  exact TStructure.t.isGE_of_iso e.symm n
+  exact {ge := (TStructure.t.ge n).prop_of_iso e.symm (TStructure.ge_of_isGE _ _ _)}
 
 instance (X : C) (n : ℤ) : ((singleFunctor C n).obj X).IsLE n := by
   let e := (singleFunctorIsoCompQ C n).app X
   dsimp only [Functor.comp_obj] at e
-  exact TStructure.t.isLE_of_iso e.symm n
+  exact {le := (TStructure.t.le n).prop_of_iso e.symm (TStructure.le_of_isLE _ _ _)}
 
 lemma exists_iso_Q_obj_of_isLE (X : DerivedCategory C) (n : ℤ) [hX : X.IsLE n] :
     ∃ (K : CochainComplex C ℤ) (_ : K.IsStrictlyLE n), Nonempty (X ≅ Q.obj K) := by
@@ -175,7 +177,7 @@ lemma exists_iso_Q_obj_of_isGE_of_isLE (X : DerivedCategory C) (a b : ℤ) [X.Is
   obtain ⟨K, hK, ⟨e⟩⟩ := X.exists_iso_Q_obj_of_isLE b
   have : K.IsGE a := by
     rw [← isGE_Q_obj_iff]
-    exact TStructure.t.isGE_of_iso e a
+    exact {ge := (TStructure.t.ge a).prop_of_iso e (TStructure.ge_of_isGE _ _ _)}
   exact ⟨K.truncGE a, inferInstance, inferInstance, ⟨e ≪≫ asIso (Q.map (K.πTruncGE a))⟩⟩
 
 lemma exists_iso_single (X : DerivedCategory C) (n : ℤ) [X.IsGE n] [X.IsLE n] :
@@ -312,14 +314,14 @@ open DerivedCategory.TStructure
 
 variable (C)
 
-abbrev Minus := (t : TStructure (DerivedCategory C)).minus.FullSubcategory
-abbrev Plus := (t : TStructure (DerivedCategory C)).plus.FullSubcategory
-abbrev Bounded := (t : TStructure (DerivedCategory C)).bounded.FullSubcategory
+abbrev Minus := (t : TStructure (DerivedCategory C)).minus.category
+abbrev Plus := (t : TStructure (DerivedCategory C)).plus.category
+abbrev Bounded := (t : TStructure (DerivedCategory C)).bounded.category
 
 variable {C}
 
-abbrev Minus.ι : Minus C ⥤ DerivedCategory C := t.minus.ι
-abbrev Plus.ι : Plus C ⥤ DerivedCategory C := t.plus.ι
-abbrev Bounded.ι : Bounded C ⥤ DerivedCategory C := t.bounded.ι
+abbrev Minus.ι : Minus C ⥤ DerivedCategory C := t.minus.P.ι
+abbrev Plus.ι : Plus C ⥤ DerivedCategory C := t.plus.P.ι
+abbrev Bounded.ι : Bounded C ⥤ DerivedCategory C := t.bounded.P.ι
 
 end DerivedCategory

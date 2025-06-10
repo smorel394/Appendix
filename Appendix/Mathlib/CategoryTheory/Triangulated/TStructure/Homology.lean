@@ -7,6 +7,7 @@ import Mathlib.CategoryTheory.Triangulated.Yoneda
 import Mathlib.CategoryTheory.Limits.FullSubcategory
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
 import Appendix.Mathlib.Algebra.Homology.ShortComplex.ULift
+import Appendix.Mathlib.CategoryTheory.Shift.ShiftSequence
 import Appendix.Mathlib.Algebra.Homology.ShortComplex.ShortComplexFour
 import Appendix.Mathlib.CategoryTheory.Triangulated.TStructure.TExact
 import Appendix.Mathlib.CategoryTheory.Triangulated.TStructure.Shift
@@ -249,7 +250,6 @@ noncomputable instance : (S.tStructure t).HasHomology₀ where
 noncomputable instance [t.homology₀.ShiftSequence ℤ] :
     (S.tStructure t).homology₀.ShiftSequence ℤ :=
   Functor.ShiftSequence.comp_left _ _ _
---  (inferInstance : (S.ι ⋙ t.homology₀).ShiftSequence ℤ)
 
 instance : t.plus.ContainsHeart t where
   subset _ hX := ⟨0, ⟨hX.2⟩⟩
