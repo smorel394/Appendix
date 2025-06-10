@@ -21,10 +21,13 @@ variable {C : Type u} [Category.{v} C] {D : Type u'} [Category.{v'} D]
 
 namespace CategoryTheory
 
+-- This is super evil...
 lemma Quotient.functor_obj_shift [r.IsCompatibleWithShift A] (X : C) (n : A) :
     ((Quotient.functor r).obj X)⟦n⟧ = (Quotient.functor r).obj (X⟦n⟧) := by
   dsimp [Quotient.functor]
-  sorry
+  unfold HasShift.quotient
+  rw [shiftFunctor_of_induced]
+  rfl
 
 namespace Quotient
 
