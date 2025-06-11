@@ -293,8 +293,8 @@ def FilteredToBoundedComplex : C ⥤ CochainComplex.Bounded t.Heart :=
 -- Theorem A.2.3(i):
 -- The restriction of `FilteredToComplex` to the heart of `tF` is
 -- an equivalence.
-instance FilteredToComplex_equivalence [t.IsCompatible L tF] :
-    (tF.ιHeart ⋙ FilteredToComplex L t).IsEquivalence := sorry
+instance FilteredToBoundedComplex_equivalence [t.IsCompatible L tF] :
+    (tF.ιHeart ⋙ FilteredToBoundedComplex L t).IsEquivalence := sorry
 
 variable [t.IsCompatible L tF]
 
@@ -304,45 +304,37 @@ variable [t.IsCompatible L tF]
 -- statement, and again the properties of that isomorphism are not clear
 -- from the statement.
 def HomologyFunctor_iso :
-    FilteredToComplex L t ⋙ (tF.ιHeart ⋙ FilteredToComplex L t).inv ≅
+    FilteredToBoundedComplex L t ⋙ (tF.ιHeart ⋙ FilteredToBoundedComplex L t).inv ≅
     tF.homology 0 := sorry
 
 -- Theorem A.2.3(ii):
 -- We want the functor to send quasi-isomorphisms to isomorphisms.
 def Realization_aux :
-    (HomologicalComplex.quasiIso t.Heart (ComplexShape.up ℤ)).IsInvertedBy
-    ((tF.ιHeart ⋙ FilteredToComplex L t).inv ⋙ tF.ιHeart ⋙
+    (CochainComplex.Bounded.quasiIso (C := t.Heart)).IsInvertedBy
+    ((tF.ιHeart ⋙ FilteredToBoundedComplex L t).inv ⋙ tF.ιHeart ⋙
     (ForgetFiltration L)) := sorry
 
 local instance : HasDerivedCategory t.Heart :=
   HasDerivedCategory.standard t.Heart
 
 -- Definition A.2.4:
-def Realization : DerivedCategory t.Heart ⥤ A :=
-  have := MorphismProperty.instIsLocalizationLocalization'Q'
-    (HomologicalComplex.quasiIso t.Heart (ComplexShape.up ℤ))
-  Localization.lift ((tF.ιHeart ⋙ FilteredToComplex L t).inv ⋙ tF.ιHeart ⋙
+def Realization : DerivedCategory.Bounded t.Heart ⥤ A :=
+  Localization.lift ((tF.ιHeart ⋙ FilteredToBoundedComplex L t).inv ⋙ tF.ιHeart ⋙
     (ForgetFiltration L)) (Realization_aux L t tF)
-    DerivedCategory.Q
+    DerivedCategory.Bounded.Q
 
 def Realization_comp_Q :
-    (tF.ιHeart ⋙ FilteredToComplex L t) ⋙ DerivedCategory.Q ⋙ Realization L t tF ≅
-    tF.ιHeart ⋙ ForgetFiltration L := by
+    (tF.ιHeart ⋙ FilteredToBoundedComplex L t) ⋙ DerivedCategory.Bounded.Q ⋙ Realization L t tF
+    ≅ tF.ιHeart ⋙ ForgetFiltration L := by
   dsimp [Realization]
-  exact isoWhiskerLeft _ (Localization.Lifting.iso _ (HomologicalComplex.quasiIso t.Heart
-    (ComplexShape.up ℤ)) ((tF.ιHeart ⋙ FilteredToComplex L t).inv ⋙ tF.ιHeart ⋙
+  exact isoWhiskerLeft _ (Localization.Lifting.iso _ (CochainComplex.Bounded.quasiIso (C := t.Heart))
+    ((tF.ιHeart ⋙ FilteredToBoundedComplex L t).inv ⋙ tF.ιHeart ⋙
     (ForgetFiltration L)) _) ≪≫ (Functor.associator _ _ _).symm ≪≫ isoWhiskerRight
-    (tF.ιHeart ⋙ FilteredToComplex L t).asEquivalence.unitIso.symm _ ≪≫
+    (tF.ιHeart ⋙ FilteredToBoundedComplex L t).asEquivalence.unitIso.symm _ ≪≫
     (Functor.rightUnitor _).symm
 
 end Realization
 
-
-
 end Triangulated.TStructure
-
-
-
-
 
 end CategoryTheory

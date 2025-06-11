@@ -184,6 +184,25 @@ instance : (Qh (C := C)).mapArrow.EssSurj :=
   Localization.essSurj_mapArrow _
     (HomotopyCategory.Bounded.subcategoryAcyclic C).W
 
+variable {C} in
+noncomputable def Q : CochainComplex.Bounded C ⥤ Bounded C :=
+  t.bounded.lift (CochainComplex.Bounded.ι _ ⋙ DerivedCategory.Q) (by sorry)
+
+noncomputable def QCompιIsoιCompQ :
+    Q ⋙ Bounded.ι ≅ CochainComplex.Bounded.ι C ⋙ DerivedCategory.Q := Iso.refl _
+
+noncomputable instance : (Q : _ ⥤ Bounded C).CommShift ℤ := by
+  dsimp only [Q]
+  infer_instance
+
+instance : (Q (C := C)).EssSurj := by sorry
+
+instance : Q.IsLocalization (CochainComplex.Bounded.quasiIso (C := C)) := by sorry
+
+instance : (CochainComplex.Bounded.quasiIso (C := C)).HasLocalization := sorry
+
+instance : (Q (C := C)).mapArrow.EssSurj := sorry
+
 variable {C}
 
 noncomputable abbrev TStructure.t : TStructure (DerivedCategory.Bounded C) :=
