@@ -2,6 +2,7 @@ import Mathlib.Algebra.Homology.Functor
 import Mathlib.Algebra.Homology.HomologicalComplex
 import Mathlib.Algebra.Homology.ShortComplex.Abelian
 import Mathlib.Algebra.Homology.DerivedCategory.Basic
+import Appendix.Mathlib.Algebra.Homology.DerivedCategory.Bounded
 import Appendix.Mathlib.CategoryTheory.Triangulated.TStructure.Homology
 import Appendix.Mathlib.CategoryTheory.Triangulated.TStructure.TExact
 import Appendix.Filtered_no_proof
@@ -246,6 +247,48 @@ def FilteredToComplexObj : CochainComplex (C ⥤ t.Heart) ℤ :=
     (FilteredToComplex_diff L t) (FilteredToComplex_condition L t)
 
 def FilteredToComplex : C ⥤ CochainComplex t.Heart ℤ := (FilteredToComplexObj L t).asFunctor
+
+omit [IsTriangulated C] [IsTriangulated A] in
+lemma Gr_bounded_above (X : C) : ∃ (n : ℤ), ∀ (m : ℤ), n < m →
+    IsZero ((Gr L m).obj X) := by
+  obtain ⟨n, hn⟩ := FilteredTriangulated.LE_exhaustive X
+  have : FilteredTriangulated.IsLE X n := {le := hn}
+  use n
+  intro m hm
+  refine (ForgetFiltration L).map_isZero ?_
+  dsimp [FilteredTriangulated.truncGELE]
+  exact FilteredTriangulated.isZero _ n m hm
+
+omit [IsTriangulated C] [IsTriangulated A] in
+lemma Gr_bounded_below (X : C) : ∃ (n : ℤ), ∀ (m : ℤ), m < n →
+    IsZero ((Gr L m).obj X) := by
+  obtain ⟨n, hn⟩ := FilteredTriangulated.GE_exhaustive X
+  have : FilteredTriangulated.IsGE X n := {ge := hn}
+  use n
+  intro m hm
+  refine (ForgetFiltration L).map_isZero ?_
+  dsimp [FilteredTriangulated.truncGELE]
+  exact FilteredTriangulated.isZero _ m n hm
+
+omit [IsTriangulated C] in
+lemma FilteredToComplex_isBounded (X : C) :
+    CochainComplex.bounded t.Heart ((FilteredToComplex L t).obj X) := by
+  dsimp [CochainComplex.bounded]
+  obtain ⟨n, hn⟩ := Gr_bounded_above L X
+  obtain ⟨m, hm⟩ := Gr_bounded_below L X
+  refine ⟨n, ?_, m, ?_⟩
+  · rw [CochainComplex.isStrictlyLE_iff]
+    intro i h
+    refine (t.homology i).map_isZero ?_
+    exact hn i h
+  · rw [CochainComplex.isStrictlyGE_iff]
+    intro i h
+    refine (t.homology i).map_isZero ?_
+    exact hm i h
+
+def FilteredToBoundedComplex : C ⥤ CochainComplex.Bounded t.Heart :=
+  (CochainComplex.bounded t.Heart).lift (FilteredToComplex L t)
+  (FilteredToComplex_isBounded L t)
 
 -- Theorem A.2.3(i):
 -- The restriction of `FilteredToComplex` to the heart of `tF` is

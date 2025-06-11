@@ -167,7 +167,6 @@ where
     (f : A ⟶ X) (g : X ⟶ B) (h : B ⟶ A⟦1⟧),
     Triangle.mk f g h ∈ distinguishedTriangles
 
-
 namespace FilteredTriangulated
 
 attribute [instance] LE_closedUnderIsomorphisms GE_closedUnderIsomorphisms
