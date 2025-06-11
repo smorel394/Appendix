@@ -130,10 +130,13 @@ lemma AcyclicComplexAcyclic_W {K L : HomotopyCategory.Bounded (Acyclic T t₁ t�
 complexes of `T`-acyclic objects in the heart `A₁` to the derived category of the heart of `A₁`
 is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms).
 -/
-
 variable [(Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι
     ⋙ DerivedCategory.Bounded.Qh).IsLocalization (AcyclicComplexAcyclic t₁ t₂ T).W]
 
+/--
+First part of the conclusion: the functor `(T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded)`
+sends a (bounded) exact complex of `T`-acyclic objects to an exact complex.
+-/
 lemma AcyclicComplexAcyclic_image {K : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory}
     (hK : (AcyclicComplexAcyclic t₁ t₂ T).P K) :
     (HomotopyCategory.Bounded.subcategoryAcyclic t₂.Heart).P
@@ -194,6 +197,11 @@ lemma AcyclicComplexAcyclic_image {K : HomotopyCategory.Bounded (Acyclic T t₁ 
   · intro i _
     exact CochainComplex.isZero_of_isStrictlyLE _ a i (by omega)
 
+/--
+Reformulation of the previous result using `MorphismProperty`: the functor
+`(T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded` sends a morphism between complexes of
+`T`-acyclic objects with exact cone to an exact complex.
+-/
 lemma AcyclicComplexAcyclic_W_image {K L : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory}
     {f : K ⟶ L} (hf : (AcyclicComplexAcyclic t₁ t₂ T).W f) : HomotopyCategory.Bounded.quasiIso _
     (((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded).map f) := by
@@ -218,7 +226,7 @@ def DerivedFunctor : DerivedCategory.Bounded t₁.Heart ⥤ DerivedCategory.Boun
 -- Second statement of Proposition A.3.2: the "commutative" diagram.
 -- This is an existence statement.
 -- To prove this statement, we will use the category of filtered acyclic objects of the
--- heart of `C`, and its equivalent with the category of complexes of acyclic objects.
+-- heart of `C`, and its equivalence with the category of complexes of acyclic objects.
 
 def FilteredAcyclic : ObjectProperty tF₁.Heart :=
   fun X ↦ ∀ n, Acyclic T t₁ t₂ ((t₁.homology n).obj ((Gr L₁ n).obj X.1))
