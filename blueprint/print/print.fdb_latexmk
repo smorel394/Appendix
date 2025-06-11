@@ -1,13 +1,15 @@
 # Fdb version 4
-["pdflatex"] 1749673783.35695 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749673784.66203 0
+["pdflatex"] 1749678780.0043 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749678781.40744 0
   "/etc/texmf/web2c/texmf.cnf" 1730460179.73442 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749673784.30704 128 852fc3e86949e4a73cd552c13992dc37 "pdflatex"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749673784.02804 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749678781.03899 627 2a5e162e3b113dd2e1c20dc3b2b61bcd "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749678781.03899 1051 ee1bd8cea97ccbec6bfd5eb50a0326c0 "pdflatex"
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm" 1246382020 924 9904cf1d39e9767e7a3622f2a125a565 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1246382020 908 2921f8a10601f252058503cc6570e581 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm" 1246382020 940 75ac932a52f80982a9f8ea75d03a34cf ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -83,10 +85,13 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1745826768 10844494 b27f5ab6a2b0a9f8a9c8cfa46549b55f ""
-  "content.tex" 1749672939.61111 363 d68ec385ab7b5b65ef8d18eff416b83d ""
+  "content.tex" 1749678657.55863 670 7c88a3baa482a164ff2c5f3e902a4ce7 ""
+  "der.tex" 1749678709.35379 74 72f9666642f765dc8340c50f860dc6cc ""
+  "ftri.tex" 1749678661.96364 57 dd1c85fdd38c271e529baf86dfc20989 ""
   "macros/common.tex" 1749672939.61411 820 60fafcc3aa944a5e60030581a943ef6b ""
   "macros/print.tex" 1749672939.61511 1101 87627b2ec24fef68edc71c13f43f7bab ""
   "print.tex" 1749672939.61811 1108 f29caad3b46360897cf1d33895096939 ""
+  "tstruct.tex" 1749678683.80371 74 14f7d68e2ce9f1b4a359ece13f780879 ""
   (generated)
   "/home/sophie/lean4/Appendix/blueprint/print/print.aux"
   "/home/sophie/lean4/Appendix/blueprint/print/print.log"
