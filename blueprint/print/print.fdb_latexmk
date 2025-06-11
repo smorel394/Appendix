@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1749678780.0043 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749678781.40744 0
+["pdflatex"] 1749681216.7946 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749681218.10151 0
   "/etc/texmf/web2c/texmf.cnf" 1730460179.73442 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749678781.03899 627 2a5e162e3b113dd2e1c20dc3b2b61bcd "pdflatex"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749678781.03899 1051 ee1bd8cea97ccbec6bfd5eb50a0326c0 "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749681217.7463 621 60df66f74ab56b4df7a428dbab51569f "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749681217.7473 1051 ee1bd8cea97ccbec6bfd5eb50a0326c0 "pdflatex"
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -85,7 +85,7 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1745826768 10844494 b27f5ab6a2b0a9f8a9c8cfa46549b55f ""
-  "content.tex" 1749678657.55863 670 7c88a3baa482a164ff2c5f3e902a4ce7 ""
+  "content.tex" 1749681175.66125 705 7b6e38f3111a91e352cd16bba8372dcc ""
   "der.tex" 1749678709.35379 74 72f9666642f765dc8340c50f860dc6cc ""
   "ftri.tex" 1749678661.96364 57 dd1c85fdd38c271e529baf86dfc20989 ""
   "macros/common.tex" 1749672939.61411 820 60fafcc3aa944a5e60030581a943ef6b ""

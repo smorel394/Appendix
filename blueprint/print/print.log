@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.4.28)  11 JUN 2025 23:53
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.4.28)  12 JUN 2025 00:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -704,17 +704,17 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 ] (./content.tex
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00107pt on input line 10.
+(Font)              scaled to size 10.00107pt on input line 12.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00075pt on input line 10.
+(Font)              scaled to size 7.00075pt on input line 12.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00053pt on input line 10.
+(Font)              scaled to size 5.00053pt on input line 12.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 10.
+(Font)              scaled to size 9.99893pt on input line 12.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 10.
+(Font)              scaled to size 6.99925pt on input line 12.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 10.
+(Font)              scaled to size 4.99947pt on input line 12.
 
 (./ftri.tex) (./tstruct.tex) (./der.tex)) [1]
 (/home/sophie/lean4/Appendix/blueprint/print/print.aux)
