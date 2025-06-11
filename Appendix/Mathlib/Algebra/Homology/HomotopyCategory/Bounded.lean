@@ -121,7 +121,6 @@ def quotient : CochainComplex.Bounded C ⥤ Bounded C :=
       rintro ⟨K, n, hn⟩
       exact ⟨n, hn⟩)
 
-
 instance : (HomotopyCategory.Bounded.quotient C).IsLocalization
     (CochainComplex.Bounded.homotopyEquivalences C) := sorry
 

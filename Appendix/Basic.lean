@@ -137,8 +137,62 @@ variable [(Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι
 lemma AcyclicComplexAcyclic_image {K : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory}
     (hK : (AcyclicComplexAcyclic t₁ t₂ T).P K) :
     (HomotopyCategory.Bounded.subcategoryAcyclic t₂.Heart).P
-    (((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded).obj K) := sorry
--- TODO: This follows from the calculations in the file `Acyclic.lean`.
+    (((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded).obj K) := by
+  have := Localization.essSurj (HomotopyCategory.Bounded.quotient (Acyclic T t₁ t₂).FullSubcategory)
+    (CochainComplex.Bounded.homotopyEquivalences (Acyclic T t₁ t₂).FullSubcategory)
+  set eL := (HomotopyCategory.Bounded.quotient
+    (Acyclic T t₁ t₂).FullSubcategory).objObjPreimageIso K
+  set  L := (HomotopyCategory.Bounded.quotient (Acyclic T t₁ t₂).FullSubcategory).objPreimage K
+  rw [AcyclicComplexAcyclic_iff] at hK
+  rw [Subcategory.mem_inverseImage_iff] at hK ⊢
+  dsimp at hK ⊢
+  rw [HomotopyCategory.mem_subcategoryAcyclic_iff] at hK ⊢
+  set e : (T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded.obj K ≅
+      (HomotopyCategory.Bounded.quotient t₂.Heart).obj
+      ((T.fromAcyclic t₁ t₂).mapCochainComplexBounded.obj L) :=
+    (T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded.mapIso eL.symm ≪≫
+    (T.fromAcyclic t₁ t₂).mapHomotopyCategoryBoundedFactors.app L
+  set f : ((HomotopyCategory.Bounded.quotient t₂.Heart).obj
+    ((T.fromAcyclic t₁ t₂).mapCochainComplexBounded.obj L)).obj ≅
+    (HomotopyCategory.quotient t₂.Heart (ComplexShape.up ℤ)).obj
+    (((T.fromAcyclic t₁ t₂).mapHomologicalComplex (ComplexShape.up ℤ)).obj L.1) := sorry
+  set f' : ((T.fromAcyclic t₁ t₂).mapHomologicalComplex (ComplexShape.up ℤ)).obj L.obj ≅
+    ((T.fromHeartToHeart t₁ t₂).mapHomologicalComplex (ComplexShape.up ℤ)).obj
+    (((Acyclic T t₁ t₂).ι.mapHomologicalComplex (ComplexShape.up ℤ)).obj L.obj) := sorry
+  intro n
+  refine IsZero.of_iso ?_ ((HomotopyCategory.Bounded.ι _ ⋙ HomotopyCategory.homologyFunctor
+    t₂.Heart (ComplexShape.up ℤ) n).mapIso e)
+  refine IsZero.of_iso ?_ ((HomotopyCategory.homologyFunctor t₂.Heart
+    (ComplexShape.up ℤ) n).mapIso f)
+  refine IsZero.of_iso ?_ ((HomotopyCategory.quotient t₂.Heart (ComplexShape.up ℤ) ⋙
+    HomotopyCategory.homologyFunctor t₂.Heart (ComplexShape.up ℤ) n).mapIso f')
+  set g : (HomotopyCategory.homologyFunctor t₂.Heart (ComplexShape.up ℤ) n).obj
+    ((HomotopyCategory.quotient t₂.Heart (ComplexShape.up ℤ)).obj
+      (((T.fromHeartToHeart t₁ t₂).mapHomologicalComplex (ComplexShape.up ℤ)).obj
+        (((Acyclic T t₁ t₂).ι.mapHomologicalComplex (ComplexShape.up ℤ)).obj L.obj))) ≅
+      (((T.fromHeartToHeart t₁ t₂).mapHomologicalComplex (ComplexShape.up ℤ)).obj
+      (((Acyclic T t₁ t₂).ι.mapHomologicalComplex (ComplexShape.up ℤ)).obj L.obj)).homology n :=
+      sorry
+  refine IsZero.of_iso ?_ g
+  rw [← HomologicalComplex.exactAt_iff_isZero_homology]
+  obtain ⟨a, ha, b, hb⟩ := L.2
+  refine CochainComplex.exact_map_of_exact_bounded_acyclic_complex T t₁ t₂ _ ?_ ?_ ?_ ?_ n
+    (a := b - 1) (b := a + 1)
+  · intro i
+    dsimp
+    rw [HomologicalComplex.exactAt_iff_isZero_homology]
+    set e : (HomotopyCategory.homologyFunctor t₁.Heart (ComplexShape.up ℤ) i).obj
+        ((Acyclic T t₁ t₂).ι.mapHomotopyCategoryBounded.obj K).obj ≅
+        ((((Acyclic T t₁ t₂).ι.mapHomologicalComplex (ComplexShape.up ℤ)).obj L.obj).homology i) :=
+      sorry
+    exact IsZero.of_iso (hK i) e.symm
+  · intro i
+    simp only [Functor.mapHomologicalComplex_obj_X, ObjectProperty.ι_obj]
+    exact (L.obj.X i).2
+  · intro i _
+    exact CochainComplex.isZero_of_isStrictlyGE _ b i (by omega)
+  · intro i _
+    exact CochainComplex.isZero_of_isStrictlyLE _ a i (by omega)
 
 lemma AcyclicComplexAcyclic_W_image {K L : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory}
     {f : K ⟶ L} (hf : (AcyclicComplexAcyclic t₁ t₂ T).W f) : HomotopyCategory.Bounded.quasiIso _
