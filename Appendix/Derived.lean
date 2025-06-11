@@ -94,9 +94,9 @@ variable (FT : T.filteredLifting L₁ L₂)
 
 -- Acyclic complexes of `T`-acyclic objects.
 def AcyclicComplexAcyclic : Triangulated.Subcategory
-    (HomotopyCategory (Acyclic T t₁ t₂).FullSubcategory (ComplexShape.up ℤ)) :=
-  (Functor.mapHomotopyCategory (Acyclic T t₁ t₂).ι
-  (ComplexShape.up ℤ) ⋙ HomotopyCategory.homologyFunctor
+    (HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory) :=
+  (Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι ⋙
+  (HomotopyCategory.bounded _).ι ⋙ HomotopyCategory.homologyFunctor
   t₁.Heart (ComplexShape.up ℤ) 0).homologicalKernel
 
 -- A complex in the homotopy category of `AcyclicCategory T t₁ t₂` is acyclic if and only
@@ -104,29 +104,26 @@ def AcyclicComplexAcyclic : Triangulated.Subcategory
 
 instance : ObjectProperty.IsClosedUnderIsomorphisms (AcyclicComplexAcyclic t₁ t₂ T).P :=
   Functor.instIsClosedUnderIsomorphismsPHomologicalKernel
-  (Functor.mapHomotopyCategory (Acyclic T t₁ t₂).ι
-  (ComplexShape.up ℤ) ⋙ HomotopyCategory.homologyFunctor
+  (Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι ⋙
+  (HomotopyCategory.bounded _).ι ⋙ HomotopyCategory.homologyFunctor
   t₁.Heart (ComplexShape.up ℤ) 0)
 
-lemma AcyclicComplexAcyclic_iff (K : HomotopyCategory (Acyclic T t₁ t₂).FullSubcategory
-    (ComplexShape.up ℤ)) :
-    (AcyclicComplexAcyclic t₁ t₂ T).P K ↔ (HomotopyCategory.subcategoryAcyclic t₁.Heart).P
-    (((Acyclic T t₁ t₂).ι.mapHomotopyCategory (ComplexShape.up ℤ)).obj K) := sorry
+lemma AcyclicComplexAcyclic_iff (K : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory) :
+    (AcyclicComplexAcyclic t₁ t₂ T).P K ↔ (HomotopyCategory.Bounded.subcategoryAcyclic t₁.Heart).P
+    (((Acyclic T t₁ t₂).ι.mapHomotopyCategoryBounded).obj K) := sorry
 
 -- A morphism in the homotopy category of `AcyclicCategory T t₁ t₂` has an acyclic
 -- cone if and only if its image in the homotopy category of `t₁.Heart`
 -- is a quasi-isomorphism.
-lemma AcyclicComplexAcyclic_W {K L : HomotopyCategory (Acyclic T t₁ t₂).FullSubcategory
-    (ComplexShape.up ℤ)} (f : K ⟶ L) : (AcyclicComplexAcyclic t₁ t₂ T).W f ↔
-    HomotopyCategory.quasiIso _ _ (((Acyclic T t₁ t₂).ι.mapHomotopyCategory
-    (ComplexShape.up ℤ)).map f) := by
+lemma AcyclicComplexAcyclic_W {K L : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory}
+    (f : K ⟶ L) : (AcyclicComplexAcyclic t₁ t₂ T).W f ↔ HomotopyCategory.Bounded.quasiIso _
+    (((Acyclic T t₁ t₂).ι.mapHomotopyCategoryBounded).map f) := by
   obtain ⟨X, g, h, dT⟩ := distinguished_cocone_triangle f
   erw [Subcategory.mem_W_iff_of_distinguished (AcyclicComplexAcyclic t₁ t₂ T) _ dT]
   rw [AcyclicComplexAcyclic_iff]
-  erw [← Subcategory.mem_W_iff_of_distinguished (HomotopyCategory.subcategoryAcyclic t₁.Heart)
-    _ (((Acyclic T t₁ t₂).ι.mapHomotopyCategory
-    (ComplexShape.up ℤ)).map_distinguished _ dT)]
-  rw [HomotopyCategory.quasiIso_eq_subcategoryAcyclic_W]
+  erw [← Subcategory.mem_W_iff_of_distinguished (HomotopyCategory.Bounded.subcategoryAcyclic
+    t₁.Heart) _ (((Acyclic T t₁ t₂).ι.mapHomotopyCategoryBounded).map_distinguished _ dT)]
+  rw [HomotopyCategory.Bounded.quasiIso_eq_subcategoryAcyclic_W]
   rfl
 
 /- Condition (b) of Proposition A.3.2: the "obvious" functor from the homotopy category of
@@ -134,36 +131,35 @@ complexes of `T`-acyclic objects in the heart `A₁` to the derived category of 
 is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms).
 -/
 
-variable [(Functor.mapHomotopyCategory (Acyclic T t₁ t₂).ι
-    (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh).IsLocalization (AcyclicComplexAcyclic t₁ t₂ T).W]
+variable [(Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι
+    ⋙ DerivedCategory.Bounded.Qh).IsLocalization (AcyclicComplexAcyclic t₁ t₂ T).W]
 
-lemma AcyclicComplexAcyclic_image {K : HomotopyCategory (Acyclic T t₁ t₂).FullSubcategory
-    (ComplexShape.up ℤ)} (hK : (AcyclicComplexAcyclic t₁ t₂ T).P K) :
-    (HomotopyCategory.subcategoryAcyclic t₂.Heart).P
-    (((T.fromAcyclic t₁ t₂).mapHomotopyCategory (ComplexShape.up ℤ)).obj K) := sorry
--- This follows from the calculations in the file `Acyclic.lean`, modulo boundedness problems.
+lemma AcyclicComplexAcyclic_image {K : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory}
+    (hK : (AcyclicComplexAcyclic t₁ t₂ T).P K) :
+    (HomotopyCategory.Bounded.subcategoryAcyclic t₂.Heart).P
+    (((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded).obj K) := sorry
+-- TODO: This follows from the calculations in the file `Acyclic.lean`.
 
-lemma AcyclicComplexAcyclic_W_image {K L : HomotopyCategory (Acyclic T t₁ t₂).FullSubcategory
-    (ComplexShape.up ℤ)} {f : K ⟶ L} (hf : (AcyclicComplexAcyclic t₁ t₂ T).W f) :
-    HomotopyCategory.quasiIso _ _ (((T.fromAcyclic t₁ t₂).mapHomotopyCategory
-    (ComplexShape.up ℤ)).map f) := by
+lemma AcyclicComplexAcyclic_W_image {K L : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory}
+    {f : K ⟶ L} (hf : (AcyclicComplexAcyclic t₁ t₂ T).W f) : HomotopyCategory.Bounded.quasiIso _
+    (((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded).map f) := by
   obtain ⟨X, g, h, dT⟩ := distinguished_cocone_triangle f
   replace hf := (Subcategory.mem_W_iff_of_distinguished (AcyclicComplexAcyclic t₁ t₂ T) _ dT).mp hf
   replace hf := AcyclicComplexAcyclic_image t₁ t₂ T hf
-  rw [HomotopyCategory.quasiIso_eq_subcategoryAcyclic_W]
-  exact (Subcategory.mem_W_iff_of_distinguished (HomotopyCategory.subcategoryAcyclic t₂.Heart)
-    _ (((T.fromAcyclic t₁ t₂).mapHomotopyCategory
-    (ComplexShape.up ℤ)).map_distinguished _ dT)).mpr hf
+  rw [HomotopyCategory.Bounded.quasiIso_eq_subcategoryAcyclic_W]
+  exact (Subcategory.mem_W_iff_of_distinguished (HomotopyCategory.Bounded.subcategoryAcyclic
+    t₂.Heart) _ (((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded).map_distinguished _ dT)).mpr hf
 
 -- By the first conclusion and condition (b), we get a functor from `DerivedCategory t₁.Heart`
 -- to `DerivedCategory t₂.Heart`.
 
-def DerivedFunctor : DerivedCategory t₁.Heart ⥤ DerivedCategory t₂.Heart :=
-  Localization.lift (Functor.mapHomotopyCategory (T.fromAcyclic t₁ t₂)
-  (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh) (W := (AcyclicComplexAcyclic t₁ t₂ T).W)
-  (fun _ _ _ hf ↦ (Localization.inverts DerivedCategory.Qh (HomotopyCategory.quasiIso t₂.Heart
-                    (ComplexShape.up ℤ))) _ (AcyclicComplexAcyclic_W_image t₁ t₂ T hf))
-  (Functor.mapHomotopyCategory (Acyclic T t₁ t₂).ι (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh)
+def DerivedFunctor : DerivedCategory.Bounded t₁.Heart ⥤ DerivedCategory.Bounded t₂.Heart :=
+  Localization.lift (Functor.mapHomotopyCategoryBounded (T.fromAcyclic t₁ t₂)
+  ⋙ DerivedCategory.Bounded.Qh) (W := (AcyclicComplexAcyclic t₁ t₂ T).W)
+  (fun _ _ _ hf ↦ (Localization.inverts DerivedCategory.Bounded.Qh
+                  (HomotopyCategory.Bounded.quasiIso t₂.Heart)) _
+                  (AcyclicComplexAcyclic_W_image t₁ t₂ T hf))
+  (Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι ⋙ DerivedCategory.Bounded.Qh)
 
 -- Second statement of Proposition A.3.2: the "commutative" diagram.
 -- This is an existence statement.
@@ -336,7 +332,18 @@ def FilteredAcyclicToComplexAcyclic_compat :
       FilteredToComplexObj]
     simp only [comp_id, id_comp]
 
-instance : (FilteredAcyclicToComplexAcyclic L₁ t₁ tF₁ t₂ T).IsEquivalence := sorry
+-- TODO: define this.
+def FilteredAcyclicToBoundedComplexAcyclic :
+    (FilteredAcyclic L₁ t₁ tF₁ t₂ T).FullSubcategory ⥤
+    CochainComplex.Bounded (Acyclic T t₁ t₂).FullSubcategory := sorry
+
+-- TODO: define this.
+def FilteredAcyclicToBoundedComplexAcyclic_compat :
+    FilteredAcyclicToBoundedComplexAcyclic L₁ t₁ tF₁ t₂ T ⋙
+    (Acyclic T t₁ t₂).ι.mapCochainComplexBounded ≅
+    (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι ⋙ tF₁.ιHeart ⋙ FilteredToBoundedComplex L₁ t₁ := by sorry
+
+instance : (FilteredAcyclicToBoundedComplexAcyclic L₁ t₁ tF₁ t₂ T).IsEquivalence := sorry
 
 def FilteredAcyclicToComplexAcyclic_functor :
     FilteredAcyclicToComplexAcyclic L₁ t₁ tF₁ t₂ T ⋙ (T.fromAcyclic t₁ t₂).mapHomologicalComplex _
@@ -355,87 +362,95 @@ def FilteredAcyclicToComplexAcyclic_functor :
     ext n
     exact (FilteredAcyclicToComplex_deg_functor L₁ t₁ tF₁ L₂ t₂ tF₂ T FT n).hom.naturality f
 
+-- TODO: define this.
+def FilteredAcyclicToBoundedComplexAcyclic_functor :
+    FilteredAcyclicToBoundedComplexAcyclic L₁ t₁ tF₁ t₂ T ⋙
+    (T.fromAcyclic t₁ t₂).mapCochainComplexBounded ≅
+    (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι ⋙ tF₁.ιHeart ⋙ FT.functor ⋙
+    FilteredToBoundedComplex L₂ t₂ := sorry
+
 def DerivedFunctor_comp :
     DerivedFunctor t₁ t₂ T ⋙ Realization L₂ t₂ tF₂ ≅ Realization L₁ t₁ tF₁ ⋙ T := by
   dsimp [DerivedFunctor]
-  refine Localization.liftNatIso (Functor.mapHomotopyCategory (Acyclic T t₁ t₂).ι
-    (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh) (AcyclicComplexAcyclic t₁ t₂ T).W
-    ((Functor.mapHomotopyCategory (T.fromAcyclic t₁ t₂)
-    (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh) ⋙ Realization L₂ t₂ tF₂)
-    ((Functor.mapHomotopyCategory (Acyclic T t₁ t₂).ι
-    (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh) ⋙ Realization L₁ t₁ tF₁ ⋙ T) _ _ ?_
-  have : Localization.Lifting (HomotopyCategory.quotient (Acyclic T t₁ t₂).FullSubcategory
-      (ComplexShape.up ℤ)) (HomologicalComplex.homotopyEquivalences
-      (Acyclic T t₁ t₂).FullSubcategory
-      (ComplexShape.up ℤ)) ((T.fromAcyclic t₁ t₂).mapHomologicalComplex (ComplexShape.up ℤ) ⋙
-      HomotopyCategory.quotient t₂.Heart (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh ⋙
-      Realization L₂ t₂ tF₂) (((T.fromAcyclic t₁ t₂).mapHomotopyCategory (ComplexShape.up ℤ) ⋙
-      DerivedCategory.Qh) ⋙ Realization L₂ t₂ tF₂) :=
+  refine Localization.liftNatIso (Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι
+    ⋙ DerivedCategory.Bounded.Qh) (AcyclicComplexAcyclic t₁ t₂ T).W
+    ((Functor.mapHomotopyCategoryBounded (T.fromAcyclic t₁ t₂)
+    ⋙ DerivedCategory.Bounded.Qh) ⋙ Realization L₂ t₂ tF₂)
+    ((Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι
+    ⋙ DerivedCategory.Bounded.Qh) ⋙ Realization L₁ t₁ tF₁ ⋙ T) _ _ ?_
+  have : Localization.Lifting (HomotopyCategory.Bounded.quotient (Acyclic T t₁ t₂).FullSubcategory)
+      (CochainComplex.Bounded.homotopyEquivalences (C := (Acyclic T t₁ t₂).FullSubcategory))
+      ((T.fromAcyclic t₁ t₂).mapCochainComplexBounded ⋙
+      HomotopyCategory.Bounded.quotient t₂.Heart ⋙ DerivedCategory.Bounded.Qh ⋙
+      Realization L₂ t₂ tF₂) (((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBounded ⋙
+      DerivedCategory.Bounded.Qh) ⋙ Realization L₂ t₂ tF₂) :=
     {iso' := isoWhiskerLeft _ (Functor.associator _ _ _) ≪≫ (Functor.associator _ _ _).symm ≪≫
-             isoWhiskerRight ((T.fromAcyclic t₁ t₂).mapHomotopyCategoryFactors (ComplexShape.up ℤ))
-             (DerivedCategory.Qh ⋙ Realization L₂ t₂ tF₂) ≪≫ Functor.associator _ _ _}
-  have : Localization.Lifting (HomotopyCategory.quotient (Acyclic T t₁ t₂).FullSubcategory
-      (ComplexShape.up ℤ)) (HomologicalComplex.homotopyEquivalences
-      (Acyclic T t₁ t₂).FullSubcategory
-      (ComplexShape.up ℤ)) ((Acyclic T t₁ t₂).ι.mapHomologicalComplex (ComplexShape.up ℤ) ⋙
-      HomotopyCategory.quotient t₁.Heart (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh ⋙
-      Realization L₁ t₁ tF₁ ⋙ T) (((Acyclic T t₁ t₂).ι.mapHomotopyCategory (ComplexShape.up ℤ)
-      ⋙ DerivedCategory.Qh) ⋙ Realization L₁ t₁ tF₁ ⋙ T) :=
+             isoWhiskerRight ((T.fromAcyclic t₁ t₂).mapHomotopyCategoryBoundedFactors)
+             (DerivedCategory.Bounded.Qh ⋙ Realization L₂ t₂ tF₂) ≪≫ Functor.associator _ _ _}
+  have : Localization.Lifting (HomotopyCategory.Bounded.quotient (Acyclic T t₁ t₂).FullSubcategory)
+      (CochainComplex.Bounded.homotopyEquivalences (C := (Acyclic T t₁ t₂).FullSubcategory))
+      ((Acyclic T t₁ t₂).ι.mapCochainComplexBounded ⋙
+      HomotopyCategory.Bounded.quotient t₁.Heart ⋙ DerivedCategory.Bounded.Qh ⋙
+      Realization L₁ t₁ tF₁ ⋙ T) (((Acyclic T t₁ t₂).ι.mapHomotopyCategoryBounded
+      ⋙ DerivedCategory.Bounded.Qh) ⋙ Realization L₁ t₁ tF₁ ⋙ T) :=
     {iso' := isoWhiskerLeft _ (Functor.associator _ _ _) ≪≫ (Functor.associator _ _ _).symm ≪≫
-             isoWhiskerRight ((Acyclic T t₁ t₂).ι.mapHomotopyCategoryFactors
-             (ComplexShape.up ℤ)) (DerivedCategory.Qh ⋙ Realization L₁ t₁ tF₁ ⋙ T) ≪≫
+             isoWhiskerRight ((Acyclic T t₁ t₂).ι.mapHomotopyCategoryBoundedFactors)
+             (DerivedCategory.Bounded.Qh ⋙ Realization L₁ t₁ tF₁ ⋙ T) ≪≫
              Functor.associator _ _ _ }
-  refine Localization.liftNatIso (HomotopyCategory.quotient (Acyclic T t₁ t₂).FullSubcategory
-    (ComplexShape.up ℤ)) (HomologicalComplex.homotopyEquivalences (Acyclic T t₁ t₂).FullSubcategory
-    (ComplexShape.up ℤ))
-    (Functor.mapHomologicalComplex (T.fromAcyclic t₁ t₂) (ComplexShape.up ℤ) ⋙
-    HomotopyCategory.quotient t₂.Heart (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh ⋙
+  refine Localization.liftNatIso (HomotopyCategory.Bounded.quotient (Acyclic T t₁ t₂).FullSubcategory)
+    (CochainComplex.Bounded.homotopyEquivalences (C := (Acyclic T t₁ t₂).FullSubcategory))
+    (Functor.mapCochainComplexBounded (T.fromAcyclic t₁ t₂) ⋙
+    HomotopyCategory.Bounded.quotient t₂.Heart ⋙ DerivedCategory.Bounded.Qh ⋙
     Realization L₂ t₂ tF₂)
-    (Functor.mapHomologicalComplex (Acyclic T t₁ t₂).ι (ComplexShape.up ℤ) ⋙
-    HomotopyCategory.quotient t₁.Heart (ComplexShape.up ℤ) ⋙ DerivedCategory.Qh ⋙
+    (Functor.mapCochainComplexBounded (Acyclic T t₁ t₂).ι ⋙
+    HomotopyCategory.Bounded.quotient t₁.Heart ⋙ DerivedCategory.Bounded.Qh ⋙
     Realization L₁ t₁ tF₁ ⋙ T)
     _ _ ?_
   refine isoWhiskerLeft _ (Functor.associator _ _ _).symm ≪≫ isoWhiskerLeft _ (isoWhiskerRight
-    (DerivedCategory.quotientCompQhIso t₂.Heart) _) ≪≫ ?_ ≪≫ isoWhiskerLeft _ (isoWhiskerRight
-    (DerivedCategory.quotientCompQhIso t₁.Heart).symm _) ≪≫
+    (DerivedCategory.Bounded.quotientCompQhIso t₂.Heart) _) ≪≫ ?_ ≪≫ isoWhiskerLeft _ (isoWhiskerRight
+    (DerivedCategory.Bounded.quotientCompQhIso t₁.Heart).symm _) ≪≫
     isoWhiskerLeft _ (Functor.associator _ _ _)
   refine (Functor.leftUnitor _).symm ≪≫ ?_
-  refine isoWhiskerRight (FilteredAcyclicToComplexAcyclic L₁ t₁ tF₁ t₂
+  refine isoWhiskerRight (FilteredAcyclicToBoundedComplexAcyclic L₁ t₁ tF₁ t₂
     T).asEquivalence.counitIso.symm _ ≪≫ ?_
   refine Functor.associator _ _ _ ≪≫ Iso.inverseCompIso ?_
   dsimp
   refine (Functor.associator _ _ _).symm ≪≫ ?_
-  refine isoWhiskerRight (FilteredAcyclicToComplexAcyclic_functor L₁ t₁ tF₁ L₂ t₂ tF₂ T FT) _ ≪≫ ?_
+  refine isoWhiskerRight (FilteredAcyclicToBoundedComplexAcyclic_functor L₁ t₁ tF₁ L₂ t₂ T FT) _ ≪≫ ?_
   refine isoWhiskerRight ((Functor.associator (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι tF₁.ιHeart
-    (FT.functor ⋙ FilteredToComplex L₂ t₂)).symm ≪≫ (Functor.associator
-    ((FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι ⋙ tF₁.ιHeart) FT.functor (FilteredToComplex L₂ t₂)).symm
+    (FT.functor ⋙ FilteredToBoundedComplex L₂ t₂)).symm ≪≫ (Functor.associator
+    ((FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι ⋙ tF₁.ιHeart) FT.functor
+    (FilteredToBoundedComplex L₂ t₂)).symm
     ≪≫ isoWhiskerRight (Functor.associator (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι tF₁.ιHeart
-    FT.functor) (FilteredToComplex L₂ t₂) ≪≫
+    FT.functor) (FilteredToBoundedComplex L₂ t₂) ≪≫
     isoWhiskerRight (FilteredAcyclicToHeart_comp L₁ t₁ tF₁ L₂ t₂ tF₂ T FT).symm
-    (FilteredToComplex L₂ t₂) ≪≫ Functor.associator
-    (FilteredAcyclicToHeart L₁ t₁ tF₁ L₂ t₂ tF₂ T FT) tF₂.ιHeart (FilteredToComplex L₂ t₂))
-    (DerivedCategory.Q ⋙ Realization L₂ t₂ tF₂) ≪≫ ?_
+    (FilteredToBoundedComplex L₂ t₂) ≪≫ Functor.associator
+    (FilteredAcyclicToHeart L₁ t₁ tF₁ L₂ t₂ tF₂ T FT) tF₂.ιHeart (FilteredToBoundedComplex L₂ t₂))
+    (DerivedCategory.Bounded.Q ⋙ Realization L₂ t₂ tF₂) ≪≫ ?_
   refine Functor.associator (FilteredAcyclicToHeart L₁ t₁ tF₁ L₂ t₂ tF₂ T FT)
-    (tF₂.ιHeart ⋙ FilteredToComplex L₂ t₂) (DerivedCategory.Q ⋙ Realization L₂ t₂ tF₂) ≪≫ ?_
+    (tF₂.ιHeart ⋙ FilteredToBoundedComplex L₂ t₂) (DerivedCategory.Bounded.Q ⋙
+    Realization L₂ t₂ tF₂) ≪≫ ?_
   refine isoWhiskerLeft (FilteredAcyclicToHeart L₁ t₁ tF₁ L₂ t₂ tF₂ T FT)
     (Realization_comp_Q L₂ t₂ tF₂) ≪≫ ?_
   refine (Functor.associator (FilteredAcyclicToHeart L₁ t₁ tF₁ L₂ t₂ tF₂ T FT) tF₂.ιHeart
     (ForgetFiltration L₂)).symm  ≪≫ ?_
   refine isoWhiskerRight (FilteredAcyclicToHeart_comp L₁ t₁ tF₁ L₂ t₂ tF₂ T FT)
     (ForgetFiltration L₂) ≪≫ ?_
-  refine ?_ ≪≫ Functor.associator (FilteredAcyclicToComplexAcyclic L₁ t₁ tF₁ t₂ T)
-    ((Acyclic T t₁ t₂).ι.mapHomologicalComplex (ComplexShape.up ℤ))
-    (DerivedCategory.Q ⋙ Realization L₁ t₁ tF₁ ⋙ T)
-  refine ?_ ≪≫ isoWhiskerRight (FilteredAcyclicToComplexAcyclic_compat L₁ t₁ tF₁ t₂ T).symm
-    (DerivedCategory.Q ⋙ Realization L₁ t₁ tF₁ ⋙ T)
+  refine ?_ ≪≫ Functor.associator (FilteredAcyclicToBoundedComplexAcyclic L₁ t₁ tF₁ t₂ T)
+    (Acyclic T t₁ t₂).ι.mapCochainComplexBounded
+    (DerivedCategory.Bounded.Q ⋙ Realization L₁ t₁ tF₁ ⋙ T)
+  refine ?_ ≪≫ isoWhiskerRight (FilteredAcyclicToBoundedComplexAcyclic_compat L₁ t₁ tF₁ t₂ T).symm
+    (DerivedCategory.Bounded.Q ⋙ Realization L₁ t₁ tF₁ ⋙ T)
   refine ?_ ≪≫ (Functor.associator (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι
-    (tF₁.ιHeart ⋙ FilteredToComplex L₁ t₁) (DerivedCategory.Q ⋙ Realization L₁ t₁ tF₁ ⋙ T)).symm
+    (tF₁.ιHeart ⋙ FilteredToBoundedComplex L₁ t₁) (DerivedCategory.Bounded.Q ⋙
+    Realization L₁ t₁ tF₁ ⋙ T)).symm
   refine ?_ ≪≫ isoWhiskerLeft (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι (isoWhiskerRight
     (Realization_comp_Q L₁ t₁ tF₁).symm T ≪≫ isoWhiskerRight
-    (Functor.associator (tF₁.ιHeart ⋙ FilteredToComplex L₁ t₁) DerivedCategory.Q
-    (Realization L₁ t₁ tF₁)).symm T ≪≫ Functor.associator ((tF₁.ιHeart ⋙ FilteredToComplex L₁ t₁)
-    ⋙ DerivedCategory.Q) (Realization L₁ t₁ tF₁) T ≪≫ Functor.associator (tF₁.ιHeart ⋙
-    FilteredToComplex L₁ t₁) DerivedCategory.Q (Realization L₁ t₁ tF₁ ⋙ T))
+    (Functor.associator (tF₁.ιHeart ⋙ FilteredToBoundedComplex L₁ t₁) DerivedCategory.Bounded.Q
+    (Realization L₁ t₁ tF₁)).symm T ≪≫ Functor.associator ((tF₁.ιHeart ⋙
+    FilteredToBoundedComplex L₁ t₁) ⋙ DerivedCategory.Bounded.Q) (Realization L₁ t₁ tF₁) T ≪≫
+    Functor.associator (tF₁.ιHeart ⋙ FilteredToBoundedComplex L₁ t₁) DerivedCategory.Bounded.Q
+    (Realization L₁ t₁ tF₁ ⋙ T))
   refine Functor.associator (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι (tF₁.ιHeart ⋙ FT.functor)
     (ForgetFiltration L₂) ≪≫ ?_
   refine isoWhiskerLeft (FilteredAcyclic L₁ t₁ tF₁ t₂ T).ι ?_

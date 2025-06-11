@@ -29,7 +29,7 @@ noncomputable abbrev subcategoryAcyclic :
     Triangulated.Subcategory (HomotopyCategory.Bounded C) :=
   (HomotopyCategory.subcategoryAcyclic C).inverseImage (HomotopyCategory.Bounded.ι C)
 
-lemma quasiIso_eq_subcategoryAcyclic_trW :
+lemma quasiIso_eq_subcategoryAcyclic_W :
     HomotopyCategory.Bounded.quasiIso C = (subcategoryAcyclic C).W := by
   ext K L f
   obtain ⟨M, g, h, mem⟩ := CategoryTheory.Pretriangulated.distinguished_cocone_triangle f
@@ -150,7 +150,7 @@ instance : Qh.IsLocalization (HomotopyCategory.Bounded.subcategoryAcyclic C).W :
     (HomotopyCategory.Bounded.ι C) (QhCompιIsoιCompQh C)-/
 
 instance : Qh.IsLocalization (HomotopyCategory.Bounded.quasiIso C) := by
-  rw [HomotopyCategory.Bounded.quasiIso_eq_subcategoryAcyclic_trW]
+  rw [HomotopyCategory.Bounded.quasiIso_eq_subcategoryAcyclic_W]
   infer_instance
 
 instance : (DerivedCategory.Bounded.ι (C := C)).CommShift ℤ := sorry
@@ -202,6 +202,10 @@ instance : Q.IsLocalization (CochainComplex.Bounded.quasiIso (C := C)) := by sor
 instance : (CochainComplex.Bounded.quasiIso (C := C)).HasLocalization := sorry
 
 instance : (Q (C := C)).mapArrow.EssSurj := sorry
+
+/-- The natural isomorphism `HomotopyCategory.Bounded.quotient C ⋙ Qh ≅ Q`. -/
+def quotientCompQhIso : HomotopyCategory.Bounded.quotient C ⋙ Qh ≅ Q := sorry
+--  HomologicalComplexUpToQuasiIso.quotientCompQhIso C (ComplexShape.up ℤ)
 
 variable {C}
 

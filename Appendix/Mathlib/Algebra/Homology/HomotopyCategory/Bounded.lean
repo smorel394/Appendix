@@ -121,6 +121,10 @@ def quotient : CochainComplex.Bounded C ⥤ Bounded C :=
       rintro ⟨K, n, hn⟩
       exact ⟨n, hn⟩)
 
+
+instance : (HomotopyCategory.Bounded.quotient C).IsLocalization
+    (CochainComplex.Bounded.homotopyEquivalences C) := sorry
+
 def quotientCompι :
   quotient C ⋙ ι C ≅
     CochainComplex.Bounded.ι C ⋙ HomotopyCategory.quotient C (ComplexShape.up ℤ) := by
@@ -190,6 +194,15 @@ def mapHomotopyCategoryBoundedCompIso {E : Type*} [Category E] [Preadditive E] [
   ((HomotopyCategory.bounded _).fullyFaithfulι.whiskeringRight _).preimageIso
     (isoWhiskerLeft (HomotopyCategory.Bounded.ι C)
       (mapHomotopyCategoryCompIso e (ComplexShape.up ℤ)))
+
+/-- The obvious isomorphism between
+`HomotopyCategory.Bounded.quotient C ⋙ F.mapHomotopyCategoryBounded` and
+`F.mapCochainComplexBounded ⋙ HomotopyCategory.Bounded.quotient D` when `F : C ⥤ D` is
+an additive functor. -/
+def mapHomotopyCategoryBoundedFactors (F : C ⥤ D) [F.Additive] :
+    HomotopyCategory.Bounded.quotient C ⋙ F.mapHomotopyCategoryBounded ≅
+      F.mapCochainComplexBounded ⋙ HomotopyCategory.Bounded.quotient D := sorry
+--  CategoryTheory.Quotient.lift.isLift _ _ _
 
 end Functor
 

@@ -7,6 +7,7 @@ import Mathlib.Algebra.Homology.Embedding.CochainComplex
 import Mathlib.Algebra.Homology.HomotopyCategory.Shift
 import Appendix.Mathlib.CategoryTheory.Shift.CommShift
 
+universe u v
 
 /-!
 # C^b
@@ -17,7 +18,7 @@ open CategoryTheory Limits
 
 namespace CochainComplex
 
-variable (C : Type*) [Category C]
+variable (C : Type u) [Category.{v} C]
 
 protected def bounded [HasZeroMorphisms C] : ObjectProperty (CochainComplex C ℤ) :=
   fun K ↦ ∃ (n : ℤ), K.IsStrictlyLE n ∧ ∃ (m : ℤ), K.IsStrictlyGE m
@@ -51,6 +52,9 @@ def quasiIso [CategoryWithHomology C] : MorphismProperty (Bounded C) :=
 end
 
 variable [Preadditive C]
+
+def homotopyEquivalences [Preadditive C] : MorphismProperty (Bounded C) :=
+  (HomologicalComplex.homotopyEquivalences C (ComplexShape.up ℤ)).inverseImage (ι C)
 
 noncomputable instance : HasShift (Bounded C) ℤ :=
   (fullyFaithfulι C).hasShift
