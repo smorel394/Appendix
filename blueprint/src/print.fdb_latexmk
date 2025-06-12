@@ -1,9 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1749744134.32239 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749744136.1698 0
+["pdflatex"] 1749744130.1795 "/home/sophie/lean4/Appendix/blueprint/src/print.tex" "print.pdf" "print" 1749744132.43192 0
   "/etc/texmf/web2c/texmf.cnf" 1730460179.73442 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749744136.01897 6776 7ba9261c0abc900b05adf902b460459a "pdflatex"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749744136.02097 3061 c39d597ac653f7f13f82190902a91050 "pdflatex"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.toc" 1749744136.02097 1243 d08bb4f0c16d558eae9c5304b1319317 "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/src/print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -160,12 +158,15 @@
   "ftri.tex" 1749743303.20897 32588 d06f343ad545720c9ede599c23672bfe ""
   "macros/common.tex" 1749733976.20009 4178 563317c51a042d1058e4c4b083e2bcdb ""
   "macros/print.tex" 1749672939.61511 1101 87627b2ec24fef68edc71c13f43f7bab ""
+  "print.aux" 1749744132.29897 6776 7ba9261c0abc900b05adf902b460459a "pdflatex"
+  "print.out" 1749744132.29997 3061 c39d597ac653f7f13f82190902a91050 "pdflatex"
   "print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""
+  "print.toc" 1749744132.29997 1243 d08bb4f0c16d558eae9c5304b1319317 "pdflatex"
   "tstruct.tex" 1749744129.98497 3511 249cae156d569acc4a8d89db326f211c ""
   (generated)
-  "/home/sophie/lean4/Appendix/blueprint/print/print.aux"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.log"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.out"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.pdf"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.toc"
+  "print.aux"
+  "print.log"
+  "print.out"
+  "print.pdf"
+  "print.toc"
   (rewritten before read)

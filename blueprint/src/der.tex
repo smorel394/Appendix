@@ -1,1 +1,140 @@
-\section{A.3: homological algebra calculations and functor reconstruction}
+\section{Section A.3: homological algebra calculations and functor reconstruction}
+
+This section corresponds to the Lean files \url{Acyclic.lean} and \url{Derived.lean}.
+
+\subsection{$T$-acyclic objects}
+
+Now we come to the second goal of this subsection. We start with some preliminaries.
+Let $\Df,\Df'$ be triangulated categories and $T\colon \Df\ra\Df'$ be a triangulated functor. Suppose that we are given a t-structure $(\Df^{\leq 0},\Df^{\geq 0})$ (resp. $({\Df'}^{\leq 0},{\Df'}^{\geq 0})$)
+on $\Df$ (resp. $\Df'$), and denote the cohomology functors of this t-structure by $\H^i$ and its heart by $\Cf$ (resp. $\Cf'$).
+We say that an object $X$ of $\Cf$ is \emph{$T$-acyclic} if $T(X)\in\Ob\Cf'$. If $X$ is $T$-acyclic, then we have $\H^n T(X)=0$ for every $n\in\Z\setminus\{0\}$; 
+the converse if true if the t-structure on $\Df'$ is nondegenerate.
+
+\begin{lemma}
+The following hold:
+\begin{itemize}
+\item[(i)] The full subcategory of $T$-acyclic objects of $\Cf$ is stable by extensions.
+
+\item[(ii)] Let $0\ra X\ra Y\ra Z\ra 0$ be an exact sequence in $\Cf$. If $X,Y,Z$ are $T$-acyclic, then $0\ra T(X)\ra T(Y)\ra T(Z)\ra 0$
+is an exact sequence in $\Cf'$.
+
+\item[(iii)] Let $(X^\bullet,d^\bullet)$ be a complex of objects of $\Cf$ and let $k\in\Z$. If $X^k$ is $T$-acyclic and $\H^{k+1}(X^\bullet,d^\bullet)=0$, then we have
+$\H^r T(\Ker d^{k+1})\simeq\H^{r+1}T(\Ker d^k)$ for every $r\in\Z\setminus\{-1,0\}$.
+
+\item[(iv)] Suppose that the t-structure on $\Df'$ is non-degenerate.
+Let $(X^\bullet,d^\bullet)$ be an exact complex of $T$-acyclic objects. Suppose that at least one of the following conditions hold:
+\begin{itemize}
+\item[(a)] The complex $(X^\bullet,d^\bullet)$ is bounded.
+\item[(b)] There exists $N\in\Nat$ such that $T(X)\in{\Df'}^{[-N,N]}$ for every $X\in\Ob\Cf$.
+
+\end{itemize}
+Then the complex $T(X^\bullet)$ of objects of $\Cf'$ is exact.
+
+\item[(v)] Suppose that the t-structure on $\Df'$ is non-degenerate and
+that there exists $N\in\Nat$ such that $T(X)\in{\Df'}^{[-N,N]}$ for every $X\in\Ob\Cf$.
+Let $(X^\bullet,d^\bullet)$ be a complex of $T$-acyclic objects of $\Cf$. If $X^\bullet$ is quasi-isomorphic to a bounded complex, then, for $n\in\Nat$ big enough,
+the complexes $\tau_{\leq n}X^\bullet$, $\tau_{\geq -n}X^\bullet$ and $\tau_{\leq n}\tau_{\geq -n}X^\bullet$ are complexes of $T$-acyclic objects, and all the maps in the square
+%\[\xymatrix{\tau_{\leq n}X^\bullet\ar[r]\ar[d] & \tau_{\leq n}\tau_{\geq -n}X^\bullet\ar[d]\\
+%X^\bullet\ar[r] & \tau_{\geq -n}X^\bullet}\]
+are quasi-isomorphisms. In particular, $X^\bullet$ is quasi-isomorphic to a bounded
+complex of $T$-acyclic objects.
+
+\end{itemize}
+\label{lemma_der_fil}
+\end{lemma}
+
+\begin{proof}
+We repeatedly use the fact that a complex $X\ra Y\ra Z$ in $\Cf$ is a short exact sequence if and only if can completed to a distinguished triangle of $\Df$
+(see Theorem~1.3.6 of~\cite{BBD}).
+
+Let $0\ra X\ra Y\ra Z\ra 0$ be an exact sequence in $\Cf$. If $X,Z$ are $T$-acyclic, then we have an exact triangle $T(X)\ra T(Y)\ra T(Z)\xra{+1}$ with
+$T(X),T(Z)$ in $\Cf'$, so $T(Y)$ is in $\Cf'$ and the sequence $0\ra T(X)\ra T(Y)\ra T(Z)\ra 0$ is exact in $\Cf'$. This proves (i) and (ii).
+
+In the situation of (iii), we have an exact sequence
+\[0\ra\Ker d^k\ra X^k\xra{d^k} \Im(d^k)=\Ker(d^{k+1})\ra 0,\]
+hence a distinguished triangle $T(\Ker d^k)\ra T(X^k)\ra T(\Ker d^{k+1})\xra{+1}$.
+As $\H^r T(X^k)=0$ for $r\ne 0$, the conclusion of (iii) follows from the long exact cohomology sequence of this triangle.
+
+Suppose that we are in the situation of (iv). Let $k\in\Z$, and let $r$ be a positive integer. By (iii), we have isomorphisms
+$\H^r T(\Ker d^k)\simeq\H^{r+l}T(\Ker d^{k-l})$ and $\H^{-r}T(\Ker d^k)\simeq\H^{-r-l}T(\Ker d^{k+l})$ for every $l\in\Nat$. Also, for $l$ big enough,
+we have $\H^{r+l}T(\Ker d^{k-l})=0$ and $\H^{-r-l}T(\Ker d^{k+l})=0$; 
+indeed, if (a) holds, this is true because $X^{k+l}=0$ and $X^{k-l}=0$ for $l$ big enough, and if (b) holds, this is true as soon as $l\geq N$. We deduce that $\H^rT(\Ker d^k)=0$
+and $\H^{-r}(\Ker d^k)=0$ for every $k\in\Z$ and every positive integer $r$, hence that all $\Ker d^k$ are $T$-acyclic. The conclusion of (iv) then follows by applying (ii) to the short exact
+sequences $0\ra\Ker d^k\ra X^k\ra\Ker d^{k+1}\ra 0$.
+
+Finally, suppose that we are in the situation of (v). As $X^\bullet$ is quasi-isomorphic to a bounded complex, there exists $M\in\Nat$ such that $\H^r(X^\bullet)=0$ for $r\not\in[-M,M]$.
+Let $k\in\Nat$. If $k\geq M$ and $r$ is a positive integer, then we have by (iii):
+\[\H^{-r}T(\Ker d^k)\simeq\H^{-r-N}T(\Ker d^{k+N})=0\]
+and
+\[H^r T(\Ker d^{-k})\simeq\H^{r+N}\Ker(d^{-k-N})=0.\]
+Similarly, if $k\geq N+M$ and $r$ is a positive integer, then we have by (iii):
+\[\H^rT(\Ker d^k)\simeq\H^{r+N}T(\Ker d^{k-N})=0\]
+and
+\[H^{-r} T(\Ker d^{-k})\simeq\H^{-r-N}\Ker(d^{-k+N})=0.\]
+We conclude that $\Ker(d^k)$ is $T$-acyclic for $k\geq N+M$ or $k\leq -N-M$. Also, if $n\leq -N-2$, then $\H^n(X^\bullet)=0$ and $\H^{n+1}(X^\bullet)=0$,
+hence $\Coker(d^{n-1})\simeq\Ker(d^{n+1})$. So the two statements of (v) hold for $n\geq N+M+2$.
+\end{proof}
+
+
+\subsection{Functor reconstruction}
+
+The following proposition is essentially proved in Section~A.7 of \cite{Be1} .
+
+\begin{proposition} 
+Let $\Df,\Df'$ be triangulated categories, and let $\DF$ (resp. $\DF'$) be an f-category over $\Df$ (resp. $\Df'$).
+Suppose that we are given compatible t-structures $(\Df^{\leq 0},\Df^{\geq 0})$ and $(\DF^{\leq 0},\DF^{\geq 0})$ (resp. $({\Df'}^{\leq 0},{\Df'}^{\geq 0})$
+and $({\DF'}^{\leq 0},{\DF'}^{\geq 0})$) on $\Df$ and $\DF$ (resp. $\Df'$ and $\DF'$), and denote the hearts of this t-structures 
+by $\Cf$ and $\Cf_F$ (resp. $\Cf'$ and $\Cf'_F$). Suppose also that the t-structure on $\Df'$ is non-degenerate.
+
+Let $T\colon \Df\ra\Df'$ be a triangulated functor. Suppose that the following conditions are satisfied:
+\begin{itemize}
+\item[(a)] The functor $T$ admits an f-lifting $FT\colon \DF\ra\DF'$.
+
+\item[(b)] Let $\If:=\{X\in\Cf\mid T(X)\in\Cf'\}$ be the full subcategory of $T$-acyclic objects of $\Cf$. Then the functor
+$\Kb(\If)/\Nb(\If)\ra\Db(\Cf)$ is an equivalence, where $\Kb(\If)$ is the category of bounded complexes of objects of $\If$ up to
+homotopy and $\Nb(\If)$ is its full subcategory of exact complexes.
+
+\end{itemize}
+
+Then the functor $\Kb(\If)\xra{\Kb(T)}\Kb(\Cf')\ra\Db(\Cf')$ sends $\Nb(\If)$ to $0$, hence induces a functor
+$DT\colon \Db(\Cf)\ra\Db(\Cf')$, and the following diagram commutes up to natural isomorphism:
+%\[\xymatrix{\Db(\Cf)\ar[r]^-{DT}\ar[d]_{\real} & \Db(\Cf')\ar[d]^{\real} \\
+%\Df\ar[r]_-{T} & \Df'}\]
+
+\label{prop_der_fil}
+\end{proposition}
+
+\begin{proof} 
+The first statement follows from point (iv) of Lemma~\ref{lemma_der_fil}.
+
+We prove the second statement. 
+In Theorem~\ref{thm_real}, we defined equivalences $G\colon \Cf_F\ra\Cb(\Cf)$ and $G'\colon \Cf'_F\ra\Cb(\Cf')$.
+By point (ii) of the same theorem, the functor $\omega\circ G^{-1}\colon \Cb(\Cf)\ra\Df$ (resp. $\omega\circ {G'}^{-1}\colon \Cb(\Df')\ra\Df'$) sends exact complexes to $0$, hence
+induces a functor $\Db(\Cf)\ra\Df$ (resp. $\Db(\Cf')\ra\Df'$), which is the realization functor $\real$.
+Now let $\If_F$ be the full subcategory of $\Cf_F$ whose objects are the $X$ such that $\Gra^iX[i]\in\Ob\If$ for every $i\in\Z$, i.e. such that $G(X)$
+is in $\Cb(\If)$. Proposition~\ref{prop_f_lifting} implies that $FT$ sends
+$\If_F$ to $\Cf'_F$, and that the restrictions of $G'\circ FT$ and $\Cb(T)\circ G$ to $\If_F$ are isomorphic. So we get an isomorphism of functors on $\Cb(\If)$:
+\[T\circ\omega\circ G^{-1}\simeq\omega\circ FT\circ G^{-1}\simeq\omega\circ{G'}^{-1}\circ\Cb(T).\]
+This gives the isomorphism $T\circ\real\simeq\real\circ DT$.
+\end{proof}
+
+\begin{remark}
+Suppose that we are in the situation of Proposition~\ref{prop_der_fil}.
+If moreover $T\colon \Df\ra\Df'$ is left t-exact and if $\If$ is cogenerating in $\Cf$ (i.e. every object of $\Cf$ has a monomorphism into an object of $\If$), then the functor
+$\H^0(T)\colon \Cf\ra\Cf'$ admits a right derived functor $RT\colon \Dpl(\Cf)\ra\Dpl(\Cf')$ by Proposition~13.3.5 of~\cite{KS1}, and the construction of $RT$ in that proposition shows that
+$RT$ sends that $\Db(\Cf)$ to $\Db(\Cf')$ and that $DT$ is the restriction of $RT$ to $\Db(\Cf)$. We have a similar statement if $T$ is right t-exact and $\If$ is generating in $\Cf$.
+
+\label{rmk_der_fil1}
+\end{remark}
+
+\begin{remark}
+By Proposition~10.2.7 of~\cite{KS1}, to check assumption (b) in the statement of Proposition~\ref{prop_der_fil}, it suffices to find triangulated subcategories
+$\Df_0=\Kb(\Cf)\supset\Df_1\supset\ldots\supset\Df_r=\Kb(\If)$ of $\Kb(\Cf)$ such that, for every $i\in\{1,\ldots,r-1\}$, one of the following conditions holds:
+\begin{itemize}
+\item For every $X\in\Ob\Df_i$, there exists a quasi-isomorphism $X\ra Y$ with $Y\in\Ob\Df_{i+1}$.
+\item For every $X\in\Ob\Df_i$, there exists a quasi-isomorphism $Y\ra X$ with $Y\in\Ob\Df_{i+1}$.
+
+\end{itemize}
+
+\label{rmk_der_fil2}
+\end{remark}

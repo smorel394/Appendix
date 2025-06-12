@@ -1000,7 +1000,7 @@ end FilteredTriangulated
 
 /-
 The next thing in the paper is the definition, when we have a filtered triangulated category `C`
-over a triangulated category `A`, of the "graded pieces" functors `Gr n : C ⥤ A`, which use
+over a triangulated category `A`, of the "graduation" functors `Gr n : C ⥤ A`, which use
 an arbitrary quasi-inverse of the fully faithful functor `i : A ⥤ C` on the essential image of
 `i`.
 
@@ -1008,7 +1008,7 @@ Rather than using an arbitrary quasi-inverse, it makes things much simpler to us
 given by the "forget the filtration" functor `ForgetFiltration : C ⥤ A`, which has the
 additional pleasant property that it is defined on all of `C` and so avoids an
 `ObjectProperty.lift`. In fact, this is even better, as `ForgetFiltration` commutes with the
-second shift, so we can directy defined `Gr n` as `truncGELE n n ⋙ ForgetFiltration`.
+second shift, so we can directy define `Gr n` as `truncGELE n n ⋙ ForgetFiltration`.
 
 For this, we need to change the order of statements and do Proposition A.1.6 first (this is
 possible as that proposition makes no use of the functors `Gr n`).
@@ -1171,73 +1171,12 @@ instance (n : ℤ) : (Gr L n).IsTriangulated := by
 def Gr_vs_Gr : Gr L n ≅ truncGELE n n ⋙ shiftFunctor₂ C (-n) ⋙ ForgetFiltration L := sorry
 -- Use `ForgetFiltration_commShift`.
 
-/-
-def Gr_aux : C ⥤ C := truncGELE n n ⋙ shiftFunctor₂ C (-n)
-
--- `Gr_aux` is triangulated.
-
-instance (n : ℤ) : (Gr_aux (C := C) n).CommShift ℤ := by
-  dsimp [Gr_aux]; infer_instance
-
-instance (n : ℤ) : (Gr_aux (C := C) n).IsTriangulated := by
-  dsimp [Gr_aux]; infer_instance
-
-/- The essential image of `Gr_aux` is contained in the full subcategory of objects that
-are both `≤ 0` and `≥ 0`.
--/
-lemma Gr_aux_image (X : C) : IsLE ((Gr_aux n).obj X) 0 ∧ IsGE ((Gr_aux n).obj X) 0 := by
-  dsimp [Gr_aux]
-  constructor
-  · have : IsLE ((shiftFunctor₂ C (-n)).obj ((truncLEGE n n).obj X)) 0 := by
-      dsimp [truncLEGE]
-      exact isLE_shift _ n (-n) 0 (neg_add_cancel _)
-    refine isLE_of_iso ((shiftFunctor₂ C (-n)).mapIso ((asIso (truncLEGEToGELE n n)).app X)) 0
-  · dsimp [truncGELE]
-    exact isGE_shift _ n (-n) 0 (neg_add_cancel _)
-
-def Gr_aux_trunc : Gr_aux (C := C) n ⋙ truncGELE 0 0 ≅ Gr_aux n := by
-  refine NatIso.ofComponents (fun X ↦ ?_) (fun {X Y} f ↦ ?_)
-  · have := (Gr_aux_image n X).1
-    have := (Gr_aux_image n X).2
-    have : IsGE ((truncLE 0).obj ((Gr_aux n).obj X)) 0 := inferInstance
-    exact asIso ((truncGEι 0).app ((truncLE 0).obj ((Gr_aux n).obj X))) ≪≫
-      (asIso ((truncLEπ 0).app ((Gr_aux n).obj X))).symm
-  · dsimp
-    slice_lhs 1 2 => rw [(truncGEι 0).naturality, Functor.id_map]
-    have := (Gr_aux_image n Y).1
-    rw [← cancel_mono ((truncLEπ 0).app ((Gr_aux n).obj Y))]
-    simp only [Functor.id_obj, assoc, IsIso.inv_hom_id, comp_id]
-    have := (truncLEπ 0).naturality ((Gr_aux n).map f)
-    simp only [Functor.id_obj, Functor.id_map] at this
-    rw [this]
-    simp only [IsIso.inv_hom_id_assoc]
-
-def Gr : C ⥤ A :=
-  Gr_aux n ⋙ ForgetFiltration L
-
-def Gr_Gr_aux : Gr L n ⋙ L.functor ≅ Gr_aux n :=
-  Functor.associator _ _ _ ≪≫ isoWhiskerLeft _ (Functor_forgetFiltration L) ≪≫ Gr_aux_trunc n
-
--- `Gr` is triangulated.
-
-instance (n : ℤ) : (Gr L n).CommShift ℤ := by
-  dsimp [Gr]; infer_instance
-
-instance (n : ℤ) : (Gr L n).IsTriangulated := by
-  dsimp [Gr]; infer_instance
--/
-
 -- Proposition A.1.5(i).
 
 -- Again, the isomorphisms are explicit.
 def Gr_commShift : leftCommShift (fun n ↦ Gr (C := C) L n) (E := FilteredShift C) := sorry
 
 -- Proposition A.1.5(ii).
-
-/-
-lemma Gr_aux_pure_zero_of_ne_zero {n : ℤ} (h : n ≠ 0) (X : A) :
-    Limits.IsZero ((Gr_aux n).obj (L.functor.obj X)) := sorry
--/
 
 lemma Gr_pure_zero_of_ne_zero {n : ℤ} (h : n ≠ 0) (X : A) :
     Limits.IsZero ((Gr L n).obj (L.functor.obj X)) := sorry

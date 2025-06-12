@@ -9,13 +9,15 @@
 % (this is what the [theorem] arguments mean) and never resets it.
 % If you want for instance to number them within chapters then you can add
 % [chapter] at the end of the next line.
-\newtheorem{theorem}{Theorem}
+\newtheorem{theorem}{Theorem}[subsection]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
 
 \makeatletter
 \renewcommand*{\thesection}{\@arabic\c@section}
@@ -53,7 +55,9 @@
 %% Arrows
 
 \newcommand{\ra}{\longrightarrow}
-\newcommand\flnom[1]{\stackrel{#1}{\ra}}
+\newcommand{\xra}{\xrightarrow}
+\newcommand{\la}{\longleftarrow}
+\newcommand{\xa}{\xleftarrow}
 \newcommand{\rasto}{\longmapsto}
 \newcommand{\iso}{\stackrel{\sim}{\ra}}
 

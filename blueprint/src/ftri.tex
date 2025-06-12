@@ -1,25 +1,32 @@
 \section{Section A.1: filtered triangulated categories}
 
-In Appendix~A of~\cite{Be1}, Beilinson introduced f-categories over triangulated categories, that have all the abstract properties of filtered
+In Appendix~A of~\cite{Be1}, Beilinson introduced filtered triangulated 
+categories over triangulated categories, that have all the abstract properties of filtered
 derived categories, and generalized the properties of filtered derived categories to this more general setting. We review his definition and results.
 Note that Section~6 of Schn\"urer's paper \cite{Schnur} gives more detailed proofs of many of the results of Appendix~A of~\cite{Be1}.
 
-When formalizing the definition of f-categories, we run into our first issue immediately. Beilinson defines an f-category as a triangulated
-category $C$ with a second shift functor $s$, which should be a triangulated self-equivalence (plus some extra structure). In particular,
+This section corresponds to the Lean file \url{Filtered_no_proof.lean}.
+
+\subsection{Definition A.1.1}
+
+When formalizing the definition of filtered triangulated 
+categories, we run into our first issue immediately. Beilinson defines an filtered triangulated category as a triangulated
+category $\DF$ with a second shift functor $s$, which should be a triangulated self-equivalence (plus some extra structure). In particular,
 the functor $s$ needs to commute with the shifts coming from the triangulated category structure. The easiest way to encode all
-the necessary compatibilities is actually to put a shift by $\Z \times \Z$ on our category $C$, where the shift by the first factor
+the necessary compatibilities is actually to put a shift by $\Z \times \Z$ on our category $\DF$, where the shift by the first factor
 will be part of the triangulated structure and the shift by the second factor will give the functor $s$. The beginning of the project
-is devoted to setting this shift structure. In particular, we chose to make the default shift by $\Z$ on the  category $C$ to be the
+is devoted to setting this shift structure. In particular, we chose to make the default shift by $\Z$ on the  category $\DF$ to be the
 shift by the first factor, and to introduce a type synonym `FilteredShift C' which carries a shift by $\Z$ encoding the functor  $s$.
 
-The following is Definition~A.1 of~\cite{Be1}.
+The following is part of Definition~A.1 of~\cite{Be1}. (Almost: we actually define filtered pretriangulated categories in the Lean code,
+and a filtered triangulated catgeory is a filtered pretriangulated category that is also triangulated.)
 
 \begin{definition}
+% Definition A.1.1(1).
 \label{def-FilteredTriangulated}
 \lean{CategoryTheory.FilteredTriangulated}
-We introduce the following objects:
-\begin{itemize}
-\item[(1)] A \textit{filtered} \textit{triangulated} \textit{category}, or for short a \emph{f-category}, is the data of:
+\leanok
+A \textit{filtered} \textit{triangulated} \textit{category} is the data of:
 \begin{itemize}
 \item a triangulated category $\DF$;
 \item two full triangulated subcategories $\DF(\leq 0)$, $\DF(\geq 0)$ of $\DF$ that are stable by isomorphisms;
@@ -35,10 +42,27 @@ satisfying the following conditions, where, for every $n\in\Z$, we set
 \item[(ii)] For any $X\in\Ob\DF$, we have $\alpha_X=s(\alpha_{s^{-1}(X)})$.
 \item[(iii)] For any $X\in\Ob\DF(\geq 1)$ and $Y\in\Ob\DF(\leq 0)$, we have $\Hom(X,Y)=0$, and the maps $\Hom(s(Y),X)\ra\Hom(Y,X)\ra\Hom(Y,s^{-1}(X))$ induced
 by $\alpha_Y$ and $\alpha_{s^{-1}(X)}$ are bijective.
-\item[(iv)] For every $X\in\Ob\DF$, there exists a distinguished triangle $A\ra X\ra B\flnom{+1}$ with $A$ in $\DF(\geq 1)$ and $B$ in $\DF(\leq 0)$.
+\item[(iv)] For every $X\in\Ob\DF$, there exists a distinguished triangle $A\ra X\ra B\xra{+1}$ with $A$ in $\DF(\geq 1)$ and $B$ in $\DF(\leq 0)$.
 \end{itemize}
 
-\item[(2)] If $\DF$ and $\DF'$ are f-categories, an \emph{f-functor} from $\DF$ to $\DF'$ is the data of a triangulated functor $T\colon \DF\ra\DF'$ and a natural isomorphism
+\end{definition}
+
+We need to setup extra definitions (for example, classes like `IsLE' and `IsGE'), then prove a lot of "easy" lemmas in order
+to make this definition usable. For example, there is a lemma \url{CategoryTheory.FilteredTriangulated.exists_triangle} saying that, for
+every $X$ and $\DF$ and every $n\in\Z$, there exists a distinguished triangle $A\ra X\ra B \ra A[1]$ with $A$ in $\DF(\ge n + 1)$
+and $B$ in $\DF(\le n)$.
+
+Then we define filtered triangulated functors. In Lean, we first need to ask for a `CommShift' structure by $\Z\times\Z$, and then 
+we require three properties: preservation of objects that are $\le 0$, preservation of objects that are $\ge 0$, and commutation with
+the natural transformation $\alpha$.
+
+\begin{definition}
+% Definition A.1.1(2).
+\label{def-FilteredTriangulatedFunctor}
+\lean{CategoryTheory.Functor.IsFilteredTriangulated}
+\leanok
+\uses{{def-FilteredTriangulated}}
+If $\DF$ and $\DF'$ are filtered triangulated categories, a \emph{filtered triangulated functor} from $\DF$ to $\DF'$ is the data of a triangulated functor $T\colon \DF\ra\DF'$ and a natural isomorphism
 $s'\circ T\iso T\circ s$ 
 such that $T(\DF(\leq 0))\subset\DF'(\leq 0)$,
 $T(\DF(\geq 0))\subset\DF(\geq 0)$ and that, for every $X\in\Ob\DF$, the following triangle commutes:
@@ -49,120 +73,878 @@ T(X) \arrow[r, "\alpha'_{T(X)}"] \arrow[rd, "T(\alpha(X))"']
 & T(s(X))
 \end{tikzcd}
 
-\item[(3)] 
-Let $\Df$ be a triangulated category. An \emph{f-category over $\Df$} is an f-category $\DF$ together with an equivalence $i\colon \Df\ra\DF(\leq 0)\cap\DF(\geq 0)$.
-If $\Df'$ is another triangulated category, $\DF'$ is an $f$-category over $\Df'$ and $T\colon \Df\ra\Df'$ is a triangulated functor, an \emph{f-lifting} of $T$ is an f-functor
-$FT\colon \DF\ra\DF'$ and a natural isomorphism $i'\circ T\simeq TF\circ i$.
-
-\end{itemize}
-\label{def_f_category}
 \end{definition}
 
 
-\begin{proposition}[Proposition~A.3 of~\cite{Be1}]
-Let $\DF$ be an f-category.
-\begin{itemize}
-\item[(i)] For every $n\in\Z$, the inclusion $\DF(\leq n)\subset\DF$ admits a left adjoint $\sigma_{\leq n}$, and the inclusion $\DF(\geq n)\subset\DF$ admits a right adjoint $\sigma_{\geq n}$.
-The functors $\sigma_{\leq n}$, $\sigma_{\geq n}$ are triangulated and preserve the subcategories $\DF(\leq m)$, $\DF(\geq m)$ for every $m\in\Z$.
-\item[(ii)] For $a,b\in\Z$, there exists a unique isomorphism of functors $\sigma_{\leq a}\sigma_{\geq b}\simeq\sigma_{\geq b}\sigma_{\leq a}$ that makes the following diagram commute:
+\begin{definition}
+% Definition A.1.1(3) part 1.
+\label{def-FilteredTriangulatedOver}
+\lean{CategoryTheory.isFilteredTriangulated_over}
+\leanok
+\uses{{def-FilteredTriangulated}}
+Let $\Df$ be a triangulated category. A \emph{filtered triangulated category over $\Df$} is a filtered triangulated category $\DF$ together 
+with a fully faithful functor $i\colon \Df\ra\DF$ whose essential image is $\DF(\leq 0)\cap\DF(\geq 0)$.
+
+\end{definition}
+
+\begin{definition}
+\label{def-FilteredTriangulatedOver-equivalence}
+\lean{CategoryTheory.isFilteredTriangulated_over_equiv}
+\leanok
+\uses{def-FilteredTriangulatedOver}
+Let $\Df$ be triangulated categories, $\DF$ be a filtered triangulated category over $\Df$. We write $equiv$ for the equivalence of categories 
+$\Df\ra \DF(\leq 0)\cap\DF(\geq 0)$ induced by the fully faithful functor $i\colon \Df\ra\DF$.
+
+\end{definition}
+
+\begin{definition}
+% Definition A.1.1(3) part 2.
+\label{def-FilteredLifting}
+\lean{CategoryTheory.Functor.filteredLifting}
+\leanok 
+\uses{def-FilteredTriangulatedOver, def-FilteredTriangulatedFunctor}
+Let $\Df, \Df'$ be triangulated categories, $\DF$ (resp. $\DF'$) be a filtered triangulated category over $\Df$ (resp. $\Df'$) 
+and $T\colon \Df\ra\Df'$ be a triangulated functor. A \emph{filtered lifting} of $T$ is a filtered triangulated functor
+$FT\colon \DF\ra\DF'$ and a natural isomorphism $compat : i'\circ T\simeq TF\circ i$.
+
+\end{definition}
+
+I am guessing that the isomorphism $compat$ should satisfy some more compatibilities,
+notably with the "commutation with shifts" isomorphisms. (This will probably come up when I actually formalize
+properties of filtered triangulated functors.)
+
+
+\subsection{Proposition A.1.3}
+
+We fix a filtered triangulated catgeory $\DF$.
+
+\begin{proposition}
+% Proposition A.1.3(i) first sentence.
+\label{prop-A.1.3.1-le}
+\lean{CategoryTheory.FilteredTriangulated.LE_reflective}
+\leanok
+\uses{def-FilteredTriangulated}
+For every $n\in\Z$, the full subcategory $\DF(\le n)$ is reflective.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.3(i) first sentence.
+\label{prop-A.1.3.1-ge}
+\lean{CategoryTheory.FilteredTriangulated.GE_coreflective}
+\leanok
+\uses{def-FilteredTriangulated}
+
+For every $n\in\Z$, the full subcategory $\DF(\le n)$ is coreflective.
+
+\end{proposition}
+
+\begin{definition}
+% Proposition A.1.3.1.
+\label{def-truncLE}
+\lean{CategoryTheory.Functor.truncLE}
+\leanok
+\uses{prop-A.1.3.1-le}
+
+For every $n\in\Z$, we denote by $\sigma_{\le n} : \DF \ra \DF$ the composition of a left adjoint of the inclusion functor $\iota:\DF(\le n)\to\DF$
+and of $\iota$.
+
+\end{definition}
+
+\begin{definition}
+% Proposition A.1.3.1.
+\label{def-truncLEπ}
+\lean{CategoryTheory.Functor.truncLEπ}
+\leanok
+\uses{{def-truncLE}}
+
+For every $n\in\Z$, we denote by $truncLEπ n : 𝟭 \DF \ra \sigma_{\le n}$ the unit of the adjunction.
+
+\end{definition}
+
+\begin{definition}
+% Proposition A.1.3.1.
+\label{def-truncGE}
+\lean{CategoryTheory.Functor.truncGE}
+\leanok
+\uses{prop-A.1.3.1-ge}
+
+For every $n\in\Z$, we denote by $\sigma_{\ge n} : \DF \ra \DF$ the composition of a right adjoint of the inclusion functor $\iota:\DF(\ge n)\to\DF$
+and of $\iota$.
+
+\end{definition}
+
+\begin{definition}
+% Proposition A.1.3.1.
+\label{def-truncGEι}
+\lean{CategoryTheory.Functor.truncGEι}
+\leanok
+\uses{def-truncGE}
+
+For every $n\in\Z$, we denote by $truncGEι n : \sigma_{\ge n} \ra 𝟭 \DF$ the counit of the adjunction.
+
+\end{definition}
+
+We have some lemmas about these, among others concerning the essential image of $\sigma_{\le n}$ and $\sigma_{\ge n}$, as well as lemmas
+expressing the universal property of the adjunctions.
+
+\begin{definition}
+% Proposition A.1.3.1, second sentence.
+\label{def-truncLE_shift}
+\lean{CategoryTheory.FilteredTriangulated.instCommShiftTruncLEInt}
+\leanok
+\uses{def-truncLE}
+
+For every $n\in\Z$, the functor $\sigma_{\le n} : \DF \ra \DF$ commutes with the triangulated shift.
+
+\end{definition}
+
+\begin{proposition}
+% Proposition A.1.3.1, second sentence.
+\label{prop-truncLE_tri}
+\lean{CategoryTheory.FilteredTriangulated.instIsTriangulatedTruncLE}
+\leanok
+\uses{def-truncLE_shift}
+
+For every $n\in\Z$, the functor $\sigma_{\le n} : \DF \ra \DF$ is triangulated.
+
+\end{proposition}
+
+\begin{definition}
+% Proposition A.1.3.1, second sentence.
+\label{def-truncGE_shift}
+\lean{CategoryTheory.FilteredTriangulated.instCommShiftTruncGEInt}
+\leanok
+\uses{def-truncGE}
+
+For every $n\in\Z$, the functor $\sigma_{\ge n} : \DF \ra \DF$ commutes with the triangulated shift.
+
+\end{definition}
+
+\begin{proposition}
+% Proposition A.1.3.1, second sentence.
+\label{prop-truncGE_tri}
+\lean{CategoryTheory.FilteredTriangulated.instIsTriangulatedTruncGE}
+\leanok
+\uses{def-truncGE_shift}
+
+For every $n\in\Z$, the functor $\sigma_{\ge n} : \DF \ra \DF$ is triangulated.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.3.1, second sentence.
+\label{prop-truncLE_LE}
+\lean{CategoryTheory.FilteredTriangulated.instIsLEObjTruncLE_1}
+\leanok
+\uses{def-truncLE}
+
+For all $n,m\in\Z$, the functor $\sigma_{\le n} : \DF \ra \DF$ sends $\DF(\le m)$ to itself.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.3.1, second sentence.
+\label{prop-truncLE_GE}
+\lean{CategoryTheory.FilteredTriangulated.instIsGEObjTruncLE}
+\leanok
+\uses{def-truncLE}
+
+For all $n,m\in\Z$, the functor $\sigma_{\le n} : \DF \ra \DF$ sends $\DF(\ge m)$ to itself.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.3.1, second sentence.
+\label{prop-truncGE_LE}
+\lean{CategoryTheory.FilteredTriangulated.instIsLEObjTruncGE}
+\leanok
+\uses{def-truncGE}
+
+For all $n,m\in\Z$, the functor $\sigma_{\ge n} : \DF \ra \DF$ sends $\DF(\le m)$ to itself.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.3.1, second sentence.
+\label{prop-truncGE_GE}
+\lean{CategoryTheory.FilteredTriangulated.instIsGEObjTruncGE_1}
+\leanok
+\uses{def-truncGE}
+
+For all $n,m\in\Z$, the functor $\sigma_{\ge n} : \DF \ra \DF$ sends $\DF(\ge m)$ to itself.
+
+\end{proposition}
+
+We need to switch the order of statements compared to the paper, because the proof of Proposition A.1.3 (ii) uses Proposition A.1.3 (iii),
+but with general indices.
+
+The way we state the existence of the triangle cheating in a way, because the connecting morphism in the triangle is not arbitrary,
+it's given by the axioms. (The statements are still okay thanks to the uniqueness.)
+
+
+\begin{definition}
+% Proposition A.1.3.3, second sentence.
+\label{def-triangleGELE_delta}
+\lean{CategoryTheory.FilteredTriangulated.truncLEδGE}
+\leanok
+\uses{def-truncLE, def-truncGE}
+
+For $n\in\Z$, this is the natural transformation $\delta\colon \sigma_{\le n} \to 
+(shiftFunctor\ 1) \circ (\sigma_{\ge n + 1})$.
+
+\end{definition}
+
+\begin{definition}
+% Proposition A.1.3.3, second sentence.
+\label{def-triangleGELE}
+\lean{CategoryTheory.FilteredTriangulated.triangleGELE}
+\leanok
+\uses{def-triangleGELE_delta}
+
+For $n\in\Z$, this is the functor $triangleGELE n$ from $\DF$ to the category of triangles of $\DF$ sending $X$ to the triangle 
+\[\sigma_{\ge n + 1} X \xra{truncGEι} X \xra{truncLEπ} \sigma_{\le n} \xra{\delta} (\sigma_{\ge n + 1} X)[1].\]
+
+\end{definition}
+
+\begin{proposition}
+% Proposition A.1.3.3, second sentence.
+\label{def-triangleGELE_dist}
+\lean{CategoryTheory.FilteredTriangulated.triangleGELE_distinguished}
+\leanok
+\uses{def-triangleGELE}
+
+For $X$ in $\DF$ and $n\in\Z$, the triangle $triangleGELE n X$ is distinguished.
+
+\end{proposition}
+
+The second part of Proposition A.1.3(iii) is a uniqueness statement for the triangle.
+In the paper, this says that any distinguished triangle $A \ra X \ra B \ra A[1]$ with $A$ in $\DF(≤ n)$ 
+and $B$ in $\DF(≥ n + 1)$ is isomorphic to $triangleGELE n X$ in a unique way. Actually, this is not
+quite correct, because we only have uniqueness if we require the morphism of triangles
+to be the identity of $X$ on the second objects. Also, the other morphisms are already explicit and
+uniquely determined, they are given by $descTruncLE$ and $liftTruncGE$, so the real content
+is that these morphisms are isomorphisms.
+
+\begin{proposition}
+% Proposition A.1.3.3, second sentence.
+\label{prop-triangleGELE_uniq_left}
+\lean{CategoryTheory.FilteredTriangulated.isIso_descTruncLE_of_fiber_ge}
+\leanok
+\uses{def-truncLE, def-truncGE}
+
+Let $n\in\Z$ and $T$ be a distinguished triangle in $\DF$. Assume that the first object $T.X_1$ of $T$ is in $\DF(\ge n+1)$
+and that the third object $T.X_3$ of $T$ is in $\DF(\le n)$. Then the morphism $\sigma_{\le n} T.X_2 \ra T.X_3$ induced by the second 
+morphism of $T$ and the universal property of $truncLE$ is an isomorphism.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.3.3, second sentence.
+\label{prop-triangleGELE_uniq_right}
+\lean{CategoryTheory.FilteredTriangulated.isIso_liftTruncGE_of_cone_le}
+\leanok
+\uses{def-truncLE, def-truncGE}
+
+Let $n\in\Z$ and $T$ be a distinguished triangle in $\DF$. Assume that the first object $T.X_1$ of $T$ is in $\DF(\ge n+1)$
+and that the third object $T.X_3$ of $T$ is in $\DF(\le n)$. Then the morphism $T.X_1\ra \sigma_{\ge n + 1} T.X_2$ induced by the first 
+morphism of $T$ and the universal property of $truncGE$ is an isomorphism.
+
+\end{proposition}
+
+Proposition A.1.3(ii) asserts that the functors $\sigma_{\le n}$ and $\sigma_{\ge m}$ commute.
+Before proving it, we establish a criterion for triangulated endofunctors of $\DF$
+to commute with the truncation functors (up to an isomorphism which will arise naturally).
+It is better to make this more general, as it will be used again.
+
+We consider another filtered triangulated category $\DF'$.
+
+\begin{definition}
+% Prepration to Proposition A.1.3.2.
+\label{def-commute_truncLE}
+\lean{CategoryTheory.FilteredTriangulated.commute_truncLE}
+\leanok
+\uses{def-truncLE, def-FilteredTriangulatedFunctor}
+
+Let $F:\DF\ra\DF'$ be a filtered triangulated functor
+and $n\in\Z$. If $F$ preserves the subcategory $\DF(\le n)$, we 
+get a natural transformation
+$\sigma_{\le n} \circ F \ra F \circ\sigma_{\le n}$.
+
+\end{definition}
+
+
+\begin{definition}
+% Prepration to Proposition A.1.3.2.
+\label{def-commute_truncGE}
+\lean{CategoryTheory.FilteredTriangulated.commute_truncGE}
+\leanok
+\uses{def-truncGE, def-FilteredTriangulatedFunctor}
+
+Let $F:\DF\ra\DF'$ be a filtered triangulated functor
+and $n\in\Z$. If $F$ preserves the subcategory $\DF(\ge n)$, we 
+get a natural transformation
+$F \circ\sigma_{\ge n} \ra \sigma_{\ge n} \circ F$.
+
+\end{definition}
+
+\begin{remark}
+It would be natural to use mates in this construction, but the properties were easier to prove with the direct definition
+we adopted.
+\end{remark}
+
+
+\begin{proposition}
+% Proposition A.1.3.2.
+\label{prop-commute_truncLE_iso}
+\lean{CategoryTheory.FilteredTriangulated.isIso_commute_truncLE}
+\leanok
+\uses{def-commute_truncLE}
+
+Let $F:\DF\ra\DF'$ be a filtered triangulated functor
+and $n\in\Z$. Suppose that $F$ preserves the subcategories $\DF(\le n)$.
+and $\DF(\ge n + 1)$.
+
+Then the natural transformation
+$\sigma_{\le n} \circ F \ra F \circ\sigma_{\le n}$ is an isomorphism.
+
+\end{proposition}
+
+
+\begin{proposition}
+% Proposition A.1.3.2.
+\label{prop-commute_truncGE_iso}
+\lean{CategoryTheory.FilteredTriangulated.isIso_commute_truncGE}
+\leanok
+\uses{def-commute_truncGE}
+
+Let $F:\DF\ra\DF'$ be a filtered triangulated functor
+and $n\in\Z$. Suppose that preserves the subcategories $\DF(\le n)$.
+and $\DF(\ge n + 1)$.
+
+Then the natural transformation
+$F \circ\sigma_{\ge n} \ra \sigma_{\ge n} \circ F$ is an isomorphism.
+
+\end{proposition}
+
+Now we write the existence statement of Proposition A.1.3(ii).
+
+\begin{definition}
+% Definition in Proposition A.1.3.2.
+\label{def-truncLEGE}
+\lean{CategoryTheory.FilteredTriangulated.truncLEGE}
+\leanok
+\uses{def-truncLE, def-truncGE}
+
+For $a,b\in\Z$, we define $\sigma'_{[a,b]} : \DF\ra\DF$ as $\sigma_{\leq b}\circ\sigma_{\geq a}$.
+
+\end{definition}
+
+\begin{definition}
+% Definition in Proposition A.1.3.2.
+\label{def-truncGELE}
+\lean{CategoryTheory.FilteredTriangulated.truncGELE}
+\leanok
+\uses{def-truncLE, def-truncGE}
+
+For $a,b\in\Z$, we define $\sigma_{[a,b]} : \DF\ra\DF$ as $\sigma_{\geq a}\circ\sigma_{\leq b}$.
+
+\end{definition}
+
+\begin{definition}
+% Definition in Proposition A.1.3.2.
+\label{def-LEGEToGELE}
+\lean{CategoryTheory.FilteredTriangulated.LEGEToGELE}
+\leanok
+\uses{def-truncLEGE, def-truncGELE, def-commute_truncLE}
+
+For $a,b\in\Z$, we have a natural transformation $\sigma'_{[a,b]} \ra\sigma_{[a,b]}$ given by \url{commute_truncLE}.
+
+\end{definition}
+
+\begin{definition}
+% Proposition A.1.3.2.
+\label{def-LEGEToGELE_iso}
+\lean{CategoryTheory.FilteredTriangulated.LEGEIsoGELE}
+\leanok
+\uses{def-LEGEToGELE}
+
+For $a,b\in\Z$, the natural transformation $\sigma'_{[a,b]} \ra\sigma_{[a,b]}$ of Definition \ref{def-LEGEToGELE} is an isomorphism.
+
+\end{definition}
+
+\begin{remark}
+Because $\sigma_{[a,b]}$ and $\sigma'_{[a,b]}$ are isomorphic (by a "canonical" isomorphism), they only get 
+one notation in the paper, but of course you need two notations in Lean.
+
+\end{remark}
+
+The uniqueness statement of Proposition A.1.3(ii):
+
+\begin{proposition}
+% Proposition A.1.3.2.
+\label{prop-LEGEToGELE_uniq}
+\lean{CategoryTheory.FilteredTriangulated.LEGEToGELE_uniq}
+\leanok
+\uses{def-LEGEToGELE}
+
+Let $a,b\in\Z$, let $X$ be an object of $\DF$, and let $f:\sigma'_{[a,b]} X\ra\sigma_{[a,b]}X$. Suppose that
+$f$ makes the following diagram commute: 
 
 \begin{tikzcd}
 \sigma_{\geq b}\ar[rr]\ar[rd] & & \id_{\DF}\ar[rr] & & \sigma_{\leq a} \\
-& \sigma_{\leq a}\sigma_{\geq b}\ar[rr, "\sim"'] && \sigma_{\geq b}\sigma_{\leq a}\ar[ru] &
+& \sigma_{\leq a}\sigma_{\geq b}\ar[rr, "f"'] && \sigma_{\geq b}\sigma_{\leq a}\ar[ru] &
 \end{tikzcd}
 
-\item[(iii)] Let $X\in\Ob\DF$. Then there exists a unique morphism $\delta\colon \sigma_{\leq 0}X\ra\sigma_{\geq 1}[1]$ making the triangle $\sigma_{\leq 1}X\ra X\ra\sigma_{\leq 0}X\flnom{\delta}\sigma_{\geq 1}X[1]$
-distinguished.
-Any distinguished triangle $A\ra X\ra B\flnom{+1}$ with $A\in\Ob\DF(\geq 1)$ and $B\in\Ob\DF(\leq 0)$ admits a unique isomorphism to the triangle of the previous sentence.
+Then $f$ is equal to the morphism of Definition~\ref{def-LEGEToGELE}.
 
-\item[(iv)] We have canonical isomorphisms $\sigma_{\leq n}\circ s=s\circ\sigma_{\leq n-1}$ and $\sigma_{\geq n}\circ s=s\circ\sigma_{\geq n-1}$.
-
-\end{itemize}
-
-\label{prop_f_category1}
 \end{proposition}
 
-Point (iv) is not stated in Proposition~A.3 of~\cite{Be1} but follows immediately from the fact that $s(\DF(\leq n -1))=\DF(\leq n)$ (resp. $s(D(\geq n-1))=D(\geq n)$) and the uniqueness
-of adjoints.
+We can now state a more general version of Proposition A.1.3(iii).
 
 \begin{definition}
-Let $\Df$ be a triangulated category and $\DF$ be an f-category over $\Df$. For every $n\in\Z$, we define a functor $\Gra^n\colon \DF\ra\Df$ by
-$\Gra^n=i^{-1}\circ s^{-n}\circ\sigma_{\leq n}\sigma_{\geq n}$.
+\label{def-truncGELE_le_up}
+\lean{CategoryTheory.FilteredTriangulated.truncGELE_le_up}
+\leanok
+\uses{def-truncGELE}
+
+Let $a,b,c\in\Z$ with $b\le c$. Then we have a natural transformation $\sigma_{[a,c]} \ra \sigma_{[a,b]}$.
+
+\end{definition}
+
+\begin{definition}
+\label{def-truncGELE_le_down}
+\lean{CategoryTheory.FilteredTriangulated.truncGELE_le_down}
+\leanok
+\uses{def-truncGELE}
+
+Let $a,b,c\in\Z$ with $a\le b$. Then we have a natural transformation $\sigma_{[b,c]} \ra \sigma_{[a,c]}$.
+
+\end{definition}
+
+\begin{definition}
+\label{def-truncGELE_δ}
+\lean{CategoryTheory.FilteredTriangulated.truncGELE_δ}
+\leanok
+\uses{def-truncGELE}
+
+For $a,b,c\in\Z$, we have a natural transformation
+$\delta\colon \sigma_{[a,b]} \to (shiftFunctor\ 1)\circ(\sigma_{[b+1,c]})$.
+
+\end{definition}
+
+\begin{definition}
+\label{def-truncGELE_triangle}
+\lean{CategoryTheory.FilteredTriangulated.truncGELE_triangle}
+\leanok
+\uses{def-truncGELE_δ, def-truncGELE_le_up, def-truncGELE_le_down}
+
+For $a,b,c\in\Z$ such that $a\le b\le c$,
+this is the functor $triangleGELE a b c$ from $\DF$ to the category of triangles of $\DF$ sending $X$ to the triangle 
+\[\sigma_{[b+1,c]} X \ra \sigma_{[a,c]} X \ra \sigma_{[a,b]} \xra{\delta} (\sigma_{[b+1,c]} X)[1].\]
 
 \end{definition}
 
 \begin{proposition}
-Let $\Df$ be a triangulated category and $\DF$ be an f-category over $\Df$. 
-\begin{itemize}
-\item[(i)] For every $r\in\Z$, we have a natural isomorphism $\Gra^r\circ s=\Gra^{r-1}$. 
+\label{def-truncGELE_triangle_dist}
+\lean{CategoryTheory.FilteredTriangulated.truncGELE_triangle_distinguished}
+\leanok
+\uses{def-truncGELE_triangle}
+For $X$ in $\DF$ and $a,b,c\in\Z$ such that $a\le b\le c$, the triangle of Definition \ref{def-truncGELE_triangle}
+is distinguished.
 
-\item[(ii)] Let $r\in\Z$. Then $\Gra^r\circ i=0$ if $r\ne 0$ and $\Gra^r\circ i\simeq\id_{\Df}$ if $r=0$.
-
-\item[(iii)] Let $r,n\in\Z$. We have
-\[\Gra^r\circ\sigma_{\leq n}=\left\{\begin{array}{ll}\Gra^r& \mbox{if }r\leq  n\\ 0 & \mbox{otherwise}\end{array}\right.
-\qquad\mbox{and}\quad\Gra^r\circ\sigma_{\geq n}=\left\{\begin{array}{ll}\Gra^r& \mbox{if }r\geq  n\\ 0 & \mbox{otherwise}\end{array}\right..\]
-
-\end{itemize}
-\label{prop_Gr}
 \end{proposition}
 
-\begin{proof}
-Point (i) follows from Proposition~\ref{prop_f_category1}(iv), point (ii) from the fact that the image of $i$ is contained in $\DF(\leq 0)\cap\DF(\geq 0)$, and point (iii)
-from the definition of $\Gra^r$.
-\end{proof}
+We did not write the uniqueness statement for the triangle, though there is a statement similar to 
+Propositions~\ref{prop-triangleGELE_uniq_left} and ~\ref{prop-triangleGELE_uniq_right}.
 
-\begin{proposition}[Proposition~A.3 of~\cite{Be1}]
-Let $\Df$ be a triangulated category and $\DF$ be an f-category over $\Df$.
-Then there exists a triangulated functor $\omega\colon \DF\ra\Df$ such that:\footnote{Note that there is a typo in Proposition~A.3 of~\cite{Be1}: the left and right
-adjoints are switched; see the correction in Proposition~6.6 of~\cite{Schnur}.}
-\begin{itemize}
-\item[(a)] $\omega_{\mid\DF(\leq 0)}\colon \DF(\leq 0)\ra\Df$ is left adjoint to $\Df\flnom{i}\DF(\leq 0)\cap\DF(\geq 0)\subset\DF(\leq 0)$;
-\item[(b)] $\omega_{\mid\DF(\geq 0)}\colon \DF(\geq 0)\ra\Df$ is right adjoint to $\Df\flnom{i}\DF(\leq 0)\cap\DF(\geq 0)\subset\DF(\geq 0)$;
-\item[(c)] for any $X\in\Ob\DF$, the map $\omega(\alpha_X)\colon \omega(X)\ra\omega(s(X))$ is an isomorphism;
-\item[(d)] if $A\in\Ob\DF(\leq 0)$ and $B\in\DF(\geq 0)$, then $\omega\colon \Hom(A,B)\ra\Hom(\omega(A),\omega(B))$ is bijective.
+Proposition A.1.3 (iv) uses the adjective "canonical" and an equality sign, which is bad. We need to explain what 
+compatibilities hide under it, and to make the equality sign by an isomorphism 
+(that will be given by the universal property of the adjoint).
 
-\end{itemize}
-Moreover, $\omega$ is determined up to unique isomorphism by properties (a) and (c) (resp. (b) and (c)).
+Also, we actually want the isomorphisms for "second" shifts
+by any integer, compatible with the zero and the addition, like in `Functor.CommShift`.
+We introduce a new structure for this, similar to \url{Functor.CommShift} and called
+\url{familyCommShift}. It expresses the fact that a family of endofunctors $F: \Z \ra\DF$ has a family of 
+isomorphisms $F (n + m) \circ shiftFunctor_2 m \iso shiftFunctor_2 m \circ F n$, where $shiftFunctor_2 a$ is the
+second shift by $a\in\Z$ (i.e., $s^a$), and that these isomorphisms are equal to the obvious ones when $m=0$ and 
+compatible with addition.
 
-\label{prop_f_category2}
-\end{proposition}
+\begin{definition}
+% Proposition A.1.3.4.
+\label{def-truncLE_commShift}
+\lean{CategoryTheory.FilteredTriangulated.truncLE_commShift}
+\leanok
+\uses{def-truncLE}
 
-The following proposition follows easily from the definitions.
+The family of functors $n \mapsto truncLE n$ has a \url{familyCommShift} structure.
+
+\end{definition}
+
+\begin{definition}
+% Proposition A.1.3.4.
+\label{def-truncGE_commShift}
+\lean{CategoryTheory.FilteredTriangulated.truncGE_commShift}
+\leanok
+\uses{def-truncGE}
+
+The family of functors $n \mapsto truncGE n$ has a \url{familyCommShift} structure.
+
+\end{definition}
+
+
+\subsection{The "forget the filtration" functor (Proposition A.1.6)}
+
+The next thing in the paper is the definition, when we have a filtered triangulated category
+$\DF$ over a triangulated category $\Df$, of the "graded pieces" functors $\Gra^n : \DF \to \Df$, 
+which use an arbitrary quasi-inverse of the fully faithful functor $i:\Df\to\DF$ on the essential image of
+$i$.
+
+Rather than using an arbitrary quasi-inverse, it makes things much simpler to use the one
+given by the "forget the filtration" functor $\omega : \DF \to \Df$, which has the
+additional pleasant property that it is defined on all of $\DF$ and so avoids an
+\url{ObjectProperty.lift}. In fact, this is even better, as $\omega$ intertwines the
+second shift and the identity of $\Df$, so we can directy define $\Gra^n$ as $\omega\circ\sigma_{[n,n]}$
+(noting that $\Gra^n$ was originally defined as $shiftFunctor_2 (-n)\circ\sigma_{[n,n]}$ followed 
+by a quasi-inverse of the equivalence $\Df\iso \DF(\le 0)\cap\DF(\ge 0)$).
+
+For this, we need to change the order of statements and do Proposition A.1.6 first (this is
+possible as that proposition makes no use of the functors $\Gra^n$).
+
+%TODO: this part needs to be rewritten. First we should define $\omega$ on $\DF(\le 0)$ as a left adjoint, then
+%extend it to $\DF$ using compatibility with $s$, then state that it is a right adjoint on $\DF(\ge 0)$.
+
+\begin{definition}
+\label{def-FF}
+\lean{CategoryTheory.FilteredTriangulated.ForgetFiltration}
+\uses{def-FilteredTriangulatedOver}
+
+The functor $\omega:\DF\to\Df$.
+
+\end{definition}
+
+\begin{definition}
+%Proposition A.1.6(a)
+\label{def-FF-leftAdjoint}
+\lean{CategoryTheory.FilteredTriangulated.ForgetFiltration_leftAdjoint}
+\uses{def-FF}
+
+The functor $\omega:\DF\to\Df$ restricted to the full subcategory $\DF(\le 0)$ is left adjoint to 
+the functor $\Df \to \DF(\le 0)\cap\DF(\ge 0)\subset\DF(\le 0)$.
+
+\end{definition}
+
+\begin{definition}
+%Proposition A.1.6(b)
+\label{def-FF-rightAdjoint}
+\lean{CategoryTheory.FilteredTriangulated.ForgetFiltration_rightAdjoint}
+\uses{def-FF}
+
+The functor $\omega:\DF\to\Df$ restricted to the full subcategory $\DF(\ge 0)$ is right adjoint to 
+the functor $\Df \to \DF(\le 0)\cap\DF(\ge 0)\subset\DF(\ge 0)$.
+
+\end{definition}
 
 \begin{proposition}
-Let $\Df,\Df'$ be triangulated categories, and let $\DF$ (resp. $\DF'$) be an f-category over $\Df$ (resp. $\Df'$).
-Let $T\colon \Df\ra\Df'$ be a triangulated functor, and let $FT\colon \DF\ra\DF'$ be an f-lifting of $T$.
-Then the following squares commute up to natural isomorphism:
+%Proposition A.1.6(c)
+\label{prop-FF-shift}
+\lean{CategoryTheory.FilteredTriangulated.ForgetFiltration_shift}
+\uses{def-FF}
 
+For every $X$ in $\DF$, the image by $\omega$ of the map $\alpha(X) : X \to s(X)$ is an
+isomorphism. 
+
+\end{proposition}
+
+This implies that $\omega$ intertwines the second shift $s$ and the identity of $\Df$.
+Right now this is expressed via a custom structure called a \url{leftCommShift}, but I 
+don't know if that's optimal.
+
+
+\begin{proposition}
+%Proposition A.1.6(d)
+\label{prop-FF-ff}
+\lean{CategoryTheory.FilteredTriangulated.ForgetFiltration_ff}
+\uses{def-FF}
+
+Let $X,Y$ be objects of $\DF$. If $X$ is in $\DF(\le 0)$ and $Y$ is in $\DF(\ge 0)$,
+then the map $\Hom_{\DF}(X,Y) \to\Hom_{\Df}(\omega(X),\omega(Y))$ is bijective.
+
+\end{proposition}
+
+The functor $\omega$ should also be triangulated.
+(This actually follows from the other conditions, but is
+not stated in the paper. Note that the first statement contains
+data, so I am actually cheating here, because the data is determined
+by the other properties of $\omega$.)
+
+\begin{definition}
+\label{def-FF-commShift}
+\lean{CategoryTheory.FilteredTriangulated.instCommShiftForgetFiltrationInt}
+\uses{def-FF}
+
+The functor $\omega:\DF\to\Df$ commutes with the triangulated shifts.
+
+\end{definition}
+
+\begin{proposition}
+\label{prop-FF-tri}
+\lean{CategoryTheory.FilteredTriangulated.instIsTriangulatedForgetFiltration}
+\uses{def-FF-commShift}
+
+The functor $\omega:\DF\to\Df$ is triangulated.
+
+\end{proposition}
+
+We don't write the uniqueness statements here, as they are painful (which probably means
+that I haven't yet found the correct way to talk about $\omega$).
+
+Property (a) implies that we have an isomorphism $\omega\circ i \iso {\ungras}_{\Df}$ given by the
+counit of the adjunction of Definition~\ref{def-FF-leftAdjoint}.
+Property (b) gives an isomorphism in the other direction, given by the unit of the adjunction of
+Definition~\ref{def-FF-rightAdjoint}.
+We give the definition of the first
+isomorphism,
+and the result after that
+says that these isomorphisms are inverses of each other. This compatibility is not stated 
+in the paper.
+
+\begin{definition}
+\label{def-FF-i}
+\lean{CategoryTheory.FilteredTriangulated.ForgetFiltration_functor}
+\uses{def-FF-leftAdjoint}
+
+The isomorphism $\omega\circ i \iso {\ungras}_{\Df}$ given by the
+counit of the adjunction of Definition~\ref{def-FF-leftAdjoint}.
+
+\end{definition}
+
+\begin{proposition}
+\label{prop-FF-compat}
+\lean{CategoryTheory.FilteredTriangulated.ForgetFiltration_iso_comp}
+\uses{def-FF-leftAdjoint, def-FF-rightAdjoint, def-FF-i}
+
+The isomorphism $\omega\circ i \iso {\ungras}_{\Df}$ given by the
+counit of the adjunction of Definition~\ref{def-FF-leftAdjoint} is the 
+inverse of the isomorphism ${\ungras}_{\Df}\iso\omega\circ i$ given by the
+unit of the adjunction of Definition~\ref{def-FF-rightAdjoint}
+
+\end{proposition}
+
+The composition in the other direction, i.e. $i\circ\omega$, is isomorphic to $\sigma_{[0,0]}$.
+(Obviously, this is not an arbitrary isomorphism.)
+
+\begin{definition}
+\label{def-i-FF}
+\lean{CategoryTheory.FilteredTriangulated.Functor_forgetFiltration}
+\uses{def-FF}
+
+An isomorphism $i\circ\omega\iso\sigma_{[0,0]}$.
+
+\end{definition}
+
+
+\subsection{Definition A.1.4 and Proposition A.1.5}
+
+\begin{definition}
+% Definition A.1.4
+\label{def-Gr}
+\lean{CategoryTheory.FilteredTriangulated.Gr}
+\uses{def-FF, def-truncGELE}
+
+For every $n\in\Z$, we set $\Gra^n = \omega\circ\sigma_{{n,n}}$.
+
+\end{definition}
+
+The functors $\Gra^n$ are triangulated:
+
+\begin{definition}
+\label{def-Gr-commShift}
+\lean{CategoryTheory.FilteredTriangulated.instCommShiftGrInt}
+\uses{def-Gr}
+
+For every $n\in\Z$, the functor $\Gra^n$ commutes with the triangulated shifts.
+
+\end{definition}
+
+\begin{proposition}
+\label{def-Gr-tri}
+\lean{CategoryTheory.FilteredTriangulated.instIsTriangulatedGr}
+\uses{def-Gr-commShift}
+
+For every $n\in\Z$, the functor $\Gra^n$ is triangulated.
+
+\end{proposition}
+
+We now state Proposition A.1.5.
+
+
+\begin{definition}
+% Proposition A.1.5(i)
+\label{def-Gr-commShift2}
+\lean{CategoryTheory.FilteredTriangulated.Gr-commShift}
+\uses{def-Gr}
+
+For every $n\in\Z$, the functor $\Gra^n$ intertwines the second shift of $\DF$ and the identity functor of $\Df$.
+
+\end{definition}
+
+\begin{proposition}
+% Proposition A.1.5(ii)
+\label{prop-Gr-pure1}
+\lean{CategoryTheory.FilteredTriangulated.Gr_pure_zero_of_ne_zero}
+\uses{def-Gr}
+
+For every $n\in\Z$ such that $n\ne 0$, for every $X$ in $\Df$, the object $\Gra^n(i(X))$ is zero. 
+
+\end{proposition}
+
+\begin{definition}
+% Proposition A.1.5(i)
+\label{def-Gr-pure2}
+\lean{CategoryTheory.FilteredTriangulated.Gr_pure_of_zero}
+\uses{def-Gr}
+
+An isomorphism $\Gra^0\circ i\iso \ungras_{\Df}$.
+
+\end{definition}
+
+Proposition A.1.5(iii) actually should say that some particular morphisms are isomorphisms,
+so we state it like that.
+
+\begin{proposition}
+% Proposition A.1.5(iii)
+\label{prop-Gr-truncLE1}
+\lean{CategoryTheory.FilteredTriangulated.Gr_truncLE_zero}
+\uses{def-Gr, def-truncLE}
+
+For all $r,n\in\Z$ such that $n < r$, the functor $\Gra^r\circ\sigma_{\le n}$ is zero.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.5(iii)
+\label{prop-Gr-truncLE2}
+\lean{CategoryTheory.FilteredTriangulated.isIso_Gr_truncLEπ}
+\uses{def-Gr, def-truncLEπ}
+
+For all $r,n\in\Z$ such that $r \le n$, the morphism $\Gra^r\to\Gra^r\circ\sigma_{\le n}$
+given by $truncLEπ$ is an isomorphism.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.5(iii)
+\label{prop-Gr-truncGE1}
+\lean{CategoryTheory.FilteredTriangulated.Gr_truncGE_zero}
+\uses{def-Gr, def-truncGE}
+
+For all $r,n\in\Z$ such that $r < n$, the functor $\Gra^r\circ\sigma_{\ge n}$ is zero.
+
+\end{proposition}
+
+\begin{proposition}
+% Proposition A.1.5(iii)
+\label{prop-Gr-truncGE2}
+\lean{CategoryTheory.FilteredTriangulated.isIso_Gr_truncLEπ}
+\uses{def-Gr, def-truncLEπ}
+
+For all $r,n\in\Z$ such that $n \le r$, the morphism $\Gra^r\circ\sigma_{\ge n}\to\Gra^r$
+given by $truncGEι$ is an isomorphism.
+
+\end{proposition}
+
+
+
+\subsection{Compatibility with filtered triangulated functors (Proposition A.1.8)}
+
+Let $\DF,\DF'$ be filtered triangulated categories, and $FT:\DF\to\DF'$ be a filtered 
+triangulated functor.
+
+Proposition A.1.8 is a mess as written.
+It is not precise, the natural isomorphisms are not arbitrary!
+Also, the square with $\sigma_{\ge n}$ is missing, and we need more squares
+$\sigma_{[a,b]}$, as well as compatibilities with the connecting
+morphisms in the triangles of $\sigma_{[a,b]}$.
+
+By Propositions~\ref{prop-commute_truncLE_iso} and~\ref{prop-commute_truncGE_iso},
+the commutative squares for $\sigma_{\le n}$ and
+$\sigma_{\ge n}$ follow from the facts that a filtered triangulated functor is triangulated 
+and preserves all the categories $\DF(\le m)$ and $\DF(\ge m)$.
+
+The squares for the functors $\sigma_{[a,b]}$ and $\Gra^n$ then follow from the ones for
+the truncation functors.
+
+The square for $\omega$ is harder to define, as the definition (and characterization) 
+of $\omega$ is a little complicated. There should be some compatibilities there, but I am 
+not yet sure what they are. We will see what is needed later.
+
+The "commutative square" for $\sigma_{\le n}$: 
 \begin{tikzcd}
-\DF\ar[r, "FT"]\ar[d, "\omega"'] &\DF'\ar[d, "\omega"] &&
-\DF\ar[r, "FT"]\ar[d, "\Gra^n"'] &\DF'\ar[d, "\Gra^n"] &&
 \DF\ar[r, "FT"]\ar[d, "\sigma_{\leq n}"'] &\DF'\ar[d, "\sigma_{\leq n}"]
 \\
-\Df\ar[r, "T"'] & \Df'&&
-\Df\ar[r, "T"'] &\Df'&&
 \DF\ar[r, "FT"'] &\DF'
 \end{tikzcd}
 
-\label{prop_f_lifting}
+\begin{proposition}
+% Proposition A.1.8
+\label{prop-FT-truncLE}
+\lean{CategoryTheory.FilteredTriangulated.liftFunctor_truncLE_comm}
+\uses{def-commute_truncLE, def-FilteredTriangulatedFunctor}
+
+Let $n\in\Z$. The morphism $\sigma_{\le n}\circ FT \to FT\circ\sigma_{\le n}$
+of Definition~\ref{def-commute_truncLE} is an isomorphism.
+
 \end{proposition}
 
+The "commutative square" for $\sigma_{\ge n}$: 
+\begin{tikzcd}
+\DF\ar[r, "FT"]\ar[d, "\sigma_{\geq n}"'] &\DF'\ar[d, "\sigma_{\geq n}"]
+\\
+\DF\ar[r, "FT"'] &\DF'
+\end{tikzcd}
 
-%\begin{subprop}
-%Let $\Df$ be a triangulated category, $\DF$ be an f-category over $\Df$, and $\Df'$ be a full triangulated subcategory of $\Df$ that is stable by isomorphisms. We define a full
-%subcategory $\DF'$ of $\DF$ by
-%\[\Ob\DF'=\{K\in\Ob\Df\mid\forall r\in\Z,\ \Gra^rK\in\Ob\Df'\}.\]
-%Then $\DF'$ is a triangulated subcategory of $\DF$, it is stable by isomorphisms, we have $s(\DF')\subset\DF'$ and $i(\Df')\subset\DF'$. The data of
-%$\DF'$, $\DF'\cap\DF(\leq 0)$, $\DF'\cap\DF(\geq 0)$, $s_{\mid\DF'}\colon \DF'\ra\DF'$, $\alpha$ and $i_{\mid\Df'}\colon \Df'\ra\DF'$ defines an f-category over $\Df'$.
+\begin{proposition}
+% Proposition A.1.8
+\label{prop-FT-truncGE}
+\lean{CategoryTheory.FilteredTriangulated.liftFunctor_truncGE_comm}
+\uses{def-commute_truncGE, def-FilteredTriangulatedFunctor}
 
-%\label{prop_f_category3}
-%\end{subprop}
+Let $n\in\Z$. The morphism $FT\circ\sigma_{\ge n}\to\sigma_{\ge n}\circ FT$
+of Definition~\ref{def-commute_truncGE} is an isomorphism.
 
-%\begin{proof}
-%As the functors $\Gra^r$ are triangulated, $\DF'$ is a triangulated subcategory of $\DF$; it is clearly stable by isomorphisms, and it stable by $s$ thanks to the isomorphisms
-%$\Gra^r\circ s=\Gra^{r-1}$ (Proposition~\ref{prop_Gr}(i)). 
-%If $X\in\Ob\Df'$, then $\Gra^r(i(X))=0$ if $r\ne 0$ and $\Gra^0(i(X))\simeq X$ (Proposition~\ref{prop_Gr}(ii)), so $i(X)\in\Ob\DF'$. To prove the last assertion, we check the conditions of
-%Definition~\ref{def_f_category}. Conditions (i)-(iii) are clear. To check condition~(iv), it suffices by Proposition~\ref{prop_f_category1}(iii) to prove that the functors
-%$\sigma_{\leq n}$, $\sigma_{\geq n}$ preserve $\DF'$; but this follows immediately from Proposition~\ref{prop_Gr}(iii).
-%\end{proof}
+\end{proposition}
+
+\begin{definition}
+% Proposition A.1.8
+\label{def-FT-Gr}
+\lean{CategoryTheory.FilteredTriangulated.lifting_Gr_comm}
+\uses{def-Gr, def-FilteredTriangulatedFunctor}
+
+For $n\in\Z$, an isomorphism $\Gra^n\circ FT\to FT\circ\Gra^n$.
+
+\end{definition}
+\begin{tikzcd}
+\DF\ar[r, "FT"]\ar[d, "\Gra^n"'] &\DF'\ar[d, "\Gra^n"] &&
+\\
+\Df\ar[r, "T"'] &\Df'&&
+\end{tikzcd}
+
+\begin{definition}
+% Proposition A.1.8
+\label{def-FT-FF}
+\lean{CategoryTheory.FilteredTriangulated.lifting_forgetFiltrating_comm }
+\uses{def-FF, def-FilteredTriangulatedFunctor}
+
+An isomorphism $\omega\circ FT\to FT\circ\omega'$.
+
+\end{definition}
+
+\begin{tikzcd}
+\DF\ar[r, "FT"]\ar[d, "\omega"'] &\DF'\ar[d, "\omega"] &&
+\\
+\Df\ar[r, "T"'] & \Df'&&
+\end{tikzcd}
+
+
 

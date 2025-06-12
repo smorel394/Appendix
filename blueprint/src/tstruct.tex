@@ -1,1 +1,90 @@
 \section{Section A.2: compatible t-structures and the realization functor}
+
+We review the construction of the realization functor from \cite{BBD} 3.1 and Appendix~A of~\cite{Be1}.
+
+This section corresponds to the Lean file \url{TStructure_no_proof.lean}.
+
+\subsection{Compatible t-structures}
+
+We fix a filtered triangulated category $\DF$ over a triangulated category $\Df$.
+
+\begin{definition}
+% Definition A.2.1
+\label{def-compatible}
+\lean{CategoryTheory.Triangulated.TStructure.IsCompatible}
+\leanok
+\uses{def-FilteredTriangulatedOver}
+Suppose that we are given
+a t-structure $(\Df^{\leq 0},\Df^{\geq 0})$ on $\Df$ and a t-structure $(\DF^{\leq 0},\DF^{\geq 0})$ on $\DF$.
+We say that these t-structures are \emph{compatible} if $i\colon \Df\ra\DF$ is t-exact and if $s^n(\DF^{\leq a})\subset\DF^{\leq b}$
+for all $a,b,n\in\Z$ such that $a = b + n$.
+
+\end{definition}
+
+\begin{definition}
+% Proposition A.2.2
+\label{prop-def-compatible}
+\lean{CategoryTheory.Triangulated.TStructure.compatible}
+\leanok
+\uses{def-compatible}
+Suppose that we are given
+a t-structure $(\Df^{\leq 0},\Df^{\geq 0})$ on $\Df$.
+Then there exists a t-structure $(\DF^{\leq 0},\DF^{\geq 0})$ on $\DF$ such that 
+\[\Ob\DF^{\leq 0}=\{X\in\Ob\DF\mid \forall i\in\Z,\ \Gra^i X[i]\in\Ob\Df^{\leq 0}\}\]
+\[\Ob\DF^{\geq 0}=\{X\in\Ob\DF\mid \forall i\in\Z,\ \Gra^i X[i]\in\Ob\Df^{\geq 0}\}.\]
+
+\end{definition}
+
+\begin{proposition}
+%Proposition A.2.2
+\label{prop-compatible}
+\lean{CategoryTheory.Triangulated.TStructure.compatible_is_compatible}
+\leanok
+\uses{prop-def-compatible}
+Suppose that we are given
+a t-structure on $\Df$. Then it is compatible with the t-structure on $\DF$ 
+of Definition~\ref{prop-def-compatible}.
+
+\end{proposition}
+
+\begin{proposition}
+%Proposition A.2.2
+\label{prop-compatible-uniq}
+\lean{CategoryTheory.Triangulated.TStructure.compatible_uniq}
+\leanok
+\uses{prop-def-compatible}
+Suppose that we are given compatible t-structures $t$ on $\Df$ and $tF$ on $\DF$. Then $tF$ is equal to the
+t-structure of Definition~\ref{prop-def-compatible}.
+
+\end{proposition}
+
+
+\subsection{Realization}
+
+\begin{theorem}[Proposition~A.5 and~A.6 of~\cite{Be1}]
+Let $\Df$ be a triangulated category and $\DF$ be an f-category over $\Df$. Suppose that we are given compatible
+t-structures $(\Df^{\leq 0},\Df^{\geq 0})$ on $\Df$ and $(\DF^{\leq 0},\DF^{\geq 0})$ on $\DF$. Denote by
+$H\colon \Df\ra\Cf:=\Df^{\leq 0}\cap\Df^{\geq 0}$ the cohomology functor. We define a functor
+$H_F\colon \DF\ra\Cb(\Cf)$ in the following way: if $X\in\Ob\DF$, we set $H_F(X)^i=H^i\Gra^i(X)$, and we
+take as differential $H_F(X)^i\ra H_F(X)^{i+1}$ the map induced from the connection morphism in the 
+distinguished triangle
+\[\omega(\sigma_{\leq i+1}\sigma_{\geq i+1}(X))\ra\omega(\sigma_{\leq i+1}\sigma_{\geq i}(X))\ra
+\omega(\sigma_{\leq i}\sigma_{\geq i}(X))\xra{+1}.\]
+
+\begin{itemize}
+\item[(i)] The functor $H_F$ is well-defined, its restriction to the heart $\Cf_F$ of $(\DF^{\leq 0},\DF^{\geq 0})$ is an equivalence
+of categories $G\colon \Cf_F\iso\Cb(\Cf)$, and $G^{-1}\circ H_F\colon \DF\ra\Cf_F$ is the cohomology functor of the t-structure
+$(\DF^{\leq 0},\DF^{\geq 0})$.
+
+\item[(ii)] The functor $\omega\circ G^{-1}\colon \Cb(\Cf)\ra\Df$ factors through $\Db(\Cf)$.
+
+\end{itemize}
+\label{thm_real}
+\end{theorem}
+
+\begin{definition}
+In the situation of Theorem~\ref{thm_real}, we call the functor $\Db(\Cf)\ra\Df$ induced by $\omega\circ G^{-1}$ the
+\emph{realization functor} and denote it by $\real$.
+
+\label{def_real}
+\end{definition}
