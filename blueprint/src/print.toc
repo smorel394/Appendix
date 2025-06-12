@@ -1,12 +1,12 @@
-\contentsline {section}{\numberline {1}Section A.1: filtered triangulated categories}{2}{section.0.1}%
-\contentsline {subsection}{\numberline {1.1}Definition A.1.1}{2}{subsection.0.1.1}%
-\contentsline {subsection}{\numberline {1.2}Proposition A.1.3}{4}{subsection.0.1.2}%
-\contentsline {subsection}{\numberline {1.3}The "forget the filtration" functor (Proposition A.1.6)}{7}{subsection.0.1.3}%
-\contentsline {subsection}{\numberline {1.4}Definition A.1.4 and Proposition A.1.5}{8}{subsection.0.1.4}%
-\contentsline {subsection}{\numberline {1.5}Compatibility with filtered triangulated functors (Proposition A.1.8)}{9}{subsection.0.1.5}%
-\contentsline {section}{\numberline {2}Section A.2: compatible t-structures and the realization functor}{10}{section.0.2}%
-\contentsline {subsection}{\numberline {2.1}Compatible t-structures}{10}{subsection.0.2.1}%
-\contentsline {subsection}{\numberline {2.2}Realization}{11}{subsection.0.2.2}%
-\contentsline {section}{\numberline {3}Section A.3: homological algebra calculations and functor reconstruction}{11}{section.0.3}%
-\contentsline {subsection}{\numberline {3.1}$T$-acyclic objects}{11}{subsection.0.3.1}%
-\contentsline {subsection}{\numberline {3.2}Functor reconstruction}{15}{subsection.0.3.2}%
+\contentsline {chapter}{\numberline {1}Section A.1: filtered triangulated categories}{3}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Definition A.1.1}{3}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Proposition A.1.3}{5}{section.1.2}%
+\contentsline {section}{\numberline {1.3}The "forget the filtration" functor (Proposition A.1.6)}{8}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Definition A.1.4 and Proposition A.1.5}{9}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Compatibility with filtered triangulated functors (Proposition A.1.8)}{10}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Section A.2: compatible t-structures and the realization functor}{12}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Compatible t-structures}{12}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Realization}{12}{section.2.2}%
+\contentsline {chapter}{\numberline {3}Section A.3: homological algebra calculations and functor reconstruction}{14}{chapter.3}%
+\contentsline {section}{\numberline {3.1}$T$-acyclic objects}{14}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Functor reconstruction}{18}{section.3.2}%

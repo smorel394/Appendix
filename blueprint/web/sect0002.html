@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Section A.2: compatible t-structures and the realization functor</title>
+<link rel="next" href="sect0003.html" title="Section A.3: homological algebra calculations and functor reconstruction" />
+<link rel="prev" href="sect0001.html" title="Section A.1: filtered triangulated categories" />
+<link rel="up" href="index.html" title="Appendix" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Appendix</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="sect0001.html"><span class="toc_ref"></span> <span class="toc_entry">Section A.1: filtered triangulated categories</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html#a0000000005"><span class="toc_ref"></span> <span class="toc_entry">Definition A.1.1</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000010"><span class="toc_ref"></span> <span class="toc_entry">Proposition A.1.3</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000017"><span class="toc_ref"></span> <span class="toc_entry">The "forget the filtration" functor (Proposition A.1.6)</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000018"><span class="toc_ref"></span> <span class="toc_entry">Definition A.1.4 and Proposition A.1.5</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000019"><span class="toc_ref"></span> <span class="toc_entry">Compatibility with filtered triangulated functors (Proposition A.1.8)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active current">
+  <a href="sect0002.html"><span class="toc_ref"></span> <span class="toc_entry">Section A.2: compatible t-structures and the realization functor</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0002.html#a0000000028"><span class="toc_ref"></span> <span class="toc_entry">Compatible t-structures</span></a>
+ </li>
+<li class="">
+  <a href="sect0002.html#a0000000029"><span class="toc_ref"></span> <span class="toc_entry">Realization</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0003.html"><span class="toc_ref"></span> <span class="toc_entry">Section A.3: homological algebra calculations and functor reconstruction</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html#a0000000030"><span class="toc_ref"></span> <span class="toc_entry">\(T\)-acyclic objects</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html#a0000000031"><span class="toc_ref"></span> <span class="toc_entry">Functor reconstruction</span></a>
+ </li>
+
+  </ul>
+ </li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000003"> Section A.2: compatible t-structures and the realization functor</h1>
+<p>We review the construction of the realization functor from <span class="cite">
+	[
+	<a href="sect0003.html#BBD" >2</a>
+	]
+</span> 3.1 and Appendix&#160;A of&#160;<span class="cite">
+	[
+	<a href="sect0003.html#Be1" >1</a>
+	]
+</span>. </p>
+<p>This section corresponds to the Lean file <a href=""></a>TStructure_no_proof.lean. </p>
+<h1 id="a0000000028"> Compatible t-structures</h1>
+<p>We fix a filtered triangulated category \(\DF \) over a triangulated category \(\mathcal{D}\). </p>
+<p><div class="definition_thmwrapper " id="def-compatible">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.IsCompatible def-FilteredTriangulatedOver Suppose that we are given a t-structure \((\mathcal{D}^{\leq 0},\mathcal{D}^{\geq 0})\) on \(\mathcal{D}\) and a t-structure \((\DF ^{\leq 0},\DF ^{\geq 0})\) on \(\DF \). We say that these t-structures are <em>compatible</em> if \(i\colon \mathcal{D}\longrightarrow \DF \) is t-exact and if \(s^n(\DF ^{\leq a})\subset \DF ^{\leq b}\) for all \(a,b,n\in \mathbb {Z}\) such that \(a = b + n\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="prop-def-compatible">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.compatible def-compatible Suppose that we are given a t-structure \((\mathcal{D}^{\leq 0},\mathcal{D}^{\geq 0})\) on \(\mathcal{D}\). Then there exists a t-structure \((\DF ^{\leq 0},\DF ^{\geq 0})\) on \(\DF \) such that </p>
+<div class="displaymath" id="a0000000032">
+  \[ \Ob \DF ^{\leq 0}=\{ X\in \Ob \DF \mid \forall i\in \mathbb {Z},\  \Gra ^i X[i]\in \Ob \mathcal{D}^{\leq 0}\}  \]
+</div>
+<div class="displaymath" id="a0000000033">
+  \[ \Ob \DF ^{\geq 0}=\{ X\in \Ob \DF \mid \forall i\in \mathbb {Z},\  \Gra ^i X[i]\in \Ob \mathcal{D}^{\geq 0}\} . \]
+</div>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-compatible">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.3</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.compatible_is_compatible prop-def-compatible Suppose that we are given a t-structure on \(\mathcal{D}\). Then it is compatible with the t-structure on \(\DF \) of Definition&#160;<a href="sect0002.html#prop-def-compatible">.2</a>. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-compatible-uniq">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.4</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.compatible_uniq prop-def-compatible Suppose that we are given compatible t-structures \(t\) on \(\mathcal{D}\) and \(tF\) on \(\DF \). Then \(tF\) is equal to the t-structure of Definition&#160;<a href="sect0002.html#prop-def-compatible">.2</a>. </p>
+
+  </div>
+</div> </p>
+<h1 id="a0000000029"> Realization</h1>
+<p>We fix a filtered triangulated category \(\DF \) over a triangulated category \(\mathcal{D}\), as well as compatible t-structure \(t\) on \(\mathcal{D}\) and \(tF\) on \(\DF \), with hearts \(\mathcal{D}^\heartsuit \) and \(\DF ^\heartsuit \) and cohomology functors \(\H^ *_t\) and \(\H^ *_{tF}\). The realization functor is a triangulated functor \(\Db \mathcal{D}^\heartsuit \to \mathcal{D}\) extending the inclusion \(\mathcal{D}^\heartsuit \subset \mathcal{D}\). </p>
+<p>To construct it, we first need to construct a functor \(H_F : \DF \to \Cb \mathcal{D}^\heartsuit \), which will induce an equivalence of categories when restricted to \(\DF ^\heartsuit \). In the paper, the \(n\)th degree of \(H_F(X)\) is defined as \(\H^ n_t(\Gra ^n(X))\). Given the new definition of \(\Gra ^n\), this is equal to \(\H^ n_t(\omega (\sigma _{[n,n]}(X)))\); that last formula makes it easier to construct the differentials. </p>
+<p><div class="definition_thmwrapper " id="def-HF-deg">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_deg def-FilteredTriangulatedOver, def-Gr For \(n\in \mathbb {Z}\), we define a functor \(H_F^n:\DF \to \mathcal{D}^\heartsuit \) by \(\H_ F^n=\H^ n_t\circ \Gra ^n\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF-diff">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_diff def-HF-deg, def-truncGELE_triangle For \(n\in \mathbb {Z}\), we define a natural transformation \(d^n : H_F^n\to H_F^{n+1}\) by setting \(d^n(X)\) to be the image by \(\omega \) of the degree \(1\) map in the triangle \(\sigma _{[n+1,n+1]}(X)\to \sigma _{[n,n+1]}(X)\to \sigma _{{n,n}}(X)\) of Definition&#160;<a href="sect0001.html#def-truncGELE_triangle">.34</a>. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-HF-condition">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.3</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_condition def-HF-diff For every \(n\in \mathbb {Z}\), we have \(d^{n+1}\circ d^n = 0\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF''">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.4</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplexObj prop-HF-condition This is the complex of functors \(\DF \to \mathcal{D}^\heartsuit \) whose degree \(n\) term is \(H_F^n\), and whose differentials are given by the \(d^n\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF'">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.5</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex def-HF” This is the functor \(H_F':\DF \to \mathrm{C}(\mathcal{D}^\heartsuit )\) corresponding to the complex of Definition&#160;<a href="sect0002.html#def-HF''">.4</a>. </p>
+
+  </div>
+</div> </p>
+<p>We check that \(H_F'\) lands in the subcategory of bounded complexes. </p>
+<p><div class="proposition_thmwrapper " id="prop-HF_bounded">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.6</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_isBounded def-HF’, prop-Gr_le, prop-Gr_ge For every \(X\) in \(\DF \), the complex \(HF'(X)\) is bounded. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.7</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplexBounded prop-HF_bounded This is the functor \(H_F:\DF \to \Cb (\mathcal{D}^\heartsuit )\) given by \(HF'\). </p>
+
+  </div>
+</div> </p>
+<p><div class="theorem_thmwrapper " id="thm-HF_equiv">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">.8</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToBoundedComplex_equivalence def-HF, def-compatible The restriction to \(\DF ^\heartsuit \) of the functor \(\DF \) is an equivalence \(\DF ^\heartsuit \stackrel{\sim }{\longrightarrow }\Cb (\mathcal{D}^\heartsuit )\) </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-real_aux">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.9</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.Realization_aux thm-HF_equiv The composition of a quasi-inverse of the equivalence \(\DF ^\heartsuit \stackrel{\sim }{\longrightarrow }\Cb (\mathcal{D}^\heartsuit )\) of Theorem&#160;<a href="sect0002.html#thm-HF_equiv">.8</a>, of the inclusion \(\DF ^\heartsuit \subset \DF \) and of \(\omega :\DF \to \mathcal{D}\) sends quasi-isomorphisms to isomorphisms. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-real">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.10</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.Realization prop-real_aux The functor \(\real :\Db (\mathcal{D}^\heartsuit )\to \mathcal{D}^\heartsuit \) coming from the universal property of the localization \(\Cb (\mathcal{D}^\heartsuit )\to \Db (\mathcal{D}^\heartsuit )\) applied to the statement of Proposition&#160;<a href="sect0002.html#prop-real_aux">.9</a>. </p>
+
+  </div>
+</div> </p>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="sect0001.html" title="Section A.1: filtered triangulated categories"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="index.html" title="Appendix"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="sect0003.html" title="Section A.3: homological algebra calculations and functor reconstruction"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>

@@ -320,6 +320,9 @@ INPUT ./der.tex
 INPUT ./der.tex
 INPUT ./der.tex
 INPUT der.tex
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /home/sophie/lean4/Appendix/blueprint/print/print.aux
 INPUT /home/sophie/lean4/Appendix/blueprint/print/print.out
 INPUT /home/sophie/lean4/Appendix/blueprint/print/print.out

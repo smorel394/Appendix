@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.4.28)  12 JUN 2025 21:09
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.4.28)  12 JUN 2025 22:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1020,13 +1020,25 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
  (./ftri.tex
 [2
 
-] [3] [4] [5] [6] [7] [8]
-Overfull \hbox (9.04236pt too wide) in paragraph at lines 880--880
-[]\TU/lmr/bx/n/12 Compatibility with filtered triangulated functors (Propositio
-n A.1.8) 
+]
+Chapter 1.
+[3
+
+] [4] [5] [6] [7] [8] [9]
+Overfull \hbox (13.70299pt too wide) in paragraph at lines 880--880
+[]\TU/lmr/bx/n/14.4 Compatibility with filtered triangulated functors (Propo-
  []
 
-[9]) (./tstruct.tex [10]) (./der.tex
+[10]) (./tstruct.tex [11]
+Chapter 2.
+[12
+
+]) (./der.tex [13]
+Chapter 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 14.40152pt on input line 5.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 14.39845pt on input line 5.
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 5.
@@ -1035,10 +1047,12 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 5.
 
-[11]
+[14
+
+]
 Missing character: There is no ι (U+03B9) in font [lmmono10-regular]:!
 Missing character: There is no ι (U+03B9) in font [lmmono10-regular]:!
-[12] [13] [14] [15]) [16]) [17
+[15] [16] [17] [18]) [19]) [20
 
 ]
 (/home/sophie/lean4/Appendix/blueprint/print/print.aux)
@@ -1047,16 +1061,16 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `print.out' has not changed.
-(rerunfilecheck)             Checksum: C39D597AC653F7F13F82190902A91050;3061.
+(rerunfilecheck)             Checksum: 446799E6CDE558C5FC743F8E1BA4725C;2992.
  ) 
 Here is how much of TeX's memory you used:
  28706 strings out of 474878
- 573507 string characters out of 5762516
- 1947627 words of memory out of 5000000
- 50296 multiletter control sequences out of 15000+600000
- 563496 words of font info for 92 fonts, out of 8000000 for 9000
+ 573549 string characters out of 5762516
+ 1943627 words of memory out of 5000000
+ 50300 multiletter control sequences out of 15000+600000
+ 564433 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  116i,14n,121p,542b,1265s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on /home/sophie/lean4/Appendix/blueprint/print/print.pdf (18 pag
+Output written on /home/sophie/lean4/Appendix/blueprint/print/print.pdf (21 pag
 es).

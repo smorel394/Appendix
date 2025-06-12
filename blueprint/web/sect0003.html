@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Section A.3: homological algebra calculations and functor reconstruction</title>
+<link rel="prev" href="sect0002.html" title="Section A.2: compatible t-structures and the realization functor" />
+<link rel="up" href="index.html" title="Appendix" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Appendix</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="sect0001.html"><span class="toc_ref"></span> <span class="toc_entry">Section A.1: filtered triangulated categories</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html#a0000000005"><span class="toc_ref"></span> <span class="toc_entry">Definition A.1.1</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000010"><span class="toc_ref"></span> <span class="toc_entry">Proposition A.1.3</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000017"><span class="toc_ref"></span> <span class="toc_entry">The "forget the filtration" functor (Proposition A.1.6)</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000018"><span class="toc_ref"></span> <span class="toc_entry">Definition A.1.4 and Proposition A.1.5</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000019"><span class="toc_ref"></span> <span class="toc_entry">Compatibility with filtered triangulated functors (Proposition A.1.8)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref"></span> <span class="toc_entry">Section A.2: compatible t-structures and the realization functor</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0002.html#a0000000028"><span class="toc_ref"></span> <span class="toc_entry">Compatible t-structures</span></a>
+ </li>
+<li class="">
+  <a href="sect0002.html#a0000000029"><span class="toc_ref"></span> <span class="toc_entry">Realization</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active current">
+  <a href="sect0003.html"><span class="toc_ref"></span> <span class="toc_entry">Section A.3: homological algebra calculations and functor reconstruction</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0003.html#a0000000030"><span class="toc_ref"></span> <span class="toc_entry">\(T\)-acyclic objects</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html#a0000000031"><span class="toc_ref"></span> <span class="toc_entry">Functor reconstruction</span></a>
+ </li>
+
+  </ul>
+ </li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000004"> Section A.3: homological algebra calculations and functor reconstruction</h1>
+<p>This section corresponds to the Lean files <a href=""></a>Acyclic.lean and <a href=""></a>Derived.lean. </p>
+<h1 id="a0000000030"> \(T\)-acyclic objects</h1>
+<p>Let \(\mathcal{D},\mathcal{D}'\) be triangulated categories and \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) be a triangulated functor. Suppose that we are given a t-structure \((\mathcal{D}^{\leq 0},\mathcal{D}^{\geq 0})\) (resp. \(({\mathcal{D}’}^{\leq 0},{\mathcal{D}’}^{\geq 0})\)) on \(\mathcal{D}\) (resp. \(\mathcal{D}'\)), and denote the cohomology functors of this t-structure by \(\H^ i_t\) (resp. \(\H^ i_{t'}\)) and its heart by \(\mathcal{D}^\heartsuit \) (resp. \({\mathcal{D}’}^\heartsuit \)). </p>
+<p><div class="definition_thmwrapper " id="def-acyclic">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.Acyclic </p>
+<p>We say that an object \(X\) of \(\mathcal{D}^\heartsuit \) is <em>\(T\)-acyclic</em> if \(T(X)\) is in \({\mathcal{D}’}^\heartsuit \). </p>
+
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-H">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.2</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.isZero_homology_of_acyclic def-acyclic If \(X\) is a \(T\)-acyclic object and \(n\ne 0\) is an integer, then \(\H^ n_{t'}(F(X))\) is zero. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000034">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000035">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>Note that the converse is true if the t-structure \(t'\) is non-degenerate, but not in general. </p>
+<p>Lemma A.3.1(i) says that the full subcategory of \(T\)-acyclic objects is stable by extensions. In Lean, we also need to prove the "obvious" facts that it is stable by isomorphisms, binary products and contains zero objects, hence is an additive category. </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-iso">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.3</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.AcyclicCategory.instIsClosedUnderIsomorphismsHeartAcyclic def-acyclic The full subcategory of \(T\)-acyclic objects is closed under isomorphisms. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000036">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000037">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-zero">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.4</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.AcyclicCategory.zero def-acyclic Zero objects are \(T\)-acyclic. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000038">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000039">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-prod">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.5</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.AcyclicCategory.prod def-acyclic The full subcategory of \(T\)-acyclic objects is closed under binary products. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000040">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000041">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-extension">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.6</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.extension_acyclic_of_acyclic def-acyclic The full subcategory of \(T\)-acyclic objects is closed under extensions. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000042">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000043">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-hTh">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.7</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.fromHeartToHeart The functor \(T':\mathcal{D}^\heartsuit \to {\mathcal{D}’}^\heartsuit \) given by the restriction of \(\H^ 0_{t'}\circ T\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000044">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000045">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-fromAcyclic">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.8</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.fromAcyclic The functor \(T''\) from the full subcategory of \(T\)-acyclic objects to \({\mathcal{D}’}^\heartsuit \) given by the restriction of \(T\). </p>
+
+  </div>
+</div> </p>
+<p>Lemma A.1.3(ii): </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-shortexact_aux">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.9</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.map_shortExact_exact def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of a short exact complex of \(T\)-acyclic objects is an exact complex in \({\mathcal{D}’}^\heartsuit \). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000046">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000047">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000048">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.10</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>Lemma A.3.1(ii) actually says that the image is short exact, which we do not prove yet. See the next statements. </p>
+
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-mono_map_of_mono_and_acyclicCokernel">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.11</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.mono_map_of_mono_and_acyclicCokernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of a monomorphism with an acyclic cokernel is a monomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000049">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000050">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-epi_map_of_epi_and_acyclicKernel">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.12</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.epi_map_of_epi_and_acyclicKernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of an epimorphism with an acyclic kernel is an epimorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000051">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000052">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-shortexact">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.13</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.map_shortExact_of_shortExact_and_acyclic def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of a short exact complex of \(T\)-acyclic objects is a short exact complex in \({\mathcal{D}’}^\heartsuit \). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000053">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000054">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>For the proof of Lemma A.1.3(iii), we need a number of facts about preservation of kernels/cokernels/etc. First we prove a statement about preservation of images. </p>
+<p><div class="definition_thmwrapper " id="def-acyclic-image">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.14</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.isoImageOfAcyclic def-hTh, def-acyclic If a map \(f\) in \(\mathcal{D}^\heartsuit \) has an acyclic kernel and an acyclic cokernel, then the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> preserves the image of ‘\(f\). </p>
+
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000055">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.15</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>This isomorphism is not given by <a href=""></a>CategoryTheory.PreservesImage.iso, because we do not yet know at this point that the kernel and the cokernel of \(f\) are preserved. So we actually construct an image factorization of \(T'(f)\) by hand in <a href=""></a>imageFactorisation_map_of_acyclic_ker_coker which has the desired image. Then we need to check that the isomorphism of Definition&#160;<a href="sect0003.html#def-acyclic-image">.14</a> is compatible with <a href=""></a>Abelian.image.ι and <a href=""></a>Abelian.factorThruImage, this is done in <a href=""></a>CategoryTheory.Functor.isoImageOfAcyclic_comp_ι and <a href=""></a>CategoryTheory.Functor.factorThruImage_comp_isoImageOfAcyclic. </p>
+
+  </div>
+</div> </p>
+<p>We then look at the preservation of kernels and cokernels. </p>
+<p><div class="lemma_thmwrapper " id="prop-mono_kernelComparison_of_acyclic_image">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.16</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.mono_kernelComparison_of_acyclic_image def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with an acyclic image, then its kernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is a mono. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000056">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000057">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-epi_kernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.17</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.epi_kernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its kernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is an epi. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000058">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000059">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-isIso_kernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.18</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.isIso_kernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its kernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000060">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000061">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-epi_cokernelComparison_of_acyclic_image">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.19</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.epi_cokernelComparison_of_acyclic_image def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with an acyclic image, then its cokernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is an epi. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000062">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000063">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-mono_cokernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.20</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.mono_cokernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its cokernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is a mono. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000064">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000065">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-isIso_cokernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.21</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.isIso_cokernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its cokernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000066">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000067">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-shortExact_connecting_iso">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.22</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.shortExact_connecting_iso def-hTh, def-acyclic Let \(S\) be a short exact sequence in \(\mathcal{D}^\heartsuit \) whose second object \(S.X_2\) is \(T\)-acyclic. Then, for every \(n\in \mathbb {Z}\), the connecting morphism in the long exact sequence of homology of the distinguished triangle in \(\mathcal{D}'\) image of \(S\) by \(T\) (i.e. given by <a href=""></a>CategoryTheory.Functor.shortExactComplex_to_triangle) is an isomorphism from \(n\)th homology of \(T(S.X_3)\) to the \((n + 1)\)st homology of \(T(S.X_1)\). </p>
+
+  </div>
+</div> </p>
+<p>Lemma A.1.3(iii): </p>
+<p><div class="definition_thmwrapper " id="def-iso_cohomology_of_acyclic_and_exact">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.23</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.iso_cohomology_of_acyclic_and_exact def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(r\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \(r + 1\) and that the \(r\)th entry of \(S\) is \(T\)-acyclic. Then, for every \(n\in \mathbb {Z}\) different from \(0\) and \(-1\), we have an isomorphism between the \(n\)th cohomology of \(T(\Ker (S.d^{r+1}))\) and the \((n + 1)\)st homology of \(T(\Ker (S.d^r))\). </p>
+
+  </div>
+</div> </p>
+<p>We turn to the proof of Lemma A.1.3(iv). </p>
+<p><div class="lemma_thmwrapper " id="prop-rightAcyclic_ker_of_bounded_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.24</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.rightAcyclic_ker_of_bounded_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \(\le k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\le k\) and zero in small enough degree. </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in positive degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000068">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000069">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-rightAcyclic_ker_of_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.25</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.rightAcyclic_ker_of_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \(\le k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\le k\). </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in positive degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000070">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000071">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-leftAcyclic_ker_of_bounded_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.26</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.leftAcyclic_ker_of_bounded_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \({\gt} k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\ge k\) and zero in large enough degree. </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in negative degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000072">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000073">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-leftAcyclic_ker_of_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.27</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.leftAcyclic_ker_of_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \({\gt} k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\ge k\). </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in negative degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000074">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000075">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>From now on, we suppose that the t-structure \(t'\) on \(\mathcal{D}'\) is non-degenerate. </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_ker_of_bounded_exact_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.28</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_ker_of_bounded_exact_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then \(\Ker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000076">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000077">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_ker_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.29</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_ker_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then \(\Ker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000078">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000079">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_image_of_bounded_exact_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.30</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_image_of_bounded_exact_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then \(\Ima (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000080">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000081">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_image_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.31</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_image_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then \(\Ima (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000082">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000083">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_coker_of_bounded_exact_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.32</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_coker_of_bounded_exact_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then \(\Coker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000084">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000085">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_coker_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.33</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_coker_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then \(\Coker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000086">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000087">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>Lemma A.3.1(iv)(a) : </p>
+<p><div class="lemma_thmwrapper " id="prop-exact_map_of_exact_bounded_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.34</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.CochainComplex.exact_map_of_exact_bounded_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then the image of \(S\) by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is exact. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000088">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000089">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>Lemma A.3.1(iv)(b): </p>
+<p><div class="lemma_thmwrapper " id="prop-exact_map_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.35</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.CochainComplex.exact_map_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then the image of \(S\) by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> is exact. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000090">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000091">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>There is no explicit formalization of Lemma A.3.1(v). </p>
+<h1 id="a0000000031"> Functor reconstruction</h1>
+<p>We keep the notation of the previous subsection, and we assume that the t-structure \(t'\) on \(\mathcal{D}'\) is non-degenerate. We also assume that we have filtered triangulated categories \(\DF \) over \(\mathcal{D}\) and \(\DF '\) over \(\mathcal{D}'\), equipped with compatible t-structures \(tF\) and \(tF'\), as well as a filtered triangulated functor \(FT:\DF \to \DF '\) lifing \(T:\mathcal{D}\to \mathcal{D}'\); this is condition (a) of Proposition A.3.2. </p>
+<p>Condition (b) of Proposition A.3.2 says that the "obvious" functor from the bounded homotopy category of complexes of \(T\)-acyclic objects in the heart \(\mathcal{D}\) to the derived category of the heart of \(\mathcal{D}\) is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms). </p>
+<p>First statement of Proposition A.3.2: <div class="proposition_thmwrapper " id="prop-AcyclicComplexAcyclic_image">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.1</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.AcyclicComplexAcyclic_image def-acyclic, def-FilteredLifting, def-compatible </p>
+<p>The functor on the bounded homotopy categories induced by the functor \(T''\) of Definition&#160;<a href="sect0003.html#def-fromAcyclic">.8</a> sends a (bounded) exact complex of \(T\)-acyclic objects to an exact complex. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-derived">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.DerivedFunctor prop-AcyclicComplexAcyclic_image </p>
+<p>The functor \(DT:\Db (\mathcal{D}^\heartsuit )\to \Db ({\mathcal{D}’}^\heartsuit )\) given by the universal property of the localization functor of condition (b) above, and the property proved in Proposition&#160;<a href="sect0003.html#prop-AcyclicComplexAcyclic_image">.1</a>. </p>
+
+  </div>
+</div> </p>
+<p>Second statement of Proposition A.3.2: </p>
+<p><div class="definition_thmwrapper " id="def-derived_comp">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.3</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.DerivedFunctor_comp def-derived </p>
+<p>There is an isomorphism of functors \(\real '\circ DT\stackrel{\sim }{\longrightarrow }T\circ \real \). </p>
+
+  </div>
+</div> </p>
+<p><div class="tikzcd" id="a0000000092">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> (D^\(\heartsuit \))[r, "DT"][d, "“] (D’^\(\heartsuit \))[d, "’"] <br />D[r, "T“] D’ <div class="tikzcd" id="a0000000093">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+<p><div class="remark_thmwrapper " id="rmk_der_fil1">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.4</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>Suppose that we are in the situation of Proposition&#160;A.3.2. If moreover \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) is left t-exact and if \(\mathcal{I}\) is cogenerating in \(\mathcal{C}\) (i.e. every object of \(\mathcal{C}\) has a monomorphism into an object of \(\mathcal{I}\)), then the functor \(\H^ 0(T)\colon \mathcal{C}\longrightarrow \mathcal{C}'\) admits a right derived functor \(RT\colon \Dpl (\mathcal{C})\longrightarrow \Dpl (\mathcal{C}')\) by Proposition&#160;13.3.5 of&#160;<span class="cite">
+	[
+	<a href="sect0003.html#KS1" >3</a>
+	]
+</span>, and the construction of \(RT\) in that proposition shows that \(RT\) sends that \(\Db (\mathcal{C})\) to \(\Db (\mathcal{C}')\) and that \(DT\) is the restriction of \(RT\) to \(\Db (\mathcal{C})\). We have a similar statement if \(T\) is right t-exact and \(\mathcal{I}\) is generating in \(\mathcal{C}\). </p>
+<p> </p>
+
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000094">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.5</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>By Proposition&#160;10.2.7 of&#160;<span class="cite">
+	[
+	<a href="sect0003.html#KS1" >3</a>
+	]
+</span>, to check assumption (b) of Proposition&#160;A.3.2, it suffices to find triangulated subcategories \(\mathcal{D}_0=\Kb (\mathcal{C})\supset \mathcal{D}_1\supset \ldots \supset \mathcal{D}_r=\Kb (\mathcal{I})\) of \(\Kb (\mathcal{C})\) such that, for every \(i\in \{ 1,\ldots ,r-1\} \), one of the following conditions holds: </p>
+<ul class="itemize">
+  <li><p>For every \(X\in \Ob \mathcal{D}_i\), there exists a quasi-isomorphism \(X\longrightarrow Y\) with \(Y\in \Ob \mathcal{D}_{i+1}\). </p>
+</li>
+  <li><p>For every \(X\in \Ob \mathcal{D}_i\), there exists a quasi-isomorphism \(Y\longrightarrow X\) with \(Y\in \Ob \mathcal{D}_{i+1}\). </p>
+</li>
+</ul>
+<p> </p>
+
+  </div>
+</div> </p>
+<p> </p>
+<dl class="bibliography">
+  <dt><a name="Be1">1</a></dt>
+  <dd><p>A.&#160;A. Beı̆linson, On the derived category of perverse sheaves. In <em>\(K\)-theory, arithmetic and geometry (Moscow, 1984–1986)</em>, pp. 27–41, Lecture Notes in Math. 1289, Springer, Berlin, 1987 </p>
+</dd>
+  <dt><a name="BBD">2</a></dt>
+  <dd><p>A.&#160;A. Beı̆linson, J.&#160;Bernstein, and P.&#160;Deligne, Faisceaux pervers. In <em>Analysis and topology on singular spaces, I (Luminy, 1981)</em>, pp. 5–171, Astérisque 100, Soc. Math. France, Paris, 1982 </p>
+</dd>
+  <dt><a name="KS1">3</a></dt>
+  <dd><p>M.&#160;Kashiwara and P.&#160;Schapira, <em>Categories and sheaves</em>. Grundlehren der Mathematischen Wissenschaften [Fundamental Principles of Mathematical Sciences] 332, Springer-Verlag, Berlin, 2006 </p>
+</dd>
+  <dt><a name="Schnur">4</a></dt>
+  <dd><p>O.&#160;M. Schnürer, Homotopy categories and idempotent completeness, weight structures and weight complex functors. <span class="ttfamily">https://arxiv.org/abs/1107.1227</span>, 2011, <span class="ttfamily">1107.1227</span> </p>
+</dd>
+</dl>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="sect0002.html" title="Section A.2: compatible t-structures and the realization functor"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="index.html" title="Appendix"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>
