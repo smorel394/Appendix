@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1749716731.94726 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749716734.44197 0
+["pdflatex"] 1749719707.80868 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749719710.38104 0
   "/etc/texmf/web2c/texmf.cnf" 1730460179.73442 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749716733.96448 1064 c7122f2c6a8d7ecaf3ae0e16d043424f "pdflatex"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749716733.96548 1051 ee1bd8cea97ccbec6bfd5eb50a0326c0 "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749719710.13122 1160 d9af1214542dea2a1939e637702e5a5b "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749719710.13322 1051 ee1bd8cea97ccbec6bfd5eb50a0326c0 "pdflatex"
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -154,9 +154,9 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1745826768 10844494 b27f5ab6a2b0a9f8a9c8cfa46549b55f ""
-  "content.tex" 1749681391.56152 670 7c88a3baa482a164ff2c5f3e902a4ce7 ""
+  "content.tex" 1749717614.70013 1273 c9b5565b8f8a561e8a19ee3604ab37df ""
   "der.tex" 1749678709.35379 74 72f9666642f765dc8340c50f860dc6cc ""
-  "ftri.tex" 1749716696.33791 8846 080f2c27a8359b80b876e1f10c779785 ""
+  "ftri.tex" 1749719697.2057 9771 e68fff460f7b15163472d5bc2eac118e ""
   "macros/common.tex" 1749708517.88412 4074 6435f4a654f8aab90d5a1ebcaf02b384 ""
   "macros/print.tex" 1749672939.61511 1101 87627b2ec24fef68edc71c13f43f7bab ""
   "print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""

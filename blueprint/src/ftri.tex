@@ -4,9 +4,19 @@ In Appendix~A of~\cite{Be1}, Beilinson introduced f-categories over triangulated
 derived categories, and generalized the properties of filtered derived categories to this more general setting. We review his definition and results.
 Note that Section~6 of Schn\"urer's paper \cite{Schnur} gives more detailed proofs of many of the results of Appendix~A of~\cite{Be1}.
 
+When formalizing the definition of f-categories, we run into our first issue immediately. Beilinson defines an f-category as a triangulated
+category $C$ with a second shift functor $s$, which should be a triangulated self-equivalence (plus some extra structure). In particular,
+the functor $s$ needs to commute with the shifts coming from the triangulated category structure. The easiest way to encode all
+the necessary compatibilities is actually to put a shift by $\Z \times \Z$ on our category $C$, where the shift by the first factor
+will be part of the triangulated structure and the shift by the second factor will give the functor $s$. The beginning of the project
+is devoted to setting this shift structure. In particular, we chose to make the default shift by $\Z$ on the  category $C$ to be the
+shift by the first factor, and to introduce a type synonym `FilteredShift C' which carries a shift by $\Z$ encoding the functor  $s$.
+
 The following is Definition~A.1 of~\cite{Be1}.
 
 \begin{definition}
+\label{def-FilteredTriangulated}
+\lean{CategoryTheory.FilteredTriangulated}
 We introduce the following objects:
 \begin{itemize}
 \item[(1)] A \textit{filtered} \textit{triangulated} \textit{category}, or for short a \emph{f-category}, is the data of:
@@ -32,14 +42,12 @@ by $\alpha_Y$ and $\alpha_{s^{-1}(X)}$ are bijective.
 $s'\circ T\iso T\circ s$ 
 such that $T(\DF(\leq 0))\subset\DF'(\leq 0)$,
 $T(\DF(\geq 0))\subset\DF(\geq 0)$ and that, for every $X\in\Ob\DF$, the following triangle commutes:
+
 \begin{tikzcd}
-T(X) \arrow[r, "\alpha'_{T(X)}"] \arrow[rd, "T(\alpha(X))"] 
+T(X) \arrow[r, "\alpha'_{T(X)}"] \arrow[rd, "T(\alpha(X))"'] 
 & s'(T(X))\arrow[d, "\wr"] \\
 & T(s(X))
 \end{tikzcd}
-
-%\[\xymatrix{T(X)\ar[r]^-{\alpha'_{T(X)}}\ar[rd]_-{T(\alpha(X))} & s'(T(X))\ar[d]^\wr \\
-%& T(s(X))}\]
 
 \item[(3)] 
 Let $\Df$ be a triangulated category. An \emph{f-category over $\Df$} is an f-category $\DF$ together with an equivalence $i\colon \Df\ra\DF(\leq 0)\cap\DF(\geq 0)$.
@@ -57,9 +65,11 @@ Let $\DF$ be an f-category.
 \item[(i)] For every $n\in\Z$, the inclusion $\DF(\leq n)\subset\DF$ admits a left adjoint $\sigma_{\leq n}$, and the inclusion $\DF(\geq n)\subset\DF$ admits a right adjoint $\sigma_{\geq n}$.
 The functors $\sigma_{\leq n}$, $\sigma_{\geq n}$ are triangulated and preserve the subcategories $\DF(\leq m)$, $\DF(\geq m)$ for every $m\in\Z$.
 \item[(ii)] For $a,b\in\Z$, there exists a unique isomorphism of functors $\sigma_{\leq a}\sigma_{\geq b}\simeq\sigma_{\geq b}\sigma_{\leq a}$ that makes the following diagram commute:
-%\[\xymatrix@C=10pt{\sigma_{\geq b}\ar[rr]\ar[rd] & & \id_{\DF}\ar[rr] & & \sigma_{\leq a} \\
-% & \sigma_{\leq a}\sigma_{\geq b}\ar[rr]_-\sim && \sigma_{\geq b}\sigma_{\leq a}\ar[ru] &
-%}\]
+
+\begin{tikzcd}
+\sigma_{\geq b}\ar[rr]\ar[rd] & & \id_{\DF}\ar[rr] & & \sigma_{\leq a} \\
+& \sigma_{\leq a}\sigma_{\geq b}\ar[rr, "\sim"'] && \sigma_{\geq b}\sigma_{\leq a}\ar[ru] &
+\end{tikzcd}
 
 \item[(iii)] Let $X\in\Ob\DF$. Then there exists a unique morphism $\delta\colon \sigma_{\leq 0}X\ra\sigma_{\geq 1}[1]$ making the triangle $\sigma_{\leq 1}X\ra X\ra\sigma_{\leq 0}X\flnom{\delta}\sigma_{\geq 1}X[1]$
 distinguished.
@@ -123,12 +133,16 @@ The following proposition follows easily from the definitions.
 Let $\Df,\Df'$ be triangulated categories, and let $\DF$ (resp. $\DF'$) be an f-category over $\Df$ (resp. $\Df'$).
 Let $T\colon \Df\ra\Df'$ be a triangulated functor, and let $FT\colon \DF\ra\DF'$ be an f-lifting of $T$.
 Then the following squares commute up to natural isomorphism:
-%\[\xymatrix{\DF\ar[r]^-{FT}\ar[d]_\omega&\DF'\ar[d]^\omega \\
-%\Df\ar[r]_-T& \Df'}\quad
-%\xymatrix{\DF\ar[r]^-{FT}
-%\ar[d]_{\Gra^n}&\DF'\ar[d]^{\Gra^n}\\ \Df\ar[r]_-T&\Df'}\quad
-%\xymatrix{\DF\ar[r]^-{FT}
-%\ar[d]_{\sigma_{\leq n}}&\DF'\ar[d]^{\sigma_{\leq n}}\\ \DF\ar[r]_-{FT}&\DF'}\]
+
+\begin{tikzcd}
+\DF\ar[r, "FT"]\ar[d, "\omega"'] &\DF'\ar[d, "\omega"] &&
+\DF\ar[r, "FT"]\ar[d, "\Gra^n"'] &\DF'\ar[d, "\Gra^n"] &&
+\DF\ar[r, "FT"]\ar[d, "\sigma_{\leq n}"'] &\DF'\ar[d, "\sigma_{\leq n}"]
+\\
+\Df\ar[r, "T"'] & \Df'&&
+\Df\ar[r, "T"'] &\Df'&&
+\DF\ar[r, "FT"'] &\DF'
+\end{tikzcd}
 
 \label{prop_f_lifting}
 \end{proposition}

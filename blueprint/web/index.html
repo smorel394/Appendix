@@ -36,15 +36,24 @@
 <h1 id="a0000000002"> Section A.1: filtered triangulated categories</h1>
 <p>In Appendix&#160;A of&#160;<span class="cite">
 	[
+	<a href="index.html#Be1" >1</a>
+	]
 </span>, Beilinson introduced f-categories over triangulated categories, that have all the abstract properties of filtered derived categories, and generalized the properties of filtered derived categories to this more general setting. We review his definition and results. Note that Section&#160;6 of Schnürer’s paper <span class="cite">
 	[
+	<a href="index.html#Schnur" >2</a>
+	]
 </span> gives more detailed proofs of many of the results of Appendix&#160;A of&#160;<span class="cite">
 	[
+	<a href="index.html#Be1" >1</a>
+	]
 </span>. </p>
+<p>When formalizing the definition of f-categories, we run into our first issue immediately. Beilinson defines an f-category as a triangulated category \(C\) with a second shift functor \(s\), which should be a triangulated self-equivalence (plus some extra structure). In particular, the functor \(s\) needs to commute with the shifts coming from the triangulated category structure. The easiest way to encode all the necessary compatibilities is actually to put a shift by \(\mathbb {Z}\times \mathbb {Z}\) on our category \(C\), where the shift by the first factor will be part of the triangulated structure and the shift by the second factor will give the functor \(s\). The beginning of the project is devoted to setting this shift structure. In particular, we chose to make the default shift by \(\mathbb {Z}\) on the category \(C\) to be the shift by the first factor, and to introduce a type synonym ‘FilteredShift C’ which carries a shift by \(\mathbb {Z}\) encoding the functor \(s\). </p>
 <p>The following is Definition&#160;A.1 of&#160;<span class="cite">
 	[
+	<a href="index.html#Be1" >1</a>
+	]
 </span>. </p>
-<p><div class="definition_thmwrapper " id="a0000000003">
+<p><div class="definition_thmwrapper " id="def-FilteredTriangulated">
   <div class="definition_thmheading">
     <span class="definition_thmcaption">
     Definition
@@ -52,7 +61,7 @@
     <span class="definition_thmlabel">1</span>
   </div>
   <div class="definition_thmcontent">
-  <p>We introduce the following objects: </p>
+  <p> CategoryTheory.FilteredTriangulated We introduce the following objects: </p>
 <ul class="itemize">
   <li><p>A <i class="itshape">filtered</i> <i class="itshape">triangulated</i> <i class="itshape">category</i>, or for short a <em>f-category</em>, is the data of: </p>
 <ul class="itemize">
@@ -66,12 +75,12 @@
 </li>
 </ul>
 <p> satisfying the following conditions, where, for every \(n\in \mathbb {Z}\), we set </p>
-<div class="displaymath" id="a0000000004">
+<div class="displaymath" id="a0000000003">
   \[ \DF (\leq n)=s^n\DF (\leq 0)\mbox{ and }\DF (\geq n)=s^n\DF (\geq 0): \]
 </div>
 <ul class="itemize">
   <li><p>We have \(\DF (\geq 1)\subset \DF (\geq 0)\), \(\DF (\leq 1)\supset \DF (\leq 0)\) and </p>
-<div class="displaymath" id="a0000000005">
+<div class="displaymath" id="a0000000004">
   \[ \DF =\bigcup _{n\in \mathbb {Z}}\DF (\leq n)=\bigcup _{n\in \mathbb {Z}}\DF (\geq n). \]
 </div>
 </li>
@@ -83,9 +92,10 @@
 </li>
 </ul>
 </li>
-  <li><p>If \(\DF \) and \(\DF '\) are f-categories, an <em>f-functor</em> from \(\DF \) to \(\DF '\) is the data of a triangulated functor \(T\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(s'\circ T\stackrel{\sim }{\longrightarrow }T\circ s\) such that \(T(\DF (\leq 0))\subset \DF '(\leq 0)\), \(T(\DF (\geq 0))\subset \DF (\geq 0)\) and that, for every \(X\in \Ob \DF \), the following triangle commutes: <div class="tikzcd" id="a0000000006">
+  <li><p>If \(\DF \) and \(\DF '\) are f-categories, an <em>f-functor</em> from \(\DF \) to \(\DF '\) is the data of a triangulated functor \(T\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(s'\circ T\stackrel{\sim }{\longrightarrow }T\circ s\) such that \(T(\DF (\leq 0))\subset \DF '(\leq 0)\), \(T(\DF (\geq 0))\subset \DF (\geq 0)\) and that, for every \(X\in \Ob \DF \), the following triangle commutes: </p>
+<p><div class="tikzcd" id="a0000000005">
     <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
-</div> T(X) [r, "α’_T(X)"] [rd, "T(α(X))"]  s’(T(X))[d, "≀"] <br /> T(s(X)) <div class="tikzcd" id="a0000000007">
+</div> T(X) [r, "α’_T(X)"] [rd, "T(α(X))“]  s’(T(X))[d, "≀"] <br /> T(s(X)) <div class="tikzcd" id="a0000000006">
     <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
 </div> </p>
 </li>
@@ -96,7 +106,7 @@
 
   </div>
 </div> </p>
-<p><div class="proposition_thmwrapper " id="a0000000008">
+<p><div class="proposition_thmwrapper " id="a0000000007">
   <div class="proposition_thmheading">
     <span class="proposition_thmcaption">
     Proposition
@@ -104,6 +114,8 @@
     <span class="proposition_thmlabel">2</span>
     <span class="proposition_thmtitle">Proposition&#160;A.3 of&#160;<span class="cite">
 	[
+	<a href="index.html#Be1" >1</a>
+	]
 </span></span>
   </div>
   <div class="proposition_thmcontent">
@@ -112,6 +124,11 @@
   <li><p>For every \(n\in \mathbb {Z}\), the inclusion \(\DF (\leq n)\subset \DF \) admits a left adjoint \(\sigma _{\leq n}\), and the inclusion \(\DF (\geq n)\subset \DF \) admits a right adjoint \(\sigma _{\geq n}\). The functors \(\sigma _{\leq n}\), \(\sigma _{\geq n}\) are triangulated and preserve the subcategories \(\DF (\leq m)\), \(\DF (\geq m)\) for every \(m\in \mathbb {Z}\). </p>
 </li>
   <li><p>For \(a,b\in \mathbb {Z}\), there exists a unique isomorphism of functors \(\sigma _{\leq a}\sigma _{\geq b}\simeq \sigma _{\geq b}\sigma _{\leq a}\) that makes the following diagram commute: </p>
+<p><div class="tikzcd" id="a0000000008">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> σ_≥b[rr][rd]   id_[rr]   σ_≤a <br /> σ_≤aσ_≥b[rr, "∼“]  σ_≥bσ_≤a[ru]  <div class="tikzcd" id="a0000000009">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
 </li>
   <li><p>Let \(X\in \Ob \DF \). Then there exists a unique morphism \(\delta \colon \sigma _{\leq 0}X\longrightarrow \sigma _{\geq 1}[1]\) making the triangle \(\sigma _{\leq 1}X\longrightarrow X\longrightarrow \sigma _{\leq 0}X\stackrel{\delta }{\longrightarrow }\sigma _{\geq 1}X[1]\) distinguished. Any distinguished triangle \(A\longrightarrow X\longrightarrow B\stackrel{+1}{\longrightarrow }\) with \(A\in \Ob \DF (\geq 1)\) and \(B\in \Ob \DF (\leq 0)\) admits a unique isomorphism to the triangle of the previous sentence. </p>
 </li>
@@ -124,8 +141,10 @@
 </div> </p>
 <p>Point (iv) is not stated in Proposition&#160;A.3 of&#160;<span class="cite">
 	[
+	<a href="index.html#Be1" >1</a>
+	]
 </span> but follows immediately from the fact that \(s(\DF (\leq n -1))=\DF (\leq n)\) (resp. \(s(D(\geq n-1))=D(\geq n)\)) and the uniqueness of adjoints. </p>
-<p><div class="definition_thmwrapper " id="a0000000009">
+<p><div class="definition_thmwrapper " id="a0000000010">
   <div class="definition_thmheading">
     <span class="definition_thmcaption">
     Definition
@@ -137,7 +156,7 @@
 
   </div>
 </div> </p>
-<p><div class="proposition_thmwrapper " id="a0000000010">
+<p><div class="proposition_thmwrapper " id="a0000000011">
   <div class="proposition_thmheading">
     <span class="proposition_thmcaption">
     Proposition
@@ -152,7 +171,7 @@
   <li><p>Let \(r\in \mathbb {Z}\). Then \(\Gra ^r\circ i=0\) if \(r\ne 0\) and \(\Gra ^r\circ i\simeq \mathrm{id}_{\mathcal{D}}\) if \(r=0\). </p>
 </li>
   <li><p>Let \(r,n\in \mathbb {Z}\). We have </p>
-<div class="displaymath" id="a0000000011">
+<div class="displaymath" id="a0000000012">
   \[ \Gra ^r\circ \sigma _{\leq n}=\left\{ \begin{array}{ll}\Gra ^r&  \mbox{if }r\leq n\\ 0 &  \mbox{otherwise}\end{array}\right. \qquad \mbox{and}\quad \Gra ^r\circ \sigma _{\geq n}=\left\{ \begin{array}{ll}\Gra ^r&  \mbox{if }r\geq n\\ 0 &  \mbox{otherwise}\end{array}\right.. \]
 </div>
 </li>
@@ -161,7 +180,7 @@
 
   </div>
 </div> </p>
-<p><div class="proof_wrapper" id="a0000000012">
+<p><div class="proof_wrapper" id="a0000000013">
   <div class="proof_heading">
     <span class="proof_caption">
     
@@ -171,7 +190,7 @@
   <div class="proof_content">
   
   </div>
-</div> Point (i) follows from Proposition&#160;??(iv), point (ii) from the fact that the image of \(i\) is contained in \(\DF (\leq 0)\cap \DF (\geq 0)\), and point (iii) from the definition of \(\Gra ^r\). <div class="proof_wrapper" id="a0000000013">
+</div> Point (i) follows from Proposition&#160;??(iv), point (ii) from the fact that the image of \(i\) is contained in \(\DF (\leq 0)\cap \DF (\geq 0)\), and point (iii) from the definition of \(\Gra ^r\). <div class="proof_wrapper" id="a0000000014">
   <div class="proof_heading">
     <span class="proof_caption">
     
@@ -182,7 +201,7 @@
   
   </div>
 </div> </p>
-<p><div class="proposition_thmwrapper " id="a0000000014">
+<p><div class="proposition_thmwrapper " id="a0000000015">
   <div class="proposition_thmheading">
     <span class="proposition_thmcaption">
     Proposition
@@ -190,10 +209,12 @@
     <span class="proposition_thmlabel">5</span>
     <span class="proposition_thmtitle">Proposition&#160;A.3 of&#160;<span class="cite">
 	[
+	<a href="index.html#Be1" >1</a>
+	]
 </span></span>
   </div>
   <div class="proposition_thmcontent">
-  <p> Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). Then there exists a triangulated functor \(\omega \colon \DF \longrightarrow \mathcal{D}\) such that:<a class="footnote" href="#a0000000015">
+  <p> Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). Then there exists a triangulated functor \(\omega \colon \DF \longrightarrow \mathcal{D}\) such that:<a class="footnote" href="#a0000000016">
   <sup class="footnotemark">1</sup>
 </a> </p>
 <ul class="itemize">
@@ -221,20 +242,38 @@
   </div>
   <div class="proposition_thmcontent">
   <p>Let \(\mathcal{D},\mathcal{D}'\) be triangulated categories, and let \(\DF \) (resp. \(\DF '\)) be an f-category over \(\mathcal{D}\) (resp. \(\mathcal{D}'\)). Let \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) be a triangulated functor, and let \(FT\colon \DF \longrightarrow \DF '\) be an f-lifting of \(T\). Then the following squares commute up to natural isomorphism: </p>
+<p><div class="tikzcd" id="a0000000017">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> [r, "FT"][d, "ω“] ’[d, "ω"]  [r, "FT"][d, "^n“] ’[d, "^n"]  [r, "FT"][d, "σ_≤n“] ’[d, "σ_≤n"] <br />D[r, "T“]  D’ D[r, "T“] D’ [r, "FT“] ’ <div class="tikzcd" id="a0000000018">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
 <p> </p>
 
   </div>
 </div> </p>
-<h1 id="a0000000016"> Section A.2: compatible t-structures and the realization functor</h1>
-<h1 id="a0000000017"> A.3: homological algebra calculations and functor reconstruction</h1>
+<h1 id="a0000000019"> Section A.2: compatible t-structures and the realization functor</h1>
+<h1 id="a0000000020"> A.3: homological algebra calculations and functor reconstruction</h1>
+<p> </p>
+<dl class="bibliography">
+  <dt><a name="Be1">1</a></dt>
+  <dd><p>A.&#160;A. Beı̆linson, On the derived category of perverse sheaves. In <em>\(K\)-theory, arithmetic and geometry (Moscow, 1984–1986)</em>, pp. 27–41, Lecture Notes in Math. 1289, Springer, Berlin, 1987 </p>
+</dd>
+  <dt><a name="Schnur">2</a></dt>
+  <dd><p>O.&#160;M. Schnürer, Homotopy categories and idempotent completeness, weight structures and weight complex functors. <span class="ttfamily">https://arxiv.org/abs/1107.1227</span>, 2011, <span class="ttfamily">1107.1227</span> </p>
+</dd>
+</dl>
 
 </div> <!--main-text -->
 <footer id="footnotes">
 <ol>
-  <li id="a0000000015">Note that there is a typo in Proposition&#160;A.3 of&#160;<span class="cite">
+  <li id="a0000000016">Note that there is a typo in Proposition&#160;A.3 of&#160;<span class="cite">
 	[
+	<a href="index.html#Be1" >1</a>
+	]
 </span>: the left and right adjoints are switched; see the correction in Proposition&#160;6.6 of&#160;<span class="cite">
 	[
+	<a href="index.html#Schnur" >2</a>
+	]
 </span>.</li>
 </ol>
 </footer>
