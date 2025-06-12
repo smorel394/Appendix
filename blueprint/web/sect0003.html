@@ -367,7 +367,7 @@
     <span class="lemma_thmlabel">.11</span>
   </div>
   <div class="lemma_thmcontent">
-  <p> CategoryTheory.mono_map_of_mono_and_acyclicCokernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of a monomorphism with an acyclic cokernel is a monomorphism. </p>
+  <p> CategoryTheory.Functor.mono_map_of_mono_and_acyclicCokernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of a monomorphism with an acyclic cokernel is a monomorphism. </p>
 
   </div>
 </div> </p>
@@ -400,7 +400,7 @@
     <span class="lemma_thmlabel">.12</span>
   </div>
   <div class="lemma_thmcontent">
-  <p> CategoryTheory.epi_map_of_epi_and_acyclicKernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of an epimorphism with an acyclic kernel is an epimorphism. </p>
+  <p> CategoryTheory.Functor.epi_map_of_epi_and_acyclicKernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="sect0003.html#def-hTh">.7</a> of an epimorphism with an acyclic kernel is an epimorphism. </p>
 
   </div>
 </div> </p>
@@ -784,7 +784,7 @@
     <span class="lemma_thmlabel">.26</span>
   </div>
   <div class="lemma_thmcontent">
-  <p> CategoryTheory.Functor.leftAcyclic_ker_of_bounded_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \({\gt} k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\ge k\) and zero in large enough degree. </p>
+  <p> CategoryTheory.Functor.leftAcyclic_ker_of_boundedComplex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \({\gt} k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\ge k\) and zero in large enough degree. </p>
 <p>Then the homology of \(T(\Ker (S.d^r))\) is zero in negative degree. </p>
 
   </div>
@@ -1205,6 +1205,33 @@
 </li>
 </ul>
 <p> </p>
+
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000095">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.6</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>The statement of Definition&#160;<a href="sect0003.html#def-derived_comp">.3</a> is not sufficient for our purposes, as we need the isomorphism to have some compatibilities, in at least the following ways: </p>
+<ul class="itemize">
+  <li><p>If we have a commutative (up to isomorphism) diagram <div class="tikzcd" id="a0000000096">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> _1[r, "U"][d, "FT_1“] _2[d, "FT_2"] <br />_1’[r, "U’“] _2’ <div class="tikzcd" id="a0000000097">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> (probably with t-exact functors \(U\) and \(U'\)), then we want to get a commutative (up to isomorphism) diagram <div class="tikzcd" id="a0000000098">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> (D_1^\(\heartsuit \))[d, "DT_1“][r, "U"] (D_2^\(\heartsuit \))[d, "DT_2"] <br />(D_1’^\(\heartsuit \))[r, "U’“]  (D_2’^\(\heartsuit \)) <div class="tikzcd" id="a0000000099">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+</li>
+  <li><p>If we have functors \(\DF \xrightarrow {FT}\DF '\xrightarrow {FT’}\DF ''\) over \(\mathcal{D}\xrightarrow {T}\mathcal{D}'\xrightarrow {T’}\mathcal{D}''\), we want an isomorphism \(DT\circ DT'\stackrel{\sim }{\longrightarrow }D(T\circ T')\), satisfying the cocycle condition and also compatible with the situation of (i). </p>
+</li>
+</ul>
+<p>Some of these issue show up after Definition&#160;7.1.4 of the paper, and a solution is outlined. </p>
 
   </div>
 </div> </p>

@@ -237,7 +237,7 @@
     <span class="definition_thmlabel">.3</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.Functor.truncLE prop-A.1.3.1-le </p>
+  <p> CategoryTheory.FilteredTriangulated.truncLE prop-A.1.3.1-le </p>
 <p>For every \(n\in \mathbb {Z}\), we denote by \(\sigma _{\le n} : \DF \longrightarrow \DF \) the composition of a left adjoint of the inclusion functor \(\iota :\DF (\le n)\to \DF \) and of \(\iota \). </p>
 
   </div>
@@ -250,7 +250,7 @@
     <span class="definition_thmlabel">.4</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.Functor.truncLEπ def-truncLE </p>
+  <p> CategoryTheory.FilteredTriangulated.truncLEπ def-truncLE </p>
 <p>For every \(n\in \mathbb {Z}\), we denote by \(truncLEπ n : 𝟭 \DF \longrightarrow \sigma _{\le n}\) the unit of the adjunction. </p>
 
   </div>
@@ -263,7 +263,7 @@
     <span class="definition_thmlabel">.5</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.Functor.truncGE prop-A.1.3.1-ge </p>
+  <p> CategoryTheory.FilteredTriangulated.truncGE prop-A.1.3.1-ge </p>
 <p>For every \(n\in \mathbb {Z}\), we denote by \(\sigma _{\ge n} : \DF \longrightarrow \DF \) the composition of a right adjoint of the inclusion functor \(\iota :\DF (\ge n)\to \DF \) and of \(\iota \). </p>
 
   </div>
@@ -276,7 +276,7 @@
     <span class="definition_thmlabel">.6</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.Functor.truncGEι def-truncGE </p>
+  <p> CategoryTheory.FilteredTriangulated.truncGEι def-truncGE </p>
 <p>For every \(n\in \mathbb {Z}\), we denote by \(truncGEι n : \sigma _{\ge n} \longrightarrow 𝟭 \DF \) the counit of the adjunction. </p>
 
   </div>
@@ -534,7 +534,7 @@
     <span class="definition_thmlabel">.25</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.FilteredTriangulated.truncLEGE def-truncLE, def-truncGE </p>
+  <p> CategoryTheory.FilteredTriangulated.truncLEGE def-truncLE, def-truncGELEGE </p>
 <p>For \(a,b\in \mathbb {Z}\), we define \(\sigma '_{[a,b]} : \DF \longrightarrow \DF \) as \(\sigma _{\leq b}\circ \sigma _{\geq a}\). </p>
 
   </div>
@@ -560,7 +560,7 @@
     <span class="definition_thmlabel">.27</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.FilteredTriangulated.LEGEToGELE def-truncLEGE, def-truncGELE, def-commute_truncLE </p>
+  <p> CategoryTheory.FilteredTriangulated.truncLEGEToGELE def-truncLEGE, def-truncGELE, def-commute_truncLE </p>
 <p>For \(a,b\in \mathbb {Z}\), we have a natural transformation \(\sigma '_{[a,b]} \longrightarrow \sigma _{[a,b]}\) given by <a href=""></a>commute_truncLE. </p>
 
   </div>
@@ -573,7 +573,7 @@
     <span class="definition_thmlabel">.28</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.FilteredTriangulated.LEGEIsoGELE def-LEGEToGELE </p>
+  <p> CategoryTheory.FilteredTriangulated.truncLEGEIsoGELE def-LEGEToGELE </p>
 <p>For \(a,b\in \mathbb {Z}\), the natural transformation \(\sigma '_{[a,b]} \longrightarrow \sigma _{[a,b]}\) of Definition <a href="sect0001.html#def-LEGEToGELE">.27</a> is an isomorphism. </p>
 
   </div>
@@ -599,7 +599,7 @@
     <span class="proposition_thmlabel">.30</span>
   </div>
   <div class="proposition_thmcontent">
-  <p> CategoryTheory.FilteredTriangulated.LEGEToGELE_uniq def-LEGEToGELE </p>
+  <p> CategoryTheory.FilteredTriangulated.truncLEGEToGELE_uniq def-LEGEToGELE </p>
 <p>Let \(a,b\in \mathbb {Z}\), let \(X\) be an object of \(\DF \), and let \(f:\sigma '_{[a,b]} X\longrightarrow \sigma _{[a,b]}X\). Suppose that \(f\) makes the following diagram commute: </p>
 <p><div class="tikzcd" id="a0000000014">
     <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
@@ -920,7 +920,7 @@
     <span class="definition_thmlabel">.6</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.FilteredTriangulated.Gr-commShift def-Gr </p>
+  <p> CategoryTheory.FilteredTriangulated.Gr_commShift def-Gr </p>
 <p>For every \(n\in \mathbb {Z}\), the functor \(\Gra ^n\) intertwines the second shift of \(\DF \) and the identity functor of \(\mathcal{D}\). </p>
 
   </div>

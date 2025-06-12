@@ -1,9 +1,9 @@
 # Fdb version 4
-["pdflatex"] 1749760340.27731 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749760342.647 0
+["pdflatex"] 1749762565.50027 "print.tex" "/home/sophie/lean4/Appendix/blueprint/print/print.pdf" "print" 1749762567.74502 0
   "/etc/texmf/web2c/texmf.cnf" 1730460179.73442 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749760342.50111 10046 fe49c10c37d91a9f96be472a4f7a480d "pdflatex"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749760342.50311 2992 446799e6cde558c5fc743f8e1ba4725c "pdflatex"
-  "/home/sophie/lean4/Appendix/blueprint/print/print.toc" 1749760342.50311 1166 4180fdd6b85844fb59b6ddff0887751f "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.aux" 1749762567.51949 10046 fe49c10c37d91a9f96be472a4f7a480d "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.out" 1749762567.52049 2992 446799e6cde558c5fc743f8e1ba4725c "pdflatex"
+  "/home/sophie/lean4/Appendix/blueprint/print/print.toc" 1749762567.52049 1166 4180fdd6b85844fb59b6ddff0887751f "pdflatex"
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -156,12 +156,12 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1745826768 10844494 b27f5ab6a2b0a9f8a9c8cfa46549b55f ""
   "content.tex" 1749755587.16348 1773 a9435a907ccb43a6350adb86d88b7d5a ""
-  "der.tex" 1749760319.49429 20362 c71d827f00052608ca8437147cda229b ""
-  "ftri.tex" 1749760319.58229 33028 f0066b1edc938e1fc2827d790765f821 ""
+  "der.tex" 1749762554.78451 21396 c689587e2ee189d9b423c1cf8d7828a5 ""
+  "ftri.tex" 1749762388.92578 33099 d249f82a64cc13be94879af523fba655 ""
   "macros/common.tex" 1749760270.57067 4252 427c68c2e31c873653a6ea76743d8b89 ""
   "macros/print.tex" 1749672939.61511 1101 87627b2ec24fef68edc71c13f43f7bab ""
   "print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""
-  "tstruct.tex" 1749760335.05817 5884 09248a8f71be46104957e1d0d2eb2174 ""
+  "tstruct.tex" 1749762452.57768 5884 f9bee65fea998d978786ca61520e3437 ""
   (generated)
   "/home/sophie/lean4/Appendix/blueprint/print/print.aux"
   "/home/sophie/lean4/Appendix/blueprint/print/print.log"

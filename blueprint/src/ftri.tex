@@ -142,7 +142,7 @@ For every $n\in\Z$, the full subcategory $\DF(\le n)$ is coreflective.
 \begin{definition}
 % Proposition A.1.3.1.
 \label{def-truncLE}
-\lean{CategoryTheory.Functor.truncLE}
+\lean{CategoryTheory.FilteredTriangulated.truncLE}
 \leanok
 \uses{prop-A.1.3.1-le}
 
@@ -154,7 +154,7 @@ and of $\iota$.
 \begin{definition}
 % Proposition A.1.3.1.
 \label{def-truncLEπ}
-\lean{CategoryTheory.Functor.truncLEπ}
+\lean{CategoryTheory.FilteredTriangulated.truncLEπ}
 \leanok
 \uses{{def-truncLE}}
 
@@ -165,7 +165,7 @@ For every $n\in\Z$, we denote by $truncLEπ n : 𝟭 \DF \ra \sigma_{\le n}$ the
 \begin{definition}
 % Proposition A.1.3.1.
 \label{def-truncGE}
-\lean{CategoryTheory.Functor.truncGE}
+\lean{CategoryTheory.FilteredTriangulated.truncGE}
 \leanok
 \uses{prop-A.1.3.1-ge}
 
@@ -177,7 +177,7 @@ and of $\iota$.
 \begin{definition}
 % Proposition A.1.3.1.
 \label{def-truncGEι}
-\lean{CategoryTheory.Functor.truncGEι}
+\lean{CategoryTheory.FilteredTriangulated.truncGEι}
 \leanok
 \uses{def-truncGE}
 
@@ -434,7 +434,7 @@ Now we write the existence statement of Proposition A.1.3(ii).
 \label{def-truncLEGE}
 \lean{CategoryTheory.FilteredTriangulated.truncLEGE}
 \leanok
-\uses{def-truncLE, def-truncGE}
+\uses{def-truncLE, def-truncGE}LEGE
 
 For $a,b\in\Z$, we define $\sigma'_{[a,b]} : \DF\ra\DF$ as $\sigma_{\leq b}\circ\sigma_{\geq a}$.
 
@@ -454,7 +454,7 @@ For $a,b\in\Z$, we define $\sigma_{[a,b]} : \DF\ra\DF$ as $\sigma_{\geq a}\circ\
 \begin{definition}
 % Definition in Proposition A.1.3.2.
 \label{def-LEGEToGELE}
-\lean{CategoryTheory.FilteredTriangulated.LEGEToGELE}
+\lean{CategoryTheory.FilteredTriangulated.truncLEGEToGELE}
 \leanok
 \uses{def-truncLEGE, def-truncGELE, def-commute_truncLE}
 
@@ -465,7 +465,7 @@ For $a,b\in\Z$, we have a natural transformation $\sigma'_{[a,b]} \ra\sigma_{[a,
 \begin{definition}
 % Proposition A.1.3.2.
 \label{def-LEGEToGELE_iso}
-\lean{CategoryTheory.FilteredTriangulated.LEGEIsoGELE}
+\lean{CategoryTheory.FilteredTriangulated.truncLEGEIsoGELE}
 \leanok
 \uses{def-LEGEToGELE}
 
@@ -484,7 +484,7 @@ The uniqueness statement of Proposition A.1.3(ii):
 \begin{proposition}
 % Proposition A.1.3.2.
 \label{prop-LEGEToGELE_uniq}
-\lean{CategoryTheory.FilteredTriangulated.LEGEToGELE_uniq}
+\lean{CategoryTheory.FilteredTriangulated.truncLEGEToGELE_uniq}
 \leanok
 \uses{def-LEGEToGELE}
 
@@ -803,7 +803,7 @@ We now state Proposition A.1.5.
 \begin{definition}
 % Proposition A.1.5(i)
 \label{def-Gr-commShift2}
-\lean{CategoryTheory.FilteredTriangulated.Gr-commShift}
+\lean{CategoryTheory.FilteredTriangulated.Gr_commShift}
 \uses{def-Gr}
 
 For every $n\in\Z$, the functor $\Gra^n$ intertwines the second shift of $\DF$ and the identity functor of $\Df$.

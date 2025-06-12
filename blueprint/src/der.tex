@@ -147,7 +147,7 @@ See the next statements.
 
 \begin{lemma}
 \label{prop-mono_map_of_mono_and_acyclicCokernel}
-\lean{CategoryTheory.mono_map_of_mono_and_acyclicCokernel}
+\lean{CategoryTheory.Functor.mono_map_of_mono_and_acyclicCokernel}
 \leanok 
 \uses{def-hTh, def-acyclic}
 The image by the functor $T'$ of Definition~\ref{def-hTh} of a monomorphism with an acyclic 
@@ -163,7 +163,7 @@ cokernel is a monomorphism.
 
 \begin{lemma}
 \label{prop-epi_map_of_epi_and_acyclicKernel}
-\lean{CategoryTheory.epi_map_of_epi_and_acyclicKernel}
+\lean{CategoryTheory.Functor.epi_map_of_epi_and_acyclicKernel}
 \leanok 
 \uses{def-hTh, def-acyclic}
 The image by the functor $T'$ of Definition~\ref{def-hTh} of an epimorphism with an acyclic 
@@ -389,7 +389,7 @@ Then the homology of $T(\Ker (S.d^r))$ is zero in positive degree.
 
 \begin{lemma}
 \label{prop-leftAcyclic_ker_of_bounded_complex}
-\lean{CategoryTheory.Functor.leftAcyclic_ker_of_bounded_complex}
+\lean{CategoryTheory.Functor.leftAcyclic_ker_of_boundedComplex}
 \leanok 
 \uses{def-hTh, def-acyclic}
 Let $S$ be a cochain complex in $\Df^\heart$, and let $k\in\Z$. 
@@ -666,4 +666,32 @@ $\Df_0=\Kb(\Cf)\supset\Df_1\supset\ldots\supset\Df_r=\Kb(\If)$ of $\Kb(\Cf)$ suc
 \end{itemize}
 
 \label{rmk_der_fil2}
+\end{remark}
+
+\begin{remark}
+The statement of Definition~\ref{def-derived_comp} is not sufficient for our purposes, as we 
+need the isomorphism to have some compatibilities, in at least the following ways:
+\begin{itemize}
+\item[(i)] If we have a commutative (up to isomorphism) diagram 
+\begin{tikzcd}
+\DF_1\ar[r, "U"]\ar[d, "FT_1"'] &\DF_2\ar[d, "FT_2"]
+\\
+\DF_1'\ar[r, "U'"'] &\DF_2'
+\end{tikzcd}
+(probably with t-exact functors $U$ and $U'$),
+then we want to get a commutative (up to isomorphism) diagram
+\begin{tikzcd}
+\Db(\Df_1^\heart)\ar[d, "DT_1"']\ar[r, "U"] &\Db(\Df_2^\heart)\ar[d, "DT_2"]
+\\
+\Db({\Df_1'}^\heart)\ar[r, "U'"'] & \Db({\Df_2'}^\heart)
+\end{tikzcd}
+
+\item[(ii)] If we have functors $\DF\xra{FT}\DF'\xra{FT'}\DF''$ over $\Df\xra{T}\Df'\xra{T'}\Df''$,
+we want an isomorphism $DT\circ DT'\iso D(T\circ T')$, satisfying the cocycle condition and also
+compatible with the situation of (i).
+
+\end{itemize}
+
+Some of these issue show up after Definition~7.1.4 of the paper, and a solution is outlined.
+
 \end{remark}
