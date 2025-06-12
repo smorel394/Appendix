@@ -1,2 +1,154 @@
 \section{Section A.1: filtered triangulated categories}
 
+In Appendix~A of~\cite{Be1}, Beilinson introduced f-categories over triangulated categories, that have all the abstract properties of filtered
+derived categories, and generalized the properties of filtered derived categories to this more general setting. We review his definition and results.
+Note that Section~6 of Schn\"urer's paper \cite{Schnur} gives more detailed proofs of many of the results of Appendix~A of~\cite{Be1}.
+
+The following is Definition~A.1 of~\cite{Be1}.
+
+\begin{definition}
+We introduce the following objects:
+\begin{itemize}
+\item[(1)] A \textit{filtered} \textit{triangulated} \textit{category}, or for short a \emph{f-category}, is the data of:
+\begin{itemize}
+\item a triangulated category $\DF$;
+\item two full triangulated subcategories $\DF(\leq 0)$, $\DF(\geq 0)$ of $\DF$ that are stable by isomorphisms;
+\item a triangulated self-equivalence $s\colon \DF\ra\DF$ (called \emph{shift of filtration});
+\item a morphism of functors $\alpha\colon \id_{\DF}\ra s$;
+
+\end{itemize}
+satisfying the following conditions, where, for every $n\in\Z$, we set
+\[\DF(\leq n)=s^n\DF(\leq 0)\mbox{ and }\DF(\geq n)=s^n\DF(\geq 0):\]
+\begin{itemize}
+\item[(i)] We have $\DF(\geq 1)\subset\DF(\geq 0)$, $\DF(\leq 1)\supset\DF(\leq 0)$ and
+\[\DF=\bigcup_{n\in\Z}\DF(\leq n)=\bigcup_{n\in\Z}\DF(\geq n).\]
+\item[(ii)] For any $X\in\Ob\DF$, we have $\alpha_X=s(\alpha_{s^{-1}(X)})$.
+\item[(iii)] For any $X\in\Ob\DF(\geq 1)$ and $Y\in\Ob\DF(\leq 0)$, we have $\Hom(X,Y)=0$, and the maps $\Hom(s(Y),X)\ra\Hom(Y,X)\ra\Hom(Y,s^{-1}(X))$ induced
+by $\alpha_Y$ and $\alpha_{s^{-1}(X)}$ are bijective.
+\item[(iv)] For every $X\in\Ob\DF$, there exists a distinguished triangle $A\ra X\ra B\flnom{+1}$ with $A$ in $\DF(\geq 1)$ and $B$ in $\DF(\leq 0)$.
+\end{itemize}
+
+\item[(2)] If $\DF$ and $\DF'$ are f-categories, an \emph{f-functor} from $\DF$ to $\DF'$ is the data of a triangulated functor $T\colon \DF\ra\DF'$ and a natural isomorphism
+$s'\circ T\iso T\circ s$ 
+such that $T(\DF(\leq 0))\subset\DF'(\leq 0)$,
+$T(\DF(\geq 0))\subset\DF(\geq 0)$ and that, for every $X\in\Ob\DF$, the following triangle commutes:
+\begin{tikzcd}
+T(X) \arrow[r, "\alpha'_{T(X)}"] \arrow[rd, "T(\alpha(X))"] 
+& s'(T(X))\arrow[d, "\wr"] \\
+& T(s(X))
+\end{tikzcd}
+
+%\[\xymatrix{T(X)\ar[r]^-{\alpha'_{T(X)}}\ar[rd]_-{T(\alpha(X))} & s'(T(X))\ar[d]^\wr \\
+%& T(s(X))}\]
+
+\item[(3)] 
+Let $\Df$ be a triangulated category. An \emph{f-category over $\Df$} is an f-category $\DF$ together with an equivalence $i\colon \Df\ra\DF(\leq 0)\cap\DF(\geq 0)$.
+If $\Df'$ is another triangulated category, $\DF'$ is an $f$-category over $\Df'$ and $T\colon \Df\ra\Df'$ is a triangulated functor, an \emph{f-lifting} of $T$ is an f-functor
+$FT\colon \DF\ra\DF'$ and a natural isomorphism $i'\circ T\simeq TF\circ i$.
+
+\end{itemize}
+\label{def_f_category}
+\end{definition}
+
+
+\begin{proposition}[Proposition~A.3 of~\cite{Be1}]
+Let $\DF$ be an f-category.
+\begin{itemize}
+\item[(i)] For every $n\in\Z$, the inclusion $\DF(\leq n)\subset\DF$ admits a left adjoint $\sigma_{\leq n}$, and the inclusion $\DF(\geq n)\subset\DF$ admits a right adjoint $\sigma_{\geq n}$.
+The functors $\sigma_{\leq n}$, $\sigma_{\geq n}$ are triangulated and preserve the subcategories $\DF(\leq m)$, $\DF(\geq m)$ for every $m\in\Z$.
+\item[(ii)] For $a,b\in\Z$, there exists a unique isomorphism of functors $\sigma_{\leq a}\sigma_{\geq b}\simeq\sigma_{\geq b}\sigma_{\leq a}$ that makes the following diagram commute:
+%\[\xymatrix@C=10pt{\sigma_{\geq b}\ar[rr]\ar[rd] & & \id_{\DF}\ar[rr] & & \sigma_{\leq a} \\
+% & \sigma_{\leq a}\sigma_{\geq b}\ar[rr]_-\sim && \sigma_{\geq b}\sigma_{\leq a}\ar[ru] &
+%}\]
+
+\item[(iii)] Let $X\in\Ob\DF$. Then there exists a unique morphism $\delta\colon \sigma_{\leq 0}X\ra\sigma_{\geq 1}[1]$ making the triangle $\sigma_{\leq 1}X\ra X\ra\sigma_{\leq 0}X\flnom{\delta}\sigma_{\geq 1}X[1]$
+distinguished.
+Any distinguished triangle $A\ra X\ra B\flnom{+1}$ with $A\in\Ob\DF(\geq 1)$ and $B\in\Ob\DF(\leq 0)$ admits a unique isomorphism to the triangle of the previous sentence.
+
+\item[(iv)] We have canonical isomorphisms $\sigma_{\leq n}\circ s=s\circ\sigma_{\leq n-1}$ and $\sigma_{\geq n}\circ s=s\circ\sigma_{\geq n-1}$.
+
+\end{itemize}
+
+\label{prop_f_category1}
+\end{proposition}
+
+Point (iv) is not stated in Proposition~A.3 of~\cite{Be1} but follows immediately from the fact that $s(\DF(\leq n -1))=\DF(\leq n)$ (resp. $s(D(\geq n-1))=D(\geq n)$) and the uniqueness
+of adjoints.
+
+\begin{definition}
+Let $\Df$ be a triangulated category and $\DF$ be an f-category over $\Df$. For every $n\in\Z$, we define a functor $\Gra^n\colon \DF\ra\Df$ by
+$\Gra^n=i^{-1}\circ s^{-n}\circ\sigma_{\leq n}\sigma_{\geq n}$.
+
+\end{definition}
+
+\begin{proposition}
+Let $\Df$ be a triangulated category and $\DF$ be an f-category over $\Df$. 
+\begin{itemize}
+\item[(i)] For every $r\in\Z$, we have a natural isomorphism $\Gra^r\circ s=\Gra^{r-1}$. 
+
+\item[(ii)] Let $r\in\Z$. Then $\Gra^r\circ i=0$ if $r\ne 0$ and $\Gra^r\circ i\simeq\id_{\Df}$ if $r=0$.
+
+\item[(iii)] Let $r,n\in\Z$. We have
+\[\Gra^r\circ\sigma_{\leq n}=\left\{\begin{array}{ll}\Gra^r& \mbox{if }r\leq  n\\ 0 & \mbox{otherwise}\end{array}\right.
+\qquad\mbox{and}\quad\Gra^r\circ\sigma_{\geq n}=\left\{\begin{array}{ll}\Gra^r& \mbox{if }r\geq  n\\ 0 & \mbox{otherwise}\end{array}\right..\]
+
+\end{itemize}
+\label{prop_Gr}
+\end{proposition}
+
+\begin{proof}
+Point (i) follows from Proposition~\ref{prop_f_category1}(iv), point (ii) from the fact that the image of $i$ is contained in $\DF(\leq 0)\cap\DF(\geq 0)$, and point (iii)
+from the definition of $\Gra^r$.
+\end{proof}
+
+\begin{proposition}[Proposition~A.3 of~\cite{Be1}]
+Let $\Df$ be a triangulated category and $\DF$ be an f-category over $\Df$.
+Then there exists a triangulated functor $\omega\colon \DF\ra\Df$ such that:\footnote{Note that there is a typo in Proposition~A.3 of~\cite{Be1}: the left and right
+adjoints are switched; see the correction in Proposition~6.6 of~\cite{Schnur}.}
+\begin{itemize}
+\item[(a)] $\omega_{\mid\DF(\leq 0)}\colon \DF(\leq 0)\ra\Df$ is left adjoint to $\Df\flnom{i}\DF(\leq 0)\cap\DF(\geq 0)\subset\DF(\leq 0)$;
+\item[(b)] $\omega_{\mid\DF(\geq 0)}\colon \DF(\geq 0)\ra\Df$ is right adjoint to $\Df\flnom{i}\DF(\leq 0)\cap\DF(\geq 0)\subset\DF(\geq 0)$;
+\item[(c)] for any $X\in\Ob\DF$, the map $\omega(\alpha_X)\colon \omega(X)\ra\omega(s(X))$ is an isomorphism;
+\item[(d)] if $A\in\Ob\DF(\leq 0)$ and $B\in\DF(\geq 0)$, then $\omega\colon \Hom(A,B)\ra\Hom(\omega(A),\omega(B))$ is bijective.
+
+\end{itemize}
+Moreover, $\omega$ is determined up to unique isomorphism by properties (a) and (c) (resp. (b) and (c)).
+
+\label{prop_f_category2}
+\end{proposition}
+
+The following proposition follows easily from the definitions.
+
+\begin{proposition}
+Let $\Df,\Df'$ be triangulated categories, and let $\DF$ (resp. $\DF'$) be an f-category over $\Df$ (resp. $\Df'$).
+Let $T\colon \Df\ra\Df'$ be a triangulated functor, and let $FT\colon \DF\ra\DF'$ be an f-lifting of $T$.
+Then the following squares commute up to natural isomorphism:
+%\[\xymatrix{\DF\ar[r]^-{FT}\ar[d]_\omega&\DF'\ar[d]^\omega \\
+%\Df\ar[r]_-T& \Df'}\quad
+%\xymatrix{\DF\ar[r]^-{FT}
+%\ar[d]_{\Gra^n}&\DF'\ar[d]^{\Gra^n}\\ \Df\ar[r]_-T&\Df'}\quad
+%\xymatrix{\DF\ar[r]^-{FT}
+%\ar[d]_{\sigma_{\leq n}}&\DF'\ar[d]^{\sigma_{\leq n}}\\ \DF\ar[r]_-{FT}&\DF'}\]
+
+\label{prop_f_lifting}
+\end{proposition}
+
+
+%\begin{subprop}
+%Let $\Df$ be a triangulated category, $\DF$ be an f-category over $\Df$, and $\Df'$ be a full triangulated subcategory of $\Df$ that is stable by isomorphisms. We define a full
+%subcategory $\DF'$ of $\DF$ by
+%\[\Ob\DF'=\{K\in\Ob\Df\mid\forall r\in\Z,\ \Gra^rK\in\Ob\Df'\}.\]
+%Then $\DF'$ is a triangulated subcategory of $\DF$, it is stable by isomorphisms, we have $s(\DF')\subset\DF'$ and $i(\Df')\subset\DF'$. The data of
+%$\DF'$, $\DF'\cap\DF(\leq 0)$, $\DF'\cap\DF(\geq 0)$, $s_{\mid\DF'}\colon \DF'\ra\DF'$, $\alpha$ and $i_{\mid\Df'}\colon \Df'\ra\DF'$ defines an f-category over $\Df'$.
+
+%\label{prop_f_category3}
+%\end{subprop}
+
+%\begin{proof}
+%As the functors $\Gra^r$ are triangulated, $\DF'$ is a triangulated subcategory of $\DF$; it is clearly stable by isomorphisms, and it stable by $s$ thanks to the isomorphisms
+%$\Gra^r\circ s=\Gra^{r-1}$ (Proposition~\ref{prop_Gr}(i)). 
+%If $X\in\Ob\Df'$, then $\Gra^r(i(X))=0$ if $r\ne 0$ and $\Gra^0(i(X))\simeq X$ (Proposition~\ref{prop_Gr}(ii)), so $i(X)\in\Ob\DF'$. To prove the last assertion, we check the conditions of
+%Definition~\ref{def_f_category}. Conditions (i)-(iii) are clear. To check condition~(iv), it suffices by Proposition~\ref{prop_f_category1}(iii) to prove that the functors
+%$\sigma_{\leq n}$, $\sigma_{\geq n}$ preserve $\DF'$; but this follows immediately from Proposition~\ref{prop_Gr}(iii).
+%\end{proof}
+

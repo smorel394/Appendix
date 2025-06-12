@@ -32,13 +32,212 @@
 <span class="author">Sophie Morel</span>
 </p>
 </div>
-<p>sectionchapter </p>
 <p>This is a formalization of the new results of Sections A.1–A.3 of my paper <em>Mixed \(\ell \)-adic complexes for schemes over number fields</em>, excluding the example of filtered derived categories and admitting all the results that can be found in the literature. </p>
 <h1 id="a0000000002"> Section A.1: filtered triangulated categories</h1>
-<h1 id="a0000000003"> Section A.2: compatible t-structures and the realization functor</h1>
-<h1 id="a0000000004"> A.3: homological algebra calculations and functor reconstruction</h1>
+<p>In Appendix&#160;A of&#160;<span class="cite">
+	[
+</span>, Beilinson introduced f-categories over triangulated categories, that have all the abstract properties of filtered derived categories, and generalized the properties of filtered derived categories to this more general setting. We review his definition and results. Note that Section&#160;6 of Schnürer’s paper <span class="cite">
+	[
+</span> gives more detailed proofs of many of the results of Appendix&#160;A of&#160;<span class="cite">
+	[
+</span>. </p>
+<p>The following is Definition&#160;A.1 of&#160;<span class="cite">
+	[
+</span>. </p>
+<p><div class="definition_thmwrapper " id="a0000000003">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>We introduce the following objects: </p>
+<ul class="itemize">
+  <li><p>A <i class="itshape">filtered</i> <i class="itshape">triangulated</i> <i class="itshape">category</i>, or for short a <em>f-category</em>, is the data of: </p>
+<ul class="itemize">
+  <li><p>a triangulated category \(\DF \); </p>
+</li>
+  <li><p>two full triangulated subcategories \(\DF (\leq 0)\), \(\DF (\geq 0)\) of \(\DF \) that are stable by isomorphisms; </p>
+</li>
+  <li><p>a triangulated self-equivalence \(s\colon \DF \longrightarrow \DF \) (called <em>shift of filtration</em>); </p>
+</li>
+  <li><p>a morphism of functors \(\alpha \colon \mathrm{id}_{\DF }\longrightarrow s\); </p>
+</li>
+</ul>
+<p> satisfying the following conditions, where, for every \(n\in \mathbb {Z}\), we set </p>
+<div class="displaymath" id="a0000000004">
+  \[ \DF (\leq n)=s^n\DF (\leq 0)\mbox{ and }\DF (\geq n)=s^n\DF (\geq 0): \]
+</div>
+<ul class="itemize">
+  <li><p>We have \(\DF (\geq 1)\subset \DF (\geq 0)\), \(\DF (\leq 1)\supset \DF (\leq 0)\) and </p>
+<div class="displaymath" id="a0000000005">
+  \[ \DF =\bigcup _{n\in \mathbb {Z}}\DF (\leq n)=\bigcup _{n\in \mathbb {Z}}\DF (\geq n). \]
+</div>
+</li>
+  <li><p>For any \(X\in \Ob \DF \), we have \(\alpha _X=s(\alpha _{s^{-1}(X)})\). </p>
+</li>
+  <li><p>For any \(X\in \Ob \DF (\geq 1)\) and \(Y\in \Ob \DF (\leq 0)\), we have \(\Hom (X,Y)=0\), and the maps \(\Hom (s(Y),X)\longrightarrow \Hom (Y,X)\longrightarrow \Hom (Y,s^{-1}(X))\) induced by \(\alpha _Y\) and \(\alpha _{s^{-1}(X)}\) are bijective. </p>
+</li>
+  <li><p>For every \(X\in \Ob \DF \), there exists a distinguished triangle \(A\longrightarrow X\longrightarrow B\stackrel{+1}{\longrightarrow }\) with \(A\) in \(\DF (\geq 1)\) and \(B\) in \(\DF (\leq 0)\). </p>
+</li>
+</ul>
+</li>
+  <li><p>If \(\DF \) and \(\DF '\) are f-categories, an <em>f-functor</em> from \(\DF \) to \(\DF '\) is the data of a triangulated functor \(T\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(s'\circ T\stackrel{\sim }{\longrightarrow }T\circ s\) such that \(T(\DF (\leq 0))\subset \DF '(\leq 0)\), \(T(\DF (\geq 0))\subset \DF (\geq 0)\) and that, for every \(X\in \Ob \DF \), the following triangle commutes: <div class="tikzcd" id="a0000000006">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> T(X) [r, "α’_T(X)"] [rd, "T(α(X))"]  s’(T(X))[d, "≀"] <br /> T(s(X)) <div class="tikzcd" id="a0000000007">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+</li>
+  <li><p>Let \(\mathcal{D}\) be a triangulated category. An <em>f-category over \(\mathcal{D}\)</em> is an f-category \(\DF \) together with an equivalence \(i\colon \mathcal{D}\longrightarrow \DF (\leq 0)\cap \DF (\geq 0)\). If \(\mathcal{D}'\) is another triangulated category, \(\DF '\) is an \(f\)-category over \(\mathcal{D}'\) and \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) is a triangulated functor, an <em>f-lifting</em> of \(T\) is an f-functor \(FT\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(i'\circ T\simeq TF\circ i\). </p>
+</li>
+</ul>
+<p>  </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="a0000000008">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">2</span>
+    <span class="proposition_thmtitle">Proposition&#160;A.3 of&#160;<span class="cite">
+	[
+</span></span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> Let \(\DF \) be an f-category. </p>
+<ul class="itemize">
+  <li><p>For every \(n\in \mathbb {Z}\), the inclusion \(\DF (\leq n)\subset \DF \) admits a left adjoint \(\sigma _{\leq n}\), and the inclusion \(\DF (\geq n)\subset \DF \) admits a right adjoint \(\sigma _{\geq n}\). The functors \(\sigma _{\leq n}\), \(\sigma _{\geq n}\) are triangulated and preserve the subcategories \(\DF (\leq m)\), \(\DF (\geq m)\) for every \(m\in \mathbb {Z}\). </p>
+</li>
+  <li><p>For \(a,b\in \mathbb {Z}\), there exists a unique isomorphism of functors \(\sigma _{\leq a}\sigma _{\geq b}\simeq \sigma _{\geq b}\sigma _{\leq a}\) that makes the following diagram commute: </p>
+</li>
+  <li><p>Let \(X\in \Ob \DF \). Then there exists a unique morphism \(\delta \colon \sigma _{\leq 0}X\longrightarrow \sigma _{\geq 1}[1]\) making the triangle \(\sigma _{\leq 1}X\longrightarrow X\longrightarrow \sigma _{\leq 0}X\stackrel{\delta }{\longrightarrow }\sigma _{\geq 1}X[1]\) distinguished. Any distinguished triangle \(A\longrightarrow X\longrightarrow B\stackrel{+1}{\longrightarrow }\) with \(A\in \Ob \DF (\geq 1)\) and \(B\in \Ob \DF (\leq 0)\) admits a unique isomorphism to the triangle of the previous sentence. </p>
+</li>
+  <li><p>We have canonical isomorphisms \(\sigma _{\leq n}\circ s=s\circ \sigma _{\leq n-1}\) and \(\sigma _{\geq n}\circ s=s\circ \sigma _{\geq n-1}\). </p>
+</li>
+</ul>
+<p> </p>
+
+  </div>
+</div> </p>
+<p>Point (iv) is not stated in Proposition&#160;A.3 of&#160;<span class="cite">
+	[
+</span> but follows immediately from the fact that \(s(\DF (\leq n -1))=\DF (\leq n)\) (resp. \(s(D(\geq n-1))=D(\geq n)\)) and the uniqueness of adjoints. </p>
+<p><div class="definition_thmwrapper " id="a0000000009">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">3</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). For every \(n\in \mathbb {Z}\), we define a functor \(\Gra ^n\colon \DF \longrightarrow \mathcal{D}\) by \(\Gra ^n=i^{-1}\circ s^{-n}\circ \sigma _{\leq n}\sigma _{\geq n}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="a0000000010">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">4</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p>Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). </p>
+<ul class="itemize">
+  <li><p>For every \(r\in \mathbb {Z}\), we have a natural isomorphism \(\Gra ^r\circ s=\Gra ^{r-1}\). </p>
+</li>
+  <li><p>Let \(r\in \mathbb {Z}\). Then \(\Gra ^r\circ i=0\) if \(r\ne 0\) and \(\Gra ^r\circ i\simeq \mathrm{id}_{\mathcal{D}}\) if \(r=0\). </p>
+</li>
+  <li><p>Let \(r,n\in \mathbb {Z}\). We have </p>
+<div class="displaymath" id="a0000000011">
+  \[ \Gra ^r\circ \sigma _{\leq n}=\left\{ \begin{array}{ll}\Gra ^r&  \mbox{if }r\leq n\\ 0 &  \mbox{otherwise}\end{array}\right. \qquad \mbox{and}\quad \Gra ^r\circ \sigma _{\geq n}=\left\{ \begin{array}{ll}\Gra ^r&  \mbox{if }r\geq n\\ 0 &  \mbox{otherwise}\end{array}\right.. \]
+</div>
+</li>
+</ul>
+<p>  </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000012">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> Point (i) follows from Proposition&#160;??(iv), point (ii) from the fact that the image of \(i\) is contained in \(\DF (\leq 0)\cap \DF (\geq 0)\), and point (iii) from the definition of \(\Gra ^r\). <div class="proof_wrapper" id="a0000000013">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="a0000000014">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">5</span>
+    <span class="proposition_thmtitle">Proposition&#160;A.3 of&#160;<span class="cite">
+	[
+</span></span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). Then there exists a triangulated functor \(\omega \colon \DF \longrightarrow \mathcal{D}\) such that:<a class="footnote" href="#a0000000015">
+  <sup class="footnotemark">1</sup>
+</a> </p>
+<ul class="itemize">
+  <li><p>\(\omega _{\mid \DF (\leq 0)}\colon \DF (\leq 0)\longrightarrow \mathcal{D}\) is left adjoint to \(\mathcal{D}\stackrel{i}{\longrightarrow }\DF (\leq 0)\cap \DF (\geq 0)\subset \DF (\leq 0)\); </p>
+</li>
+  <li><p>\(\omega _{\mid \DF (\geq 0)}\colon \DF (\geq 0)\longrightarrow \mathcal{D}\) is right adjoint to \(\mathcal{D}\stackrel{i}{\longrightarrow }\DF (\leq 0)\cap \DF (\geq 0)\subset \DF (\geq 0)\); </p>
+</li>
+  <li><p>for any \(X\in \Ob \DF \), the map \(\omega (\alpha _X)\colon \omega (X)\longrightarrow \omega (s(X))\) is an isomorphism; </p>
+</li>
+  <li><p>if \(A\in \Ob \DF (\leq 0)\) and \(B\in \DF (\geq 0)\), then \(\omega \colon \Hom (A,B)\longrightarrow \Hom (\omega (A),\omega (B))\) is bijective. </p>
+</li>
+</ul>
+<p> Moreover, \(\omega \) is determined up to unique isomorphism by properties (a) and (c) (resp. (b) and (c)). </p>
+<p> </p>
+
+  </div>
+</div> </p>
+<p>The following proposition follows easily from the definitions. </p>
+<p><div class="proposition_thmwrapper " id="prop_f_lifting">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">6</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p>Let \(\mathcal{D},\mathcal{D}'\) be triangulated categories, and let \(\DF \) (resp. \(\DF '\)) be an f-category over \(\mathcal{D}\) (resp. \(\mathcal{D}'\)). Let \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) be a triangulated functor, and let \(FT\colon \DF \longrightarrow \DF '\) be an f-lifting of \(T\). Then the following squares commute up to natural isomorphism: </p>
+<p> </p>
+
+  </div>
+</div> </p>
+<h1 id="a0000000016"> Section A.2: compatible t-structures and the realization functor</h1>
+<h1 id="a0000000017"> A.3: homological algebra calculations and functor reconstruction</h1>
 
 </div> <!--main-text -->
+<footer id="footnotes">
+<ol>
+  <li id="a0000000015">Note that there is a typo in Proposition&#160;A.3 of&#160;<span class="cite">
+	[
+</span>: the left and right adjoints are switched; see the correction in Proposition&#160;6.6 of&#160;<span class="cite">
+	[
+</span>.</li>
+</ol>
+</footer>
 </div> <!-- content-wrapper -->
 </div> <!-- content -->
 </div> <!-- wrapper -->
