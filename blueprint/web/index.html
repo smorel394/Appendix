@@ -33,37 +33,38 @@
 </p>
 </div>
 <p>This is a formalization of the new results of Sections A.1–A.3 of my paper <em>Mixed \(\ell \)-adic complexes for schemes over number fields</em>, excluding the example of filtered derived categories and admitting all the results that can be found in the literature. </p>
+
 <h1 id="a0000000002"> Section A.1: filtered triangulated categories</h1>
 <p>In Appendix&#160;A of&#160;<span class="cite">
 	[
 	<a href="index.html#Be1" >1</a>
 	]
-</span>, Beilinson introduced f-categories over triangulated categories, that have all the abstract properties of filtered derived categories, and generalized the properties of filtered derived categories to this more general setting. We review his definition and results. Note that Section&#160;6 of Schnürer’s paper <span class="cite">
+</span>, Beilinson introduced filtered triangulated categories over triangulated categories, that have all the abstract properties of filtered derived categories, and generalized the properties of filtered derived categories to this more general setting. We review his definition and results. Note that Section&#160;6 of Schnürer’s paper <span class="cite">
 	[
-	<a href="index.html#Schnur" >2</a>
+	<a href="index.html#Schnur" >4</a>
 	]
 </span> gives more detailed proofs of many of the results of Appendix&#160;A of&#160;<span class="cite">
 	[
 	<a href="index.html#Be1" >1</a>
 	]
 </span>. </p>
-<p>When formalizing the definition of f-categories, we run into our first issue immediately. Beilinson defines an f-category as a triangulated category \(C\) with a second shift functor \(s\), which should be a triangulated self-equivalence (plus some extra structure). In particular, the functor \(s\) needs to commute with the shifts coming from the triangulated category structure. The easiest way to encode all the necessary compatibilities is actually to put a shift by \(\mathbb {Z}\times \mathbb {Z}\) on our category \(C\), where the shift by the first factor will be part of the triangulated structure and the shift by the second factor will give the functor \(s\). The beginning of the project is devoted to setting this shift structure. In particular, we chose to make the default shift by \(\mathbb {Z}\) on the category \(C\) to be the shift by the first factor, and to introduce a type synonym ‘FilteredShift C’ which carries a shift by \(\mathbb {Z}\) encoding the functor \(s\). </p>
-<p>The following is Definition&#160;A.1 of&#160;<span class="cite">
+<p>This section corresponds to the Lean file <a href=""></a>Filtered_no_proof.lean. </p>
+<h2 id="a0000000003"> Definition A.1.1</h2>
+<p>When formalizing the definition of filtered triangulated categories, we run into our first issue immediately. Beilinson defines an filtered triangulated category as a triangulated category \(\DF \) with a second shift functor \(s\), which should be a triangulated self-equivalence (plus some extra structure). In particular, the functor \(s\) needs to commute with the shifts coming from the triangulated category structure. The easiest way to encode all the necessary compatibilities is actually to put a shift by \(\mathbb {Z}\times \mathbb {Z}\) on our category \(\DF \), where the shift by the first factor will be part of the triangulated structure and the shift by the second factor will give the functor \(s\). The beginning of the project is devoted to setting this shift structure. In particular, we chose to make the default shift by \(\mathbb {Z}\) on the category \(\DF \) to be the shift by the first factor, and to introduce a type synonym ‘FilteredShift C’ which carries a shift by \(\mathbb {Z}\) encoding the functor \(s\). </p>
+<p>The following is part of Definition&#160;A.1 of&#160;<span class="cite">
 	[
 	<a href="index.html#Be1" >1</a>
 	]
-</span>. </p>
+</span>. (Almost: we actually define filtered pretriangulated categories in the Lean code, and a filtered triangulated catgeory is a filtered pretriangulated category that is also triangulated.) </p>
 <p><div class="definition_thmwrapper " id="def-FilteredTriangulated">
   <div class="definition_thmheading">
     <span class="definition_thmcaption">
     Definition
     </span>
-    <span class="definition_thmlabel">1</span>
+    <span class="definition_thmlabel">.1</span>
   </div>
   <div class="definition_thmcontent">
-  <p> CategoryTheory.FilteredTriangulated We introduce the following objects: </p>
-<ul class="itemize">
-  <li><p>A <i class="itshape">filtered</i> <i class="itshape">triangulated</i> <i class="itshape">category</i>, or for short a <em>f-category</em>, is the data of: </p>
+  <p> CategoryTheory.FilteredTriangulated A <i class="itshape">filtered</i> <i class="itshape">triangulated</i> <i class="itshape">category</i> is the data of: </p>
 <ul class="itemize">
   <li><p>a triangulated category \(\DF \); </p>
 </li>
@@ -75,12 +76,12 @@
 </li>
 </ul>
 <p> satisfying the following conditions, where, for every \(n\in \mathbb {Z}\), we set </p>
-<div class="displaymath" id="a0000000003">
+<div class="displaymath" id="a0000000004">
   \[ \DF (\leq n)=s^n\DF (\leq 0)\mbox{ and }\DF (\geq n)=s^n\DF (\geq 0): \]
 </div>
 <ul class="itemize">
   <li><p>We have \(\DF (\geq 1)\subset \DF (\geq 0)\), \(\DF (\leq 1)\supset \DF (\leq 0)\) and </p>
-<div class="displaymath" id="a0000000004">
+<div class="displaymath" id="a0000000005">
   \[ \DF =\bigcup _{n\in \mathbb {Z}}\DF (\leq n)=\bigcup _{n\in \mathbb {Z}}\DF (\geq n). \]
 </div>
 </li>
@@ -88,195 +89,2279 @@
 </li>
   <li><p>For any \(X\in \Ob \DF (\geq 1)\) and \(Y\in \Ob \DF (\leq 0)\), we have \(\Hom (X,Y)=0\), and the maps \(\Hom (s(Y),X)\longrightarrow \Hom (Y,X)\longrightarrow \Hom (Y,s^{-1}(X))\) induced by \(\alpha _Y\) and \(\alpha _{s^{-1}(X)}\) are bijective. </p>
 </li>
-  <li><p>For every \(X\in \Ob \DF \), there exists a distinguished triangle \(A\longrightarrow X\longrightarrow B\stackrel{+1}{\longrightarrow }\) with \(A\) in \(\DF (\geq 1)\) and \(B\) in \(\DF (\leq 0)\). </p>
+  <li><p>For every \(X\in \Ob \DF \), there exists a distinguished triangle \(A\longrightarrow X\longrightarrow B\xrightarrow {+1}\) with \(A\) in \(\DF (\geq 1)\) and \(B\) in \(\DF (\leq 0)\). </p>
 </li>
 </ul>
-</li>
-  <li><p>If \(\DF \) and \(\DF '\) are f-categories, an <em>f-functor</em> from \(\DF \) to \(\DF '\) is the data of a triangulated functor \(T\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(s'\circ T\stackrel{\sim }{\longrightarrow }T\circ s\) such that \(T(\DF (\leq 0))\subset \DF '(\leq 0)\), \(T(\DF (\geq 0))\subset \DF (\geq 0)\) and that, for every \(X\in \Ob \DF \), the following triangle commutes: </p>
-<p><div class="tikzcd" id="a0000000005">
-    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
-</div> T(X) [r, "α’_T(X)"] [rd, "T(α(X))“]  s’(T(X))[d, "≀"] <br /> T(s(X)) <div class="tikzcd" id="a0000000006">
-    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
-</div> </p>
-</li>
-  <li><p>Let \(\mathcal{D}\) be a triangulated category. An <em>f-category over \(\mathcal{D}\)</em> is an f-category \(\DF \) together with an equivalence \(i\colon \mathcal{D}\longrightarrow \DF (\leq 0)\cap \DF (\geq 0)\). If \(\mathcal{D}'\) is another triangulated category, \(\DF '\) is an \(f\)-category over \(\mathcal{D}'\) and \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) is a triangulated functor, an <em>f-lifting</em> of \(T\) is an f-functor \(FT\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(i'\circ T\simeq TF\circ i\). </p>
-</li>
-</ul>
-<p>  </p>
 
   </div>
 </div> </p>
-<p><div class="proposition_thmwrapper " id="a0000000007">
-  <div class="proposition_thmheading">
-    <span class="proposition_thmcaption">
-    Proposition
-    </span>
-    <span class="proposition_thmlabel">2</span>
-    <span class="proposition_thmtitle">Proposition&#160;A.3 of&#160;<span class="cite">
-	[
-	<a href="index.html#Be1" >1</a>
-	]
-</span></span>
-  </div>
-  <div class="proposition_thmcontent">
-  <p> Let \(\DF \) be an f-category. </p>
-<ul class="itemize">
-  <li><p>For every \(n\in \mathbb {Z}\), the inclusion \(\DF (\leq n)\subset \DF \) admits a left adjoint \(\sigma _{\leq n}\), and the inclusion \(\DF (\geq n)\subset \DF \) admits a right adjoint \(\sigma _{\geq n}\). The functors \(\sigma _{\leq n}\), \(\sigma _{\geq n}\) are triangulated and preserve the subcategories \(\DF (\leq m)\), \(\DF (\geq m)\) for every \(m\in \mathbb {Z}\). </p>
-</li>
-  <li><p>For \(a,b\in \mathbb {Z}\), there exists a unique isomorphism of functors \(\sigma _{\leq a}\sigma _{\geq b}\simeq \sigma _{\geq b}\sigma _{\leq a}\) that makes the following diagram commute: </p>
-<p><div class="tikzcd" id="a0000000008">
-    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
-</div> σ_≥b[rr][rd]   id_[rr]   σ_≤a <br /> σ_≤aσ_≥b[rr, "∼“]  σ_≥bσ_≤a[ru]  <div class="tikzcd" id="a0000000009">
-    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
-</div> </p>
-</li>
-  <li><p>Let \(X\in \Ob \DF \). Then there exists a unique morphism \(\delta \colon \sigma _{\leq 0}X\longrightarrow \sigma _{\geq 1}[1]\) making the triangle \(\sigma _{\leq 1}X\longrightarrow X\longrightarrow \sigma _{\leq 0}X\stackrel{\delta }{\longrightarrow }\sigma _{\geq 1}X[1]\) distinguished. Any distinguished triangle \(A\longrightarrow X\longrightarrow B\stackrel{+1}{\longrightarrow }\) with \(A\in \Ob \DF (\geq 1)\) and \(B\in \Ob \DF (\leq 0)\) admits a unique isomorphism to the triangle of the previous sentence. </p>
-</li>
-  <li><p>We have canonical isomorphisms \(\sigma _{\leq n}\circ s=s\circ \sigma _{\leq n-1}\) and \(\sigma _{\geq n}\circ s=s\circ \sigma _{\geq n-1}\). </p>
-</li>
-</ul>
-<p> </p>
-
-  </div>
-</div> </p>
-<p>Point (iv) is not stated in Proposition&#160;A.3 of&#160;<span class="cite">
-	[
-	<a href="index.html#Be1" >1</a>
-	]
-</span> but follows immediately from the fact that \(s(\DF (\leq n -1))=\DF (\leq n)\) (resp. \(s(D(\geq n-1))=D(\geq n)\)) and the uniqueness of adjoints. </p>
-<p><div class="definition_thmwrapper " id="a0000000010">
+<p>We need to setup extra definitions (for example, classes like ‘IsLE’ and ‘IsGE’), then prove a lot of "easy" lemmas in order to make this definition usable. For example, there is a lemma <a href=""></a>CategoryTheory.FilteredTriangulated.exists_triangle saying that, for every \(X\) and \(\DF \) and every \(n\in \mathbb {Z}\), there exists a distinguished triangle \(A\longrightarrow X\longrightarrow B \longrightarrow A[1]\) with \(A\) in \(\DF (\ge n + 1)\) and \(B\) in \(\DF (\le n)\). </p>
+<p>Then we define filtered triangulated functors. In Lean, we first need to ask for a ‘CommShift’ structure by \(\mathbb {Z}\times \mathbb {Z}\), and then we require three properties: preservation of objects that are \(\le 0\), preservation of objects that are \(\ge 0\), and commutation with the natural transformation \(\alpha \). </p>
+<p><div class="definition_thmwrapper " id="def-FilteredTriangulatedFunctor">
   <div class="definition_thmheading">
     <span class="definition_thmcaption">
     Definition
     </span>
-    <span class="definition_thmlabel">3</span>
+    <span class="definition_thmlabel">.2</span>
   </div>
   <div class="definition_thmcontent">
-  <p>Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). For every \(n\in \mathbb {Z}\), we define a functor \(\Gra ^n\colon \DF \longrightarrow \mathcal{D}\) by \(\Gra ^n=i^{-1}\circ s^{-n}\circ \sigma _{\leq n}\sigma _{\geq n}\). </p>
+  <p> CategoryTheory.Functor.IsFilteredTriangulated def-FilteredTriangulated If \(\DF \) and \(\DF '\) are filtered triangulated categories, a <em>filtered triangulated functor</em> from \(\DF \) to \(\DF '\) is the data of a triangulated functor \(T\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(s'\circ T\stackrel{\sim }{\longrightarrow }T\circ s\) such that \(T(\DF (\leq 0))\subset \DF '(\leq 0)\), \(T(\DF (\geq 0))\subset \DF (\geq 0)\) and that, for every \(X\in \Ob \DF \), the following triangle commutes: </p>
+<p><div class="tikzcd" id="a0000000006">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> T(X) [r, "α’_T(X)"] [rd, "T(α(X))“]  s’(T(X))[d, "≀"] <br /> T(s(X)) <div class="tikzcd" id="a0000000007">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
 
   </div>
 </div> </p>
-<p><div class="proposition_thmwrapper " id="a0000000011">
+<p><div class="definition_thmwrapper " id="def-FilteredTriangulatedOver">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.3</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.isFilteredTriangulated_over def-FilteredTriangulated Let \(\mathcal{D}\) be a triangulated category. A <em>filtered triangulated category over \(\mathcal{D}\)</em> is a filtered triangulated category \(\DF \) together with a fully faithful functor \(i\colon \mathcal{D}\longrightarrow \DF \) whose essential image is \(\DF (\leq 0)\cap \DF (\geq 0)\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-FilteredTriangulatedOver-equivalence">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.4</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.isFilteredTriangulated_over_equiv def-FilteredTriangulatedOver Let \(\mathcal{D}\) be triangulated categories, \(\DF \) be a filtered triangulated category over \(\mathcal{D}\). We write \(equiv\) for the equivalence of categories \(\mathcal{D}\longrightarrow \DF (\leq 0)\cap \DF (\geq 0)\) induced by the fully faithful functor \(i\colon \mathcal{D}\longrightarrow \DF \). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-FilteredLifting">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.5</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.filteredLifting def-FilteredTriangulatedOver, def-FilteredTriangulatedFunctor Let \(\mathcal{D}, \mathcal{D}'\) be triangulated categories, \(\DF \) (resp. \(\DF '\)) be a filtered triangulated category over \(\mathcal{D}\) (resp. \(\mathcal{D}'\)) and \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) be a triangulated functor. A <em>filtered lifting</em> of \(T\) is a filtered triangulated functor \(FT\colon \DF \longrightarrow \DF '\) and a natural isomorphism \(compat : i'\circ T\simeq TF\circ i\). </p>
+
+  </div>
+</div> </p>
+<p>I am guessing that the isomorphism \(compat\) should satisfy some more compatibilities, notably with the "commutation with shifts" isomorphisms. (This will probably come up when I actually formalize properties of filtered triangulated functors.) </p>
+<h2 id="a0000000008"> Proposition A.1.3</h2>
+<p>We fix a filtered triangulated catgeory \(\DF \). </p>
+<p><div class="proposition_thmwrapper " id="prop-A.1.3.1-le">
   <div class="proposition_thmheading">
     <span class="proposition_thmcaption">
     Proposition
     </span>
-    <span class="proposition_thmlabel">4</span>
+    <span class="proposition_thmlabel">.1</span>
   </div>
   <div class="proposition_thmcontent">
-  <p>Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). </p>
-<ul class="itemize">
-  <li><p>For every \(r\in \mathbb {Z}\), we have a natural isomorphism \(\Gra ^r\circ s=\Gra ^{r-1}\). </p>
-</li>
-  <li><p>Let \(r\in \mathbb {Z}\). Then \(\Gra ^r\circ i=0\) if \(r\ne 0\) and \(\Gra ^r\circ i\simeq \mathrm{id}_{\mathcal{D}}\) if \(r=0\). </p>
-</li>
-  <li><p>Let \(r,n\in \mathbb {Z}\). We have </p>
-<div class="displaymath" id="a0000000012">
-  \[ \Gra ^r\circ \sigma _{\leq n}=\left\{ \begin{array}{ll}\Gra ^r&  \mbox{if }r\leq n\\ 0 &  \mbox{otherwise}\end{array}\right. \qquad \mbox{and}\quad \Gra ^r\circ \sigma _{\geq n}=\left\{ \begin{array}{ll}\Gra ^r&  \mbox{if }r\geq n\\ 0 &  \mbox{otherwise}\end{array}\right.. \]
-</div>
-</li>
-</ul>
-<p>  </p>
+  <p> CategoryTheory.FilteredTriangulated.LE_reflective def-FilteredTriangulated For every \(n\in \mathbb {Z}\), the full subcategory \(\DF (\le n)\) is reflective. </p>
 
   </div>
 </div> </p>
-<p><div class="proof_wrapper" id="a0000000013">
-  <div class="proof_heading">
-    <span class="proof_caption">
-    
-    </span>
-    <span class="expand-proof">▼</span>
-  </div>
-  <div class="proof_content">
-  
-  </div>
-</div> Point (i) follows from Proposition&#160;??(iv), point (ii) from the fact that the image of \(i\) is contained in \(\DF (\leq 0)\cap \DF (\geq 0)\), and point (iii) from the definition of \(\Gra ^r\). <div class="proof_wrapper" id="a0000000014">
-  <div class="proof_heading">
-    <span class="proof_caption">
-    
-    </span>
-    <span class="expand-proof">▼</span>
-  </div>
-  <div class="proof_content">
-  
-  </div>
-</div> </p>
-<p><div class="proposition_thmwrapper " id="a0000000015">
+<p><div class="proposition_thmwrapper " id="prop-A.1.3.1-ge">
   <div class="proposition_thmheading">
     <span class="proposition_thmcaption">
     Proposition
     </span>
-    <span class="proposition_thmlabel">5</span>
-    <span class="proposition_thmtitle">Proposition&#160;A.3 of&#160;<span class="cite">
+    <span class="proposition_thmlabel">.2</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.GE_coreflective def-FilteredTriangulated </p>
+<p>For every \(n\in \mathbb {Z}\), the full subcategory \(\DF (\le n)\) is coreflective. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncLE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.3</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.truncLE prop-A.1.3.1-le </p>
+<p>For every \(n\in \mathbb {Z}\), we denote by \(\sigma _{\le n} : \DF \longrightarrow \DF \) the composition of a left adjoint of the inclusion functor \(\iota :\DF (\le n)\to \DF \) and of \(\iota \). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncLEπ">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.4</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.truncLEπ def-truncLE </p>
+<p>For every \(n\in \mathbb {Z}\), we denote by \(truncLEπ n : 𝟭 \DF \longrightarrow \sigma _{\le n}\) the unit of the adjunction. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.5</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.truncGE prop-A.1.3.1-ge </p>
+<p>For every \(n\in \mathbb {Z}\), we denote by \(\sigma _{\ge n} : \DF \longrightarrow \DF \) the composition of a right adjoint of the inclusion functor \(\iota :\DF (\ge n)\to \DF \) and of \(\iota \). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGEι">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.6</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.truncGEι def-truncGE </p>
+<p>For every \(n\in \mathbb {Z}\), we denote by \(truncGEι n : \sigma _{\ge n} \longrightarrow 𝟭 \DF \) the counit of the adjunction. </p>
+
+  </div>
+</div> </p>
+<p>We have some lemmas about these, among others concerning the essential image of \(\sigma _{\le n}\) and \(\sigma _{\ge n}\), as well as lemmas expressing the universal property of the adjunctions. </p>
+<p><div class="definition_thmwrapper " id="def-truncLE_shift">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.7</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instCommShiftTruncLEInt def-truncLE </p>
+<p>For every \(n\in \mathbb {Z}\), the functor \(\sigma _{\le n} : \DF \longrightarrow \DF \) commutes with the triangulated shift. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-truncLE_tri">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.8</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsTriangulatedTruncLE def-truncLE_shift </p>
+<p>For every \(n\in \mathbb {Z}\), the functor \(\sigma _{\le n} : \DF \longrightarrow \DF \) is triangulated. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGE_shift">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.9</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instCommShiftTruncGEInt def-truncGE </p>
+<p>For every \(n\in \mathbb {Z}\), the functor \(\sigma _{\ge n} : \DF \longrightarrow \DF \) commutes with the triangulated shift. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-truncGE_tri">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.10</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsTriangulatedTruncGE def-truncGE_shift </p>
+<p>For every \(n\in \mathbb {Z}\), the functor \(\sigma _{\ge n} : \DF \longrightarrow \DF \) is triangulated. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-truncLE_LE">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.11</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsLEObjTruncLE_1 def-truncLE </p>
+<p>For all \(n,m\in \mathbb {Z}\), the functor \(\sigma _{\le n} : \DF \longrightarrow \DF \) sends \(\DF (\le m)\) to itself. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-truncLE_GE">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.12</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsGEObjTruncLE def-truncLE </p>
+<p>For all \(n,m\in \mathbb {Z}\), the functor \(\sigma _{\le n} : \DF \longrightarrow \DF \) sends \(\DF (\ge m)\) to itself. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-truncGE_LE">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.13</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsLEObjTruncGE def-truncGE </p>
+<p>For all \(n,m\in \mathbb {Z}\), the functor \(\sigma _{\ge n} : \DF \longrightarrow \DF \) sends \(\DF (\le m)\) to itself. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-truncGE_GE">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.14</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsGEObjTruncGE_1 def-truncGE </p>
+<p>For all \(n,m\in \mathbb {Z}\), the functor \(\sigma _{\ge n} : \DF \longrightarrow \DF \) sends \(\DF (\ge m)\) to itself. </p>
+
+  </div>
+</div> </p>
+<p>We need to switch the order of statements compared to the paper, because the proof of Proposition A.1.3 (ii) uses Proposition A.1.3 (iii), but with general indices. </p>
+<p>The way we state the existence of the triangle cheating in a way, because the connecting morphism in the triangle is not arbitrary, it’s given by the axioms. (The statements are still okay thanks to the uniqueness.) </p>
+<p><div class="definition_thmwrapper " id="def-triangleGELE_delta">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.15</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncLEδGE def-truncLE, def-truncGE </p>
+<p>For \(n\in \mathbb {Z}\), this is the natural transformation \(\delta \colon \sigma _{\le n} \to (shiftFunctor\  1) \circ (\sigma _{\ge n + 1})\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-triangleGELE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.16</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.triangleGELE def-triangleGELE_delta </p>
+<p>For \(n\in \mathbb {Z}\), this is the functor \(triangleGELE n\) from \(\DF \) to the category of triangles of \(\DF \) sending \(X\) to the triangle </p>
+<div class="displaymath" id="a0000000009">
+  \[ \sigma _{\ge n + 1} X \xrightarrow {truncGEι} X \xrightarrow {truncLEπ} \sigma _{\le n} \xrightarrow {\delta } (\sigma _{\ge n + 1} X)[1]. \]
+</div>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="def-triangleGELE_dist">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.17</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.triangleGELE_distinguished def-triangleGELE </p>
+<p>For \(X\) in \(\DF \) and \(n\in \mathbb {Z}\), the triangle \(triangleGELE n X\) is distinguished. </p>
+
+  </div>
+</div> </p>
+<p>The second part of Proposition A.1.3(iii) is a uniqueness statement for the triangle. In the paper, this says that any distinguished triangle \(A \longrightarrow X \longrightarrow B \longrightarrow A[1]\) with \(A\) in \(\DF (≤ n)\) and \(B\) in \(\DF (≥ n + 1)\) is isomorphic to \(triangleGELE n X\) in a unique way. Actually, this is not quite correct, because we only have uniqueness if we require the morphism of triangles to be the identity of \(X\) on the second objects. Also, the other morphisms are already explicit and uniquely determined, they are given by \(descTruncLE\) and \(liftTruncGE\), so the real content is that these morphisms are isomorphisms. </p>
+<p><div class="proposition_thmwrapper " id="prop-triangleGELE_uniq_left">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.18</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.isIso_descTruncLE_of_fiber_ge def-truncLE, def-truncGE </p>
+<p>Let \(n\in \mathbb {Z}\) and \(T\) be a distinguished triangle in \(\DF \). Assume that the first object \(T.X_1\) of \(T\) is in \(\DF (\ge n+1)\) and that the third object \(T.X_3\) of \(T\) is in \(\DF (\le n)\). Then the morphism \(\sigma _{\le n} T.X_2 \longrightarrow T.X_3\) induced by the second morphism of \(T\) and the universal property of \(truncLE\) is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-triangleGELE_uniq_right">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.19</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.isIso_liftTruncGE_of_cone_le def-truncLE, def-truncGE </p>
+<p>Let \(n\in \mathbb {Z}\) and \(T\) be a distinguished triangle in \(\DF \). Assume that the first object \(T.X_1\) of \(T\) is in \(\DF (\ge n+1)\) and that the third object \(T.X_3\) of \(T\) is in \(\DF (\le n)\). Then the morphism \(T.X_1\longrightarrow \sigma _{\ge n + 1} T.X_2\) induced by the first morphism of \(T\) and the universal property of \(truncGE\) is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p>Proposition A.1.3(ii) asserts that the functors \(\sigma _{\le n}\) and \(\sigma _{\ge m}\) commute. Before proving it, we establish a criterion for triangulated endofunctors of \(\DF \) to commute with the truncation functors (up to an isomorphism which will arise naturally). It is better to make this more general, as it will be used again. </p>
+<p>We consider another filtered triangulated category \(\DF '\). </p>
+<p><div class="definition_thmwrapper " id="def-commute_truncLE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.20</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.commute_truncLE def-truncLE, def-FilteredTriangulatedFunctor </p>
+<p>Let \(F:\DF \longrightarrow \DF '\) be a filtered triangulated functor and \(n\in \mathbb {Z}\). If \(F\) preserves the subcategory \(\DF (\le n)\), we get a natural transformation \(\sigma _{\le n} \circ F \longrightarrow F \circ \sigma _{\le n}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-commute_truncGE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.21</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.commute_truncGE def-truncGE, def-FilteredTriangulatedFunctor </p>
+<p>Let \(F:\DF \longrightarrow \DF '\) be a filtered triangulated functor and \(n\in \mathbb {Z}\). If \(F\) preserves the subcategory \(\DF (\ge n)\), we get a natural transformation \(F \circ \sigma _{\ge n} \longrightarrow \sigma _{\ge n} \circ F\). </p>
+
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000010">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.22</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>It would be natural to use mates in this construction, but the properties were easier to prove with the direct definition we adopted. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-commute_truncLE_iso">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.23</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.isIso_commute_truncLE def-commute_truncLE </p>
+<p>Let \(F:\DF \longrightarrow \DF '\) be a filtered triangulated functor and \(n\in \mathbb {Z}\). Suppose that \(F\) preserves the subcategories \(\DF (\le n)\). and \(\DF (\ge n + 1)\). </p>
+<p>Then the natural transformation \(\sigma _{\le n} \circ F \longrightarrow F \circ \sigma _{\le n}\) is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-commute_truncGE_iso">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.24</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.isIso_commute_truncGE def-commute_truncGE </p>
+<p>Let \(F:\DF \longrightarrow \DF '\) be a filtered triangulated functor and \(n\in \mathbb {Z}\). Suppose that preserves the subcategories \(\DF (\le n)\). and \(\DF (\ge n + 1)\). </p>
+<p>Then the natural transformation \(F \circ \sigma _{\ge n} \longrightarrow \sigma _{\ge n} \circ F\) is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p>Now we write the existence statement of Proposition A.1.3(ii). </p>
+<p><div class="definition_thmwrapper " id="def-truncLEGE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.25</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncLEGE def-truncLE, def-truncGE </p>
+<p>For \(a,b\in \mathbb {Z}\), we define \(\sigma '_{[a,b]} : \DF \longrightarrow \DF \) as \(\sigma _{\leq b}\circ \sigma _{\geq a}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGELE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.26</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncGELE def-truncLE, def-truncGE </p>
+<p>For \(a,b\in \mathbb {Z}\), we define \(\sigma _{[a,b]} : \DF \longrightarrow \DF \) as \(\sigma _{\geq a}\circ \sigma _{\leq b}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-LEGEToGELE">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.27</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.LEGEToGELE def-truncLEGE, def-truncGELE, def-commute_truncLE </p>
+<p>For \(a,b\in \mathbb {Z}\), we have a natural transformation \(\sigma '_{[a,b]} \longrightarrow \sigma _{[a,b]}\) given by <a href=""></a>commute_truncLE. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-LEGEToGELE_iso">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.28</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.LEGEIsoGELE def-LEGEToGELE </p>
+<p>For \(a,b\in \mathbb {Z}\), the natural transformation \(\sigma '_{[a,b]} \longrightarrow \sigma _{[a,b]}\) of Definition <a href="index.html#def-LEGEToGELE">.27</a> is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000011">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.29</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>Because \(\sigma _{[a,b]}\) and \(\sigma '_{[a,b]}\) are isomorphic (by a "canonical" isomorphism), they only get one notation in the paper, but of course you need two notations in Lean. </p>
+
+  </div>
+</div> </p>
+<p>The uniqueness statement of Proposition A.1.3(ii): </p>
+<p><div class="proposition_thmwrapper " id="prop-LEGEToGELE_uniq">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.30</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.LEGEToGELE_uniq def-LEGEToGELE </p>
+<p>Let \(a,b\in \mathbb {Z}\), let \(X\) be an object of \(\DF \), and let \(f:\sigma '_{[a,b]} X\longrightarrow \sigma _{[a,b]}X\). Suppose that \(f\) makes the following diagram commute: </p>
+<p><div class="tikzcd" id="a0000000012">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> σ_≥b[rr][rd]   id_[rr]   σ_≤a <br /> σ_≤aσ_≥b[rr, "f“]  σ_≥bσ_≤a[ru]  <div class="tikzcd" id="a0000000013">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+<p>Then \(f\) is equal to the morphism of Definition&#160;<a href="index.html#def-LEGEToGELE">.27</a>. </p>
+
+  </div>
+</div> </p>
+<p>We can now state a more general version of Proposition A.1.3(iii). </p>
+<p><div class="definition_thmwrapper " id="def-truncGELE_le_up">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.31</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncGELE_le_up def-truncGELE </p>
+<p>Let \(a,b,c\in \mathbb {Z}\) with \(b\le c\). Then we have a natural transformation \(\sigma _{[a,c]} \longrightarrow \sigma _{[a,b]}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGELE_le_down">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.32</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncGELE_le_down def-truncGELE </p>
+<p>Let \(a,b,c\in \mathbb {Z}\) with \(a\le b\). Then we have a natural transformation \(\sigma _{[b,c]} \longrightarrow \sigma _{[a,c]}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGELE_δ">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.33</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncGELE_δ def-truncGELE </p>
+<p>For \(a,b,c\in \mathbb {Z}\), we have a natural transformation \(\delta \colon \sigma _{[a,b]} \to (shiftFunctor\  1)\circ (\sigma _{[b+1,c]})\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGELE_triangle">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.34</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncGELE_triangle def-truncGELE_δ, def-truncGELE_le_up, def-truncGELE_le_down </p>
+<p>For \(a,b,c\in \mathbb {Z}\) such that \(a\le b\le c\), this is the functor \(triangleGELE a b c\) from \(\DF \) to the category of triangles of \(\DF \) sending \(X\) to the triangle </p>
+<div class="displaymath" id="a0000000014">
+  \[ \sigma _{[b+1,c]} X \longrightarrow \sigma _{[a,c]} X \longrightarrow \sigma _{[a,b]} \xrightarrow {\delta } (\sigma _{[b+1,c]} X)[1]. \]
+</div>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="def-truncGELE_triangle_dist">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.35</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncGELE_triangle_distinguished def-truncGELE_triangle For \(X\) in \(\DF \) and \(a,b,c\in \mathbb {Z}\) such that \(a\le b\le c\), the triangle of Definition <a href="index.html#def-truncGELE_triangle">.34</a> is distinguished. </p>
+
+  </div>
+</div> </p>
+<p>We did not write the uniqueness statement for the triangle, though there is a statement similar to Propositions&#160;<a href="index.html#prop-triangleGELE_uniq_left">.18</a> and &#160;<a href="index.html#prop-triangleGELE_uniq_right">.19</a>. </p>
+<p>Proposition A.1.3 (iv) uses the adjective "canonical" and an equality sign, which is bad. We need to explain what compatibilities hide under it, and to make the equality sign by an isomorphism (that will be given by the universal property of the adjoint). </p>
+<p>Also, we actually want the isomorphisms for "second" shifts by any integer, compatible with the zero and the addition, like in ‘Functor.CommShift‘. We introduce a new structure for this, similar to <a href=""></a>Functor.CommShift and called <a href=""></a>familyCommShift. It expresses the fact that a family of endofunctors \(F: \mathbb {Z}\longrightarrow \DF \) has a family of isomorphisms \(F (n + m) \circ shiftFunctor_2 m \stackrel{\sim }{\longrightarrow }shiftFunctor_2 m \circ F n\), where \(shiftFunctor_2 a\) is the second shift by \(a\in \mathbb {Z}\) (i.e., \(s^a\)), and that these isomorphisms are equal to the obvious ones when \(m=0\) and compatible with addition. </p>
+<p><div class="definition_thmwrapper " id="def-truncLE_commShift">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.36</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncLE_commShift def-truncLE </p>
+<p>The family of functors \(n \mapsto truncLE n\) has a <a href=""></a>familyCommShift structure. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-truncGE_commShift">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.37</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.truncGE_commShift def-truncGE </p>
+<p>The family of functors \(n \mapsto truncGE n\) has a <a href=""></a>familyCommShift structure. </p>
+
+  </div>
+</div> </p>
+<h2 id="a0000000015"> The "forget the filtration" functor (Proposition A.1.6)</h2>
+<p>The next thing in the paper is the definition, when we have a filtered triangulated category \(\DF \) over a triangulated category \(\mathcal{D}\), of the "graded pieces" functors \(\Gra ^n : \DF \to \mathcal{D}\), which use an arbitrary quasi-inverse of the fully faithful functor \(i:\mathcal{D}\to \DF \) on the essential image of \(i\). </p>
+<p>Rather than using an arbitrary quasi-inverse, it makes things much simpler to use the one given by the "forget the filtration" functor \(\omega : \DF \to \mathcal{D}\), which has the additional pleasant property that it is defined on all of \(\DF \) and so avoids an <a href=""></a>ObjectProperty.lift. In fact, this is even better, as \(\omega \) intertwines the second shift and the identity of \(\mathcal{D}\), so we can directy define \(\Gra ^n\) as \(\omega \circ \sigma _{[n,n]}\) (noting that \(\Gra ^n\) was originally defined as \(shiftFunctor_2 (-n)\circ \sigma _{[n,n]}\) followed by a quasi-inverse of the equivalence \(\mathcal{D}\stackrel{\sim }{\longrightarrow }\DF (\le 0)\cap \DF (\ge 0)\)). </p>
+<p>For this, we need to change the order of statements and do Proposition A.1.6 first (this is possible as that proposition makes no use of the functors \(\Gra ^n\)). </p>
+<p><div class="definition_thmwrapper " id="def-FF">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.ForgetFiltration def-FilteredTriangulatedOver </p>
+<p>The functor \(\omega :\DF \to \mathcal{D}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-FF-leftAdjoint">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.ForgetFiltration_leftAdjoint def-FF </p>
+<p>The functor \(\omega :\DF \to \mathcal{D}\) restricted to the full subcategory \(\DF (\le 0)\) is left adjoint to the functor \(\mathcal{D}\to \DF (\le 0)\cap \DF (\ge 0)\subset \DF (\le 0)\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-FF-rightAdjoint">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.3</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.ForgetFiltration_rightAdjoint def-FF </p>
+<p>The functor \(\omega :\DF \to \mathcal{D}\) restricted to the full subcategory \(\DF (\ge 0)\) is right adjoint to the functor \(\mathcal{D}\to \DF (\le 0)\cap \DF (\ge 0)\subset \DF (\ge 0)\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-FF-shift">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.4</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.ForgetFiltration_shift def-FF </p>
+<p>For every \(X\) in \(\DF \), the image by \(\omega \) of the map \(\alpha (X) : X \to s(X)\) is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p>This implies that \(\omega \) intertwines the second shift \(s\) and the identity of \(\mathcal{D}\). Right now this is expressed via a custom structure called a <a href=""></a>leftCommShift, but I don’t know if that’s optimal. </p>
+<p><div class="proposition_thmwrapper " id="prop-FF-ff">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.5</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.ForgetFiltration_ff def-FF </p>
+<p>Let \(X,Y\) be objects of \(\DF \). If \(X\) is in \(\DF (\le 0)\) and \(Y\) is in \(\DF (\ge 0)\), then the map \(\Hom _{\DF }(X,Y) \to \Hom _{\mathcal{D}}(\omega (X),\omega (Y))\) is bijective. </p>
+
+  </div>
+</div> </p>
+<p>The functor \(\omega \) should also be triangulated. (This actually follows from the other conditions, but is not stated in the paper. Note that the first statement contains data, so I am actually cheating here, because the data is determined by the other properties of \(\omega \).) </p>
+<p><div class="definition_thmwrapper " id="def-FF-commShift">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.6</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instCommShiftForgetFiltrationInt def-FF </p>
+<p>The functor \(\omega :\DF \to \mathcal{D}\) commutes with the triangulated shifts. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-FF-tri">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.7</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsTriangulatedForgetFiltration def-FF-commShift </p>
+<p>The functor \(\omega :\DF \to \mathcal{D}\) is triangulated. </p>
+
+  </div>
+</div> </p>
+<p>We don’t write the uniqueness statements here, as they are painful (which probably means that I haven’t yet found the correct way to talk about \(\omega \)). </p>
+<p>Property (a) implies that we have an isomorphism \(\omega \circ i \stackrel{\sim }{\longrightarrow }{\mathbf{1}}_{\mathcal{D}}\) given by the counit of the adjunction of Definition&#160;<a href="index.html#def-FF-leftAdjoint">.2</a>. Property (b) gives an isomorphism in the other direction, given by the unit of the adjunction of Definition&#160;<a href="index.html#def-FF-rightAdjoint">.3</a>. We give the definition of the first isomorphism, and the result after that says that these isomorphisms are inverses of each other. This compatibility is not stated in the paper. </p>
+<p><div class="definition_thmwrapper " id="def-FF-i">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.8</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.ForgetFiltration_functor def-FF-leftAdjoint </p>
+<p>The isomorphism \(\omega \circ i \stackrel{\sim }{\longrightarrow }{\mathbf{1}}_{\mathcal{D}}\) given by the counit of the adjunction of Definition&#160;<a href="index.html#def-FF-leftAdjoint">.2</a>. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-FF-compat">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.9</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.ForgetFiltration_iso_comp def-FF-leftAdjoint, def-FF-rightAdjoint, def-FF-i </p>
+<p>The isomorphism \(\omega \circ i \stackrel{\sim }{\longrightarrow }{\mathbf{1}}_{\mathcal{D}}\) given by the counit of the adjunction of Definition&#160;<a href="index.html#def-FF-leftAdjoint">.2</a> is the inverse of the isomorphism \({\mathbf{1}}_{\mathcal{D}}\stackrel{\sim }{\longrightarrow }\omega \circ i\) given by the unit of the adjunction of Definition&#160;<a href="index.html#def-FF-rightAdjoint">.3</a> </p>
+
+  </div>
+</div> </p>
+<p>The composition in the other direction, i.e. \(i\circ \omega \), is isomorphic to \(\sigma _{[0,0]}\). (Obviously, this is not an arbitrary isomorphism.) </p>
+<p><div class="definition_thmwrapper " id="def-i-FF">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.10</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Functor_forgetFiltration def-FF </p>
+<p>An isomorphism \(i\circ \omega \stackrel{\sim }{\longrightarrow }\sigma _{[0,0]}\). </p>
+
+  </div>
+</div> </p>
+<h2 id="a0000000016"> Definition A.1.4 and Proposition A.1.5</h2>
+<p><div class="definition_thmwrapper " id="def-Gr">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr def-FF, def-truncGELE </p>
+<p>For every \(n\in \mathbb {Z}\), we set \(\Gra ^n = \omega \circ \sigma _{{n,n}}\). </p>
+
+  </div>
+</div> </p>
+<p>The functors \(\Gra ^n\) are triangulated: </p>
+<p><div class="definition_thmwrapper " id="def-Gr-commShift">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instCommShiftGrInt def-Gr </p>
+<p>For every \(n\in \mathbb {Z}\), the functor \(\Gra ^n\) commutes with the triangulated shifts. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="def-Gr-tri">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.3</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.instIsTriangulatedGr def-Gr-commShift </p>
+<p>For every \(n\in \mathbb {Z}\), the functor \(\Gra ^n\) is triangulated. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-Gr_le">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.4</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr_bounded_above def-Gr For every \(X\) in \(\DF \), there exists \(n\in \mathbb {Z}\) such that \(\Gra ^m X\) is zero if \(m{\gt}n\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-Gr_ge">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.5</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr_bounded_below def-Gr For every \(X\) in \(\DF \), there exists \(n\in \mathbb {Z}\) such that \(\Gra ^m X\) is zero if \(m{\lt}n\). </p>
+
+  </div>
+</div> </p>
+<p>We now state Proposition A.1.5. </p>
+<p><div class="definition_thmwrapper " id="def-Gr-commShift2">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.6</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr-commShift def-Gr </p>
+<p>For every \(n\in \mathbb {Z}\), the functor \(\Gra ^n\) intertwines the second shift of \(\DF \) and the identity functor of \(\mathcal{D}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-Gr-pure1">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.7</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr_pure_zero_of_ne_zero def-Gr </p>
+<p>For every \(n\in \mathbb {Z}\) such that \(n\ne 0\), for every \(X\) in \(\mathcal{D}\), the object \(\Gra ^n(i(X))\) is zero. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-Gr-pure2">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.8</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr_pure_of_zero def-Gr </p>
+<p>An isomorphism \(\Gra ^0\circ i\stackrel{\sim }{\longrightarrow }\mathbf{1}_{\mathcal{D}}\). </p>
+
+  </div>
+</div> </p>
+<p>Proposition A.1.5(iii) actually should say that some particular morphisms are isomorphisms, so we state it like that. </p>
+<p><div class="proposition_thmwrapper " id="prop-Gr-truncLE1">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.9</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr_truncLE_zero def-Gr, def-truncLE </p>
+<p>For all \(r,n\in \mathbb {Z}\) such that \(n {\lt} r\), the functor \(\Gra ^r\circ \sigma _{\le n}\) is zero. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-Gr-truncLE2">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.10</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.isIso_Gr_truncLEπ def-Gr, def-truncLEπ </p>
+<p>For all \(r,n\in \mathbb {Z}\) such that \(r \le n\), the morphism \(\Gra ^r\to \Gra ^r\circ \sigma _{\le n}\) given by \(truncLEπ\) is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-Gr-truncGE1">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.11</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.Gr_truncGE_zero def-Gr, def-truncGE </p>
+<p>For all \(r,n\in \mathbb {Z}\) such that \(r {\lt} n\), the functor \(\Gra ^r\circ \sigma _{\ge n}\) is zero. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-Gr-truncGE2">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.12</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.isIso_Gr_truncLEπ def-Gr, def-truncLEπ </p>
+<p>For all \(r,n\in \mathbb {Z}\) such that \(n \le r\), the morphism \(\Gra ^r\circ \sigma _{\ge n}\to \Gra ^r\) given by \(truncGEι\) is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<h2 id="a0000000017"> Compatibility with filtered triangulated functors (Proposition A.1.8)</h2>
+<p>Let \(\DF ,\DF '\) be filtered triangulated categories, and \(FT:\DF \to \DF '\) be a filtered triangulated functor. </p>
+<p>Proposition A.1.8 is a mess as written. It is not precise, the natural isomorphisms are not arbitrary! Also, the square with \(\sigma _{\ge n}\) is missing, and we need more squares \(\sigma _{[a,b]}\), as well as compatibilities with the connecting morphisms in the triangles of \(\sigma _{[a,b]}\). </p>
+<p>By Propositions&#160;<a href="index.html#prop-commute_truncLE_iso">.23</a> and&#160;<a href="index.html#prop-commute_truncGE_iso">.24</a>, the commutative squares for \(\sigma _{\le n}\) and \(\sigma _{\ge n}\) follow from the facts that a filtered triangulated functor is triangulated and preserves all the categories \(\DF (\le m)\) and \(\DF (\ge m)\). </p>
+<p>The squares for the functors \(\sigma _{[a,b]}\) and \(\Gra ^n\) then follow from the ones for the truncation functors. </p>
+<p>The square for \(\omega \) is harder to define, as the definition (and characterization) of \(\omega \) is a little complicated. There should be some compatibilities there, but I am not yet sure what they are. We will see what is needed later. </p>
+<p>The "commutative square" for \(\sigma _{\le n}\): <div class="tikzcd" id="a0000000018">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> [r, "FT"][d, "σ_≤n“] ’[d, "σ_≤n"] <br />[r, "FT“] ’ <div class="tikzcd" id="a0000000019">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-FT-truncLE">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.1</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.liftFunctor_truncLE_comm def-commute_truncLE, def-FilteredTriangulatedFunctor </p>
+<p>Let \(n\in \mathbb {Z}\). The morphism \(\sigma _{\le n}\circ FT \to FT\circ \sigma _{\le n}\) of Definition&#160;<a href="index.html#def-commute_truncLE">.20</a> is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p>The "commutative square" for \(\sigma _{\ge n}\): <div class="tikzcd" id="a0000000020">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> [r, "FT"][d, "σ_≥n“] ’[d, "σ_≥n"] <br />[r, "FT“] ’ <div class="tikzcd" id="a0000000021">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-FT-truncGE">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.2</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.liftFunctor_truncGE_comm def-commute_truncGE, def-FilteredTriangulatedFunctor </p>
+<p>Let \(n\in \mathbb {Z}\). The morphism \(FT\circ \sigma _{\ge n}\to \sigma _{\ge n}\circ FT\) of Definition&#160;<a href="index.html#def-commute_truncGE">.21</a> is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-FT-Gr">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.3</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.lifting_Gr_comm def-Gr, def-FilteredTriangulatedFunctor </p>
+<p>For \(n\in \mathbb {Z}\), an isomorphism \(\Gra ^n\circ FT\to FT\circ \Gra ^n\). </p>
+
+  </div>
+</div> <div class="tikzcd" id="a0000000022">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> [r, "FT"][d, "^n“] ’[d, "^n"]  <br />D[r, "T“] D’ <div class="tikzcd" id="a0000000023">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-FT-FF">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.4</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.lifting_forgetFiltrating_comm  def-FF, def-FilteredTriangulatedFunctor </p>
+<p>An isomorphism \(\omega \circ FT\to FT\circ \omega '\). </p>
+
+  </div>
+</div> </p>
+<p><div class="tikzcd" id="a0000000024">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> [r, "FT"][d, "ω“] ’[d, "ω"]  <br />D[r, "T“]  D’ <div class="tikzcd" id="a0000000025">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
+<h1 id="a0000000026"> Section A.2: compatible t-structures and the realization functor</h1>
+<p>We review the construction of the realization functor from <span class="cite">
+	[
+	<a href="index.html#BBD" >2</a>
+	]
+</span> 3.1 and Appendix&#160;A of&#160;<span class="cite">
 	[
 	<a href="index.html#Be1" >1</a>
 	]
-</span></span>
+</span>. </p>
+<p>This section corresponds to the Lean file <a href=""></a>TStructure_no_proof.lean. </p>
+<h2 id="a0000000027"> Compatible t-structures</h2>
+<p>We fix a filtered triangulated category \(\DF \) over a triangulated category \(\mathcal{D}\). </p>
+<p><div class="definition_thmwrapper " id="def-compatible">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
   </div>
-  <div class="proposition_thmcontent">
-  <p> Let \(\mathcal{D}\) be a triangulated category and \(\DF \) be an f-category over \(\mathcal{D}\). Then there exists a triangulated functor \(\omega \colon \DF \longrightarrow \mathcal{D}\) such that:<a class="footnote" href="#a0000000016">
-  <sup class="footnotemark">1</sup>
-</a> </p>
-<ul class="itemize">
-  <li><p>\(\omega _{\mid \DF (\leq 0)}\colon \DF (\leq 0)\longrightarrow \mathcal{D}\) is left adjoint to \(\mathcal{D}\stackrel{i}{\longrightarrow }\DF (\leq 0)\cap \DF (\geq 0)\subset \DF (\leq 0)\); </p>
-</li>
-  <li><p>\(\omega _{\mid \DF (\geq 0)}\colon \DF (\geq 0)\longrightarrow \mathcal{D}\) is right adjoint to \(\mathcal{D}\stackrel{i}{\longrightarrow }\DF (\leq 0)\cap \DF (\geq 0)\subset \DF (\geq 0)\); </p>
-</li>
-  <li><p>for any \(X\in \Ob \DF \), the map \(\omega (\alpha _X)\colon \omega (X)\longrightarrow \omega (s(X))\) is an isomorphism; </p>
-</li>
-  <li><p>if \(A\in \Ob \DF (\leq 0)\) and \(B\in \DF (\geq 0)\), then \(\omega \colon \Hom (A,B)\longrightarrow \Hom (\omega (A),\omega (B))\) is bijective. </p>
-</li>
-</ul>
-<p> Moreover, \(\omega \) is determined up to unique isomorphism by properties (a) and (c) (resp. (b) and (c)). </p>
-<p> </p>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.IsCompatible def-FilteredTriangulatedOver Suppose that we are given a t-structure \((\mathcal{D}^{\leq 0},\mathcal{D}^{\geq 0})\) on \(\mathcal{D}\) and a t-structure \((\DF ^{\leq 0},\DF ^{\geq 0})\) on \(\DF \). We say that these t-structures are <em>compatible</em> if \(i\colon \mathcal{D}\longrightarrow \DF \) is t-exact and if \(s^n(\DF ^{\leq a})\subset \DF ^{\leq b}\) for all \(a,b,n\in \mathbb {Z}\) such that \(a = b + n\). </p>
 
   </div>
 </div> </p>
-<p>The following proposition follows easily from the definitions. </p>
-<p><div class="proposition_thmwrapper " id="prop_f_lifting">
+<p><div class="definition_thmwrapper " id="prop-def-compatible">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.compatible def-compatible Suppose that we are given a t-structure \((\mathcal{D}^{\leq 0},\mathcal{D}^{\geq 0})\) on \(\mathcal{D}\). Then there exists a t-structure \((\DF ^{\leq 0},\DF ^{\geq 0})\) on \(\DF \) such that </p>
+<div class="displaymath" id="a0000000028">
+  \[ \Ob \DF ^{\leq 0}=\{ X\in \Ob \DF \mid \forall i\in \mathbb {Z},\  \Gra ^i X[i]\in \Ob \mathcal{D}^{\leq 0}\}  \]
+</div>
+<div class="displaymath" id="a0000000029">
+  \[ \Ob \DF ^{\geq 0}=\{ X\in \Ob \DF \mid \forall i\in \mathbb {Z},\  \Gra ^i X[i]\in \Ob \mathcal{D}^{\geq 0}\} . \]
+</div>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-compatible">
   <div class="proposition_thmheading">
     <span class="proposition_thmcaption">
     Proposition
     </span>
-    <span class="proposition_thmlabel">6</span>
+    <span class="proposition_thmlabel">.3</span>
   </div>
   <div class="proposition_thmcontent">
-  <p>Let \(\mathcal{D},\mathcal{D}'\) be triangulated categories, and let \(\DF \) (resp. \(\DF '\)) be an f-category over \(\mathcal{D}\) (resp. \(\mathcal{D}'\)). Let \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) be a triangulated functor, and let \(FT\colon \DF \longrightarrow \DF '\) be an f-lifting of \(T\). Then the following squares commute up to natural isomorphism: </p>
-<p><div class="tikzcd" id="a0000000017">
+  <p> CategoryTheory.Triangulated.TStructure.compatible_is_compatible prop-def-compatible Suppose that we are given a t-structure on \(\mathcal{D}\). Then it is compatible with the t-structure on \(\DF \) of Definition&#160;<a href="index.html#prop-def-compatible">.2</a>. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-compatible-uniq">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.4</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.compatible_uniq prop-def-compatible Suppose that we are given compatible t-structures \(t\) on \(\mathcal{D}\) and \(tF\) on \(\DF \). Then \(tF\) is equal to the t-structure of Definition&#160;<a href="index.html#prop-def-compatible">.2</a>. </p>
+
+  </div>
+</div> </p>
+<h2 id="a0000000030"> Realization</h2>
+<p>We fix a filtered triangulated category \(\DF \) over a triangulated category \(\mathcal{D}\), as well as compatible t-structure \(t\) on \(\mathcal{D}\) and \(tF\) on \(\DF \), with hearts \(\mathcal{D}^\heartsuit \) and \(\DF ^\heartsuit \) and cohomology functors \(\H^ *_t\) and \(\H^ *_{tF}\). The realization functor is a triangulated functor \(\Db \mathcal{D}^\heartsuit \to \mathcal{D}\) extending the inclusion \(\mathcal{D}^\heartsuit \subset \mathcal{D}\). </p>
+<p>To construct it, we first need to construct a functor \(H_F : \DF \to \Cb \mathcal{D}^\heartsuit \), which will induce an equivalence of categories when restricted to \(\DF ^\heartsuit \). In the paper, the \(n\)th degree of \(H_F(X)\) is defined as \(\H^ n_t(\Gra ^n(X))\). Given the new definition of \(\Gra ^n\), this is equal to \(\H^ n_t(\omega (\sigma _{[n,n]}(X)))\); that last formula makes it easier to construct the differentials. </p>
+<p><div class="definition_thmwrapper " id="def-HF-deg">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_deg def-FilteredTriangulatedOver, def-Gr For \(n\in \mathbb {Z}\), we define a functor \(H_F^n:\DF \to \mathcal{D}^\heartsuit \) by \(\H_ F^n=\H^ n_t\circ \Gra ^n\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF-diff">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_diff def-HF-deg, def-truncGELE_triangle For \(n\in \mathbb {Z}\), we define a natural transformation \(d^n : H_F^n\to H_F^{n+1}\) by setting \(d^n(X)\) to be the image by \(\omega \) of the degree \(1\) map in the triangle \(\sigma _{[n+1,n+1]}(X)\to \sigma _{[n,n+1]}(X)\to \sigma _{{n,n}}(X)\) of Definition&#160;<a href="index.html#def-truncGELE_triangle">.34</a>. </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-HF-condition">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.3</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_condition def-HF-diff For every \(n\in \mathbb {Z}\), we have \(d^{n+1}\circ d^n = 0\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF''">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.4</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplexObj prop-HF-condition This is the complex of functors \(\DF \to \mathcal{D}^\heartsuit \) whose degree \(n\) term is \(H_F^n\), and whose differentials are given by the \(d^n\). </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF'">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.5</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex def-HF” This is the functor \(H_F':\DF \to \mathrm{C}(\mathcal{D}^\heartsuit )\) corresponding to the complex of Definition&#160;<a href="index.html#def-HF''">.4</a>. </p>
+
+  </div>
+</div> </p>
+<p>We check that \(H_F'\) lands in the subcategory of bounded complexes. </p>
+<p><div class="proposition_thmwrapper " id="prop-HF_bounded">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.6</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplex_isBounded def-HF’, prop-Gr_le, prop-Gr_ge For every \(X\) in \(\DF \), the complex \(HF'(X)\) is bounded. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-HF">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.7</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToComplexBounded prop-HF_bounded This is the functor \(H_F:\DF \to \Cb (\mathcal{D}^\heartsuit )\) given by \(HF'\). </p>
+
+  </div>
+</div> </p>
+<p><div class="theorem_thmwrapper " id="thm-HF_equiv">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">.8</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.FilteredToBoundedComplex_equivalence def-HF, def-compatible The restriction to \(\DF ^\heartsuit \) of the functor \(\DF \) is an equivalence \(\DF ^\heartsuit \stackrel{\sim }{\longrightarrow }\Cb (\mathcal{D}^\heartsuit )\) </p>
+
+  </div>
+</div> </p>
+<p><div class="proposition_thmwrapper " id="prop-real_aux">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.9</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.Realization_aux thm-HF_equiv The composition of a quasi-inverse of the equivalence \(\DF ^\heartsuit \stackrel{\sim }{\longrightarrow }\Cb (\mathcal{D}^\heartsuit )\) of Theorem&#160;<a href="index.html#thm-HF_equiv">.8</a>, of the inclusion \(\DF ^\heartsuit \subset \DF \) and of \(\omega :\DF \to \mathcal{D}\) sends quasi-isomorphisms to isomorphisms. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-real">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.10</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.Realization prop-real_aux The functor \(\real :\Db (\mathcal{D}^\heartsuit )\to \mathcal{D}^\heartsuit \) coming from the universal property of the localization \(\Cb (\mathcal{D}^\heartsuit )\to \Db (\mathcal{D}^\heartsuit )\) applied to the statement of Proposition&#160;<a href="index.html#prop-real_aux">.9</a>. </p>
+
+  </div>
+</div> </p>
+<h1 id="a0000000031"> Section A.3: homological algebra calculations and functor reconstruction</h1>
+<p>This section corresponds to the Lean files <a href=""></a>Acyclic.lean and <a href=""></a>Derived.lean. </p>
+<h2 id="a0000000032"> \(T\)-acyclic objects</h2>
+<p>Let \(\mathcal{D},\mathcal{D}'\) be triangulated categories and \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) be a triangulated functor. Suppose that we are given a t-structure \((\mathcal{D}^{\leq 0},\mathcal{D}^{\geq 0})\) (resp. \(({\mathcal{D}’}^{\leq 0},{\mathcal{D}’}^{\geq 0})\)) on \(\mathcal{D}\) (resp. \(\mathcal{D}'\)), and denote the cohomology functors of this t-structure by \(\H^ i_t\) (resp. \(\H^ i_{t'}\)) and its heart by \(\mathcal{D}^\heartsuit \) (resp. \({\mathcal{D}’}^\heartsuit \)). </p>
+<p><div class="definition_thmwrapper " id="def-acyclic">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.1</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.Acyclic </p>
+<p>We say that an object \(X\) of \(\mathcal{D}^\heartsuit \) is <em>\(T\)-acyclic</em> if \(T(X)\) is in \({\mathcal{D}’}^\heartsuit \). </p>
+
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-H">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.2</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.isZero_homology_of_acyclic def-acyclic If \(X\) is a \(T\)-acyclic object and \(n\ne 0\) is an integer, then \(\H^ n_{t'}(F(X))\) is zero. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000033">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000034">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>Note that the converse is true if the t-structure \(t'\) is non-degenerate, but not in general. </p>
+<p>Lemma A.3.1(i) says that the full subcategory of \(T\)-acyclic objects is stable by extensions. In Lean, we also need to prove the "obvious" facts that it is stable by isomorphisms, binary products and contains zero objects, hence is an additive category. </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-iso">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.3</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.AcyclicCategory.instIsClosedUnderIsomorphismsHeartAcyclic def-acyclic The full subcategory of \(T\)-acyclic objects is closed under isomorphisms. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000035">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000036">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-zero">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.4</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.AcyclicCategory.zero def-acyclic Zero objects are \(T\)-acyclic. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000037">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000038">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-prod">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.5</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.AcyclicCategory.prod def-acyclic The full subcategory of \(T\)-acyclic objects is closed under binary products. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000039">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000040">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-extension">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.6</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Triangulated.TStructure.extension_acyclic_of_acyclic def-acyclic The full subcategory of \(T\)-acyclic objects is closed under extensions. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000041">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000042">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-hTh">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.7</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.fromHeartToHeart The functor \(T':\mathcal{D}^\heartsuit \to {\mathcal{D}’}^\heartsuit \) given by the restriction of \(\H^ 0_{t'}\circ T\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000043">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000044">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-fromAcyclic">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.8</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.fromAcyclic The functor \(T''\) from the full subcategory of \(T\)-acyclic objects to \({\mathcal{D}’}^\heartsuit \) given by the restriction of \(T\). </p>
+
+  </div>
+</div> </p>
+<p>Lemma A.1.3(ii): </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-shortexact_aux">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.9</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.map_shortExact_exact def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> of a short exact complex of \(T\)-acyclic objects is an exact complex in \({\mathcal{D}’}^\heartsuit \). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000045">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000046">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000047">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.10</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>Lemma A.3.1(ii) actually says that the image is short exact, which we do not prove yet. See the next statements. </p>
+
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-mono_map_of_mono_and_acyclicCokernel">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.11</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.mono_map_of_mono_and_acyclicCokernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> of a monomorphism with an acyclic cokernel is a monomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000048">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000049">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-epi_map_of_epi_and_acyclicKernel">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.12</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.epi_map_of_epi_and_acyclicKernel def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> of an epimorphism with an acyclic kernel is an epimorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000050">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000051">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic-shortexact">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.13</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.map_shortExact_of_shortExact_and_acyclic def-hTh, def-acyclic The image by the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> of a short exact complex of \(T\)-acyclic objects is a short exact complex in \({\mathcal{D}’}^\heartsuit \). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000052">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000053">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>For the proof of Lemma A.1.3(iii), we need a number of facts about preservation of kernels/cokernels/etc. First we prove a statement about preservation of images. </p>
+<p><div class="definition_thmwrapper " id="def-acyclic-image">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.14</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.isoImageOfAcyclic def-hTh, def-acyclic If a map \(f\) in \(\mathcal{D}^\heartsuit \) has an acyclic kernel and an acyclic cokernel, then the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> preserves the image of ‘\(f\). </p>
+
+  </div>
+</div> </p>
+<p><div class="remark_thmwrapper " id="a0000000054">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.15</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>This isomorphism is not given by <a href=""></a>CategoryTheory.PreservesImage.iso, because we do not yet know at this point that the kernel and the cokernel of \(f\) are preserved. So we actually construct an image factorization of \(T'(f)\) by hand in <a href=""></a>imageFactorisation_map_of_acyclic_ker_coker which has the desired image. Then we need to check that the isomorphism of Definition&#160;<a href="index.html#def-acyclic-image">.14</a> is compatible with <a href=""></a>Abelian.image.ι and <a href=""></a>Abelian.factorThruImage, this is done in <a href=""></a>CategoryTheory.Functor.isoImageOfAcyclic_comp_ι and <a href=""></a>CategoryTheory.Functor.factorThruImage_comp_isoImageOfAcyclic. </p>
+
+  </div>
+</div> </p>
+<p>We then look at the preservation of kernels and cokernels. </p>
+<p><div class="lemma_thmwrapper " id="prop-mono_kernelComparison_of_acyclic_image">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.16</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.mono_kernelComparison_of_acyclic_image def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with an acyclic image, then its kernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is a mono. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000055">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000056">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-epi_kernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.17</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.epi_kernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its kernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is an epi. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000057">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000058">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-isIso_kernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.18</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.isIso_kernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its kernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000059">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000060">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-epi_cokernelComparison_of_acyclic_image">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.19</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.epi_cokernelComparison_of_acyclic_image def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with an acyclic image, then its cokernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is an epi. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000061">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000062">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-mono_cokernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.20</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.mono_cokernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its cokernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is a mono. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000063">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000064">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-isIso_cokernelComparison_of_acyclic_homology">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.21</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.isIso_cokernelComparison_of_acyclic_homology def-hTh, def-acyclic If \(f\) is a morphism in \(\mathcal{D}.heart\) with a \(T\)-acyclic image, a \(T\)-acyclic kernel and a \(T\)-acyclic cokernel, then its cokernel comparison morphism for the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is an isomorphism. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000065">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000066">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-shortExact_connecting_iso">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.22</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.shortExact_connecting_iso def-hTh, def-acyclic Let \(S\) be a short exact sequence in \(\mathcal{D}^\heartsuit \) whose second object \(S.X_2\) is \(T\)-acyclic. Then, for every \(n\in \mathbb {Z}\), the connecting morphism in the long exact sequence of homology of the distinguished triangle in \(\mathcal{D}'\) image of \(S\) by \(T\) (i.e. given by <a href=""></a>CategoryTheory.Functor.shortExactComplex_to_triangle) is an isomorphism from \(n\)th homology of \(T(S.X_3)\) to the \((n + 1)\)st homology of \(T(S.X_1)\). </p>
+
+  </div>
+</div> </p>
+<p>Lemma A.1.3(iii): </p>
+<p><div class="definition_thmwrapper " id="def-iso_cohomology_of_acyclic_and_exact">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.23</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.Functor.iso_cohomology_of_acyclic_and_exact def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(r\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \(r + 1\) and that the \(r\)th entry of \(S\) is \(T\)-acyclic. Then, for every \(n\in \mathbb {Z}\) different from \(0\) and \(-1\), we have an isomorphism between the \(n\)th cohomology of \(T(\Ker (S.d^{r+1}))\) and the \((n + 1)\)st homology of \(T(\Ker (S.d^r))\). </p>
+
+  </div>
+</div> </p>
+<p>We turn to the proof of Lemma A.1.3(iv). </p>
+<p><div class="lemma_thmwrapper " id="prop-rightAcyclic_ker_of_bounded_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.24</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.rightAcyclic_ker_of_bounded_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \(\le k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\le k\) and zero in small enough degree. </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in positive degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000067">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000068">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-rightAcyclic_ker_of_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.25</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.rightAcyclic_ker_of_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \(\le k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\le k\). </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in positive degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000069">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000070">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-leftAcyclic_ker_of_bounded_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.26</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.leftAcyclic_ker_of_bounded_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \({\gt} k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\ge k\) and zero in large enough degree. </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in negative degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000071">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000072">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-leftAcyclic_ker_of_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.27</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.leftAcyclic_ker_of_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \), and let \(k\in \mathbb {Z}\). Suppose that \(S\) is exact in degree \({\gt} k\), and that the entries of \(S\) are \(T\)-acyclic in degree \(\ge k\). </p>
+<p>Then the homology of \(T(\Ker (S.d^r))\) is zero in negative degree. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000073">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000074">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>From now on, we suppose that the t-structure \(t'\) on \(\mathcal{D}'\) is non-degenerate. </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_ker_of_bounded_exact_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.28</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_ker_of_bounded_exact_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then \(\Ker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000075">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000076">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_ker_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.29</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_ker_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then \(\Ker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000077">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000078">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_image_of_bounded_exact_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.30</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_image_of_bounded_exact_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then \(\Ima (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000079">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000080">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_image_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.31</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_image_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then \(\Ima (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000081">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000082">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_coker_of_bounded_exact_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.32</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_coker_of_bounded_exact_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then \(\Coker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000083">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000084">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p><div class="lemma_thmwrapper " id="prop-acyclic_coker_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.33</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.Functor.acyclic_coker_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then \(\Coker (S.d^r)\) is \(T\)-acyclic for every \(k\in \mathbb {Z}\). </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000085">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000086">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>Lemma A.3.1(iv)(a) : </p>
+<p><div class="lemma_thmwrapper " id="prop-exact_map_of_exact_bounded_acyclic_complex">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.34</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.CochainComplex.exact_map_of_exact_bounded_acyclic_complex def-hTh, def-acyclic Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact, and that the entries of \(S\) are \(T\)-acyclic in every degree and zero outside of a bounded interval. </p>
+<p>Then the image of \(S\) by the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is exact. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000087">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000088">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>Lemma A.3.1(iv)(b): </p>
+<p><div class="lemma_thmwrapper " id="prop-exact_map_of_exact_acyclic_complex_and_bounded_functor">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">.35</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> CategoryTheory.CochainComplex.exact_map_of_exact_acyclic_complex_and_bounded_functor def-hTh, def-acyclic Suppose that \(T\) has finite cohomological dimension (relative to the t-structures \(t\) and \(t'\)). Let \(S\) be a cochain complex in \(\mathcal{D}^\heartsuit \). Suppose that \(S\) is exact and that the entries of \(S\) are \(T\)-acyclic in every degree. </p>
+<p>Then the image of \(S\) by the functor \(T'\) of Definition&#160;<a href="index.html#def-hTh">.7</a> is exact. </p>
+
+  </div>
+</div> </p>
+<p><div class="proof_wrapper" id="a0000000089">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> <div class="proof_wrapper" id="a0000000090">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  
+  </div>
+</div> </p>
+<p>There is no explicit formalization of Lemma A.3.1(v). </p>
+<h2 id="a0000000091"> Functor reconstruction</h2>
+<p>We keep the notation of the previous subsection, and we assume that the t-structure \(t'\) on \(\mathcal{D}'\) is non-degenerate. We also assume that we have filtered triangulated categories \(\DF \) over \(\mathcal{D}\) and \(\DF '\) over \(\mathcal{D}'\), equipped with compatible t-structures \(tF\) and \(tF'\), as well as a filtered triangulated functor \(FT:\DF \to \DF '\) lifing \(T:\mathcal{D}\to \mathcal{D}'\); this is condition (a) of Proposition A.3.2. </p>
+<p>Condition (b) of Proposition A.3.2 says that the "obvious" functor from the bounded homotopy category of complexes of \(T\)-acyclic objects in the heart \(\mathcal{D}\) to the derived category of the heart of \(\mathcal{D}\) is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms). </p>
+<p>First statement of Proposition A.3.2: <div class="proposition_thmwrapper " id="prop-AcyclicComplexAcyclic_image">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">.1</span>
+  </div>
+  <div class="proposition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.AcyclicComplexAcyclic_image def-acyclic, def-FilteredLifting, def-compatible </p>
+<p>The functor on the bounded homotopy categories induced by the functor \(T''\) of Definition&#160;<a href="index.html#def-fromAcyclic">.8</a> sends a (bounded) exact complex of \(T\)-acyclic objects to an exact complex. </p>
+
+  </div>
+</div> </p>
+<p><div class="definition_thmwrapper " id="def-derived">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.2</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.DerivedFunctor prop-AcyclicComplexAcyclic_image </p>
+<p>The functor \(DT:\Db (\mathcal{D}^\heartsuit )\to \Db ({\mathcal{D}’}^\heartsuit )\) given by the universal property of the localization functor of condition (b) above, and the property proved in Proposition&#160;<a href="index.html#prop-AcyclicComplexAcyclic_image">.1</a>. </p>
+
+  </div>
+</div> </p>
+<p>Second statement of Proposition A.3.2: </p>
+<p><div class="definition_thmwrapper " id="def-derived_comp">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">.3</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p> CategoryTheory.FilteredTriangulated.DerivedFunctor_comp def-derived </p>
+<p>There is an isomorphism of functors \(\real '\circ DT\stackrel{\sim }{\longrightarrow }T\circ \real \). </p>
+
+  </div>
+</div> </p>
+<p><div class="tikzcd" id="a0000000092">
     <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
-</div> [r, "FT"][d, "ω“] ’[d, "ω"]  [r, "FT"][d, "^n“] ’[d, "^n"]  [r, "FT"][d, "σ_≤n“] ’[d, "σ_≤n"] <br />D[r, "T“]  D’ D[r, "T“] D’ [r, "FT“] ’ <div class="tikzcd" id="a0000000018">
+</div> (D^\(\heartsuit \))[r, "DT"][d, "“] (D’^\(\heartsuit \))[d, "’"] <br />D[r, "T“] D’ <div class="tikzcd" id="a0000000093">
     <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
 </div> </p>
+<p><div class="remark_thmwrapper " id="rmk_der_fil1">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.4</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>Suppose that we are in the situation of Proposition&#160;A.3.2. If moreover \(T\colon \mathcal{D}\longrightarrow \mathcal{D}'\) is left t-exact and if \(\mathcal{I}\) is cogenerating in \(\mathcal{C}\) (i.e. every object of \(\mathcal{C}\) has a monomorphism into an object of \(\mathcal{I}\)), then the functor \(\H^ 0(T)\colon \mathcal{C}\longrightarrow \mathcal{C}'\) admits a right derived functor \(RT\colon \Dpl (\mathcal{C})\longrightarrow \Dpl (\mathcal{C}')\) by Proposition&#160;13.3.5 of&#160;<span class="cite">
+	[
+	<a href="index.html#KS1" >3</a>
+	]
+</span>, and the construction of \(RT\) in that proposition shows that \(RT\) sends that \(\Db (\mathcal{C})\) to \(\Db (\mathcal{C}')\) and that \(DT\) is the restriction of \(RT\) to \(\Db (\mathcal{C})\). We have a similar statement if \(T\) is right t-exact and \(\mathcal{I}\) is generating in \(\mathcal{C}\). </p>
 <p> </p>
 
   </div>
 </div> </p>
-<h1 id="a0000000019"> Section A.2: compatible t-structures and the realization functor</h1>
-<h1 id="a0000000020"> A.3: homological algebra calculations and functor reconstruction</h1>
+<p><div class="remark_thmwrapper " id="a0000000094">
+  <div class="remark_thmheading">
+    <span class="remark_thmcaption">
+    Remark
+    </span>
+    <span class="remark_thmlabel">.5</span>
+  </div>
+  <div class="remark_thmcontent">
+  <p>By Proposition&#160;10.2.7 of&#160;<span class="cite">
+	[
+	<a href="index.html#KS1" >3</a>
+	]
+</span>, to check assumption (b) of Proposition&#160;A.3.2, it suffices to find triangulated subcategories \(\mathcal{D}_0=\Kb (\mathcal{C})\supset \mathcal{D}_1\supset \ldots \supset \mathcal{D}_r=\Kb (\mathcal{I})\) of \(\Kb (\mathcal{C})\) such that, for every \(i\in \{ 1,\ldots ,r-1\} \), one of the following conditions holds: </p>
+<ul class="itemize">
+  <li><p>For every \(X\in \Ob \mathcal{D}_i\), there exists a quasi-isomorphism \(X\longrightarrow Y\) with \(Y\in \Ob \mathcal{D}_{i+1}\). </p>
+</li>
+  <li><p>For every \(X\in \Ob \mathcal{D}_i\), there exists a quasi-isomorphism \(Y\longrightarrow X\) with \(Y\in \Ob \mathcal{D}_{i+1}\). </p>
+</li>
+</ul>
+<p> </p>
+
+  </div>
+</div> </p>
 <p> </p>
 <dl class="bibliography">
   <dt><a name="Be1">1</a></dt>
   <dd><p>A.&#160;A. Beı̆linson, On the derived category of perverse sheaves. In <em>\(K\)-theory, arithmetic and geometry (Moscow, 1984–1986)</em>, pp. 27–41, Lecture Notes in Math. 1289, Springer, Berlin, 1987 </p>
 </dd>
-  <dt><a name="Schnur">2</a></dt>
+  <dt><a name="BBD">2</a></dt>
+  <dd><p>A.&#160;A. Beı̆linson, J.&#160;Bernstein, and P.&#160;Deligne, Faisceaux pervers. In <em>Analysis and topology on singular spaces, I (Luminy, 1981)</em>, pp. 5–171, Astérisque 100, Soc. Math. France, Paris, 1982 </p>
+</dd>
+  <dt><a name="KS1">3</a></dt>
+  <dd><p>M.&#160;Kashiwara and P.&#160;Schapira, <em>Categories and sheaves</em>. Grundlehren der Mathematischen Wissenschaften [Fundamental Principles of Mathematical Sciences] 332, Springer-Verlag, Berlin, 2006 </p>
+</dd>
+  <dt><a name="Schnur">4</a></dt>
   <dd><p>O.&#160;M. Schnürer, Homotopy categories and idempotent completeness, weight structures and weight complex functors. <span class="ttfamily">https://arxiv.org/abs/1107.1227</span>, 2011, <span class="ttfamily">1107.1227</span> </p>
 </dd>
 </dl>
 
 </div> <!--main-text -->
-<footer id="footnotes">
-<ol>
-  <li id="a0000000016">Note that there is a typo in Proposition&#160;A.3 of&#160;<span class="cite">
-	[
-	<a href="index.html#Be1" >1</a>
-	]
-</span>: the left and right adjoints are switched; see the correction in Proposition&#160;6.6 of&#160;<span class="cite">
-	[
-	<a href="index.html#Schnur" >2</a>
-	]
-</span>.</li>
-</ol>
-</footer>
 </div> <!-- content-wrapper -->
 </div> <!-- content -->
 </div> <!-- wrapper -->

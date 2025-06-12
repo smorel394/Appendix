@@ -4,122 +4,651 @@ This section corresponds to the Lean files \url{Acyclic.lean} and \url{Derived.l
 
 \subsection{$T$-acyclic objects}
 
-Now we come to the second goal of this subsection. We start with some preliminaries.
-Let $\Df,\Df'$ be triangulated categories and $T\colon \Df\ra\Df'$ be a triangulated functor. Suppose that we are given a t-structure $(\Df^{\leq 0},\Df^{\geq 0})$ (resp. $({\Df'}^{\leq 0},{\Df'}^{\geq 0})$)
-on $\Df$ (resp. $\Df'$), and denote the cohomology functors of this t-structure by $\H^i$ and its heart by $\Cf$ (resp. $\Cf'$).
-We say that an object $X$ of $\Cf$ is \emph{$T$-acyclic} if $T(X)\in\Ob\Cf'$. If $X$ is $T$-acyclic, then we have $\H^n T(X)=0$ for every $n\in\Z\setminus\{0\}$; 
-the converse if true if the t-structure on $\Df'$ is nondegenerate.
+Let $\Df,\Df'$ be triangulated categories and $T\colon \Df\ra\Df'$ be a triangulated functor. Suppose that we are given a t-structure 
+$(\Df^{\leq 0},\Df^{\geq 0})$ (resp. $({\Df'}^{\leq 0},{\Df'}^{\geq 0})$) on $\Df$ (resp. $\Df'$), and denote the cohomology functors of 
+this t-structure by $\H^i_t$ (resp. $\H^i_{t'}$) and its heart by $\Df^\heart$ (resp. ${\Df'}^\heart$).
+
+\begin{definition}
+\label{def-acyclic}
+\lean{CategoryTheory.Triangulated.TStructure.Acyclic}
+
+We say that an object $X$ of $\Df^\heart$ is \emph{$T$-acyclic} if $T(X)$ is in ${\Df'}^\heart$.
+
+\end{definition}
 
 \begin{lemma}
-The following hold:
-\begin{itemize}
-\item[(i)] The full subcategory of $T$-acyclic objects of $\Cf$ is stable by extensions.
+\label{prop-acyclic-H}
+\lean{CategoryTheory.Triangulated.TStructure.isZero_homology_of_acyclic}
+\leanok 
+\uses{def-acyclic}
+If $X$ is a $T$-acyclic object and $n\ne 0$ is an integer, then $\H^n_{t'}(F(X))$ is zero.
 
-\item[(ii)] Let $0\ra X\ra Y\ra Z\ra 0$ be an exact sequence in $\Cf$. If $X,Y,Z$ are $T$-acyclic, then $0\ra T(X)\ra T(Y)\ra T(Z)\ra 0$
-is an exact sequence in $\Cf'$.
-
-\item[(iii)] Let $(X^\bullet,d^\bullet)$ be a complex of objects of $\Cf$ and let $k\in\Z$. If $X^k$ is $T$-acyclic and $\H^{k+1}(X^\bullet,d^\bullet)=0$, then we have
-$\H^r T(\Ker d^{k+1})\simeq\H^{r+1}T(\Ker d^k)$ for every $r\in\Z\setminus\{-1,0\}$.
-
-\item[(iv)] Suppose that the t-structure on $\Df'$ is non-degenerate.
-Let $(X^\bullet,d^\bullet)$ be an exact complex of $T$-acyclic objects. Suppose that at least one of the following conditions hold:
-\begin{itemize}
-\item[(a)] The complex $(X^\bullet,d^\bullet)$ is bounded.
-\item[(b)] There exists $N\in\Nat$ such that $T(X)\in{\Df'}^{[-N,N]}$ for every $X\in\Ob\Cf$.
-
-\end{itemize}
-Then the complex $T(X^\bullet)$ of objects of $\Cf'$ is exact.
-
-\item[(v)] Suppose that the t-structure on $\Df'$ is non-degenerate and
-that there exists $N\in\Nat$ such that $T(X)\in{\Df'}^{[-N,N]}$ for every $X\in\Ob\Cf$.
-Let $(X^\bullet,d^\bullet)$ be a complex of $T$-acyclic objects of $\Cf$. If $X^\bullet$ is quasi-isomorphic to a bounded complex, then, for $n\in\Nat$ big enough,
-the complexes $\tau_{\leq n}X^\bullet$, $\tau_{\geq -n}X^\bullet$ and $\tau_{\leq n}\tau_{\geq -n}X^\bullet$ are complexes of $T$-acyclic objects, and all the maps in the square
-%\[\xymatrix{\tau_{\leq n}X^\bullet\ar[r]\ar[d] & \tau_{\leq n}\tau_{\geq -n}X^\bullet\ar[d]\\
-%X^\bullet\ar[r] & \tau_{\geq -n}X^\bullet}\]
-are quasi-isomorphisms. In particular, $X^\bullet$ is quasi-isomorphic to a bounded
-complex of $T$-acyclic objects.
-
-\end{itemize}
-\label{lemma_der_fil}
 \end{lemma}
 
 \begin{proof}
-We repeatedly use the fact that a complex $X\ra Y\ra Z$ in $\Cf$ is a short exact sequence if and only if can completed to a distinguished triangle of $\Df$
-(see Theorem~1.3.6 of~\cite{BBD}).
-
-Let $0\ra X\ra Y\ra Z\ra 0$ be an exact sequence in $\Cf$. If $X,Z$ are $T$-acyclic, then we have an exact triangle $T(X)\ra T(Y)\ra T(Z)\xra{+1}$ with
-$T(X),T(Z)$ in $\Cf'$, so $T(Y)$ is in $\Cf'$ and the sequence $0\ra T(X)\ra T(Y)\ra T(Z)\ra 0$ is exact in $\Cf'$. This proves (i) and (ii).
-
-In the situation of (iii), we have an exact sequence
-\[0\ra\Ker d^k\ra X^k\xra{d^k} \Im(d^k)=\Ker(d^{k+1})\ra 0,\]
-hence a distinguished triangle $T(\Ker d^k)\ra T(X^k)\ra T(\Ker d^{k+1})\xra{+1}$.
-As $\H^r T(X^k)=0$ for $r\ne 0$, the conclusion of (iii) follows from the long exact cohomology sequence of this triangle.
-
-Suppose that we are in the situation of (iv). Let $k\in\Z$, and let $r$ be a positive integer. By (iii), we have isomorphisms
-$\H^r T(\Ker d^k)\simeq\H^{r+l}T(\Ker d^{k-l})$ and $\H^{-r}T(\Ker d^k)\simeq\H^{-r-l}T(\Ker d^{k+l})$ for every $l\in\Nat$. Also, for $l$ big enough,
-we have $\H^{r+l}T(\Ker d^{k-l})=0$ and $\H^{-r-l}T(\Ker d^{k+l})=0$; 
-indeed, if (a) holds, this is true because $X^{k+l}=0$ and $X^{k-l}=0$ for $l$ big enough, and if (b) holds, this is true as soon as $l\geq N$. We deduce that $\H^rT(\Ker d^k)=0$
-and $\H^{-r}(\Ker d^k)=0$ for every $k\in\Z$ and every positive integer $r$, hence that all $\Ker d^k$ are $T$-acyclic. The conclusion of (iv) then follows by applying (ii) to the short exact
-sequences $0\ra\Ker d^k\ra X^k\ra\Ker d^{k+1}\ra 0$.
-
-Finally, suppose that we are in the situation of (v). As $X^\bullet$ is quasi-isomorphic to a bounded complex, there exists $M\in\Nat$ such that $\H^r(X^\bullet)=0$ for $r\not\in[-M,M]$.
-Let $k\in\Nat$. If $k\geq M$ and $r$ is a positive integer, then we have by (iii):
-\[\H^{-r}T(\Ker d^k)\simeq\H^{-r-N}T(\Ker d^{k+N})=0\]
-and
-\[H^r T(\Ker d^{-k})\simeq\H^{r+N}\Ker(d^{-k-N})=0.\]
-Similarly, if $k\geq N+M$ and $r$ is a positive integer, then we have by (iii):
-\[\H^rT(\Ker d^k)\simeq\H^{r+N}T(\Ker d^{k-N})=0\]
-and
-\[H^{-r} T(\Ker d^{-k})\simeq\H^{-r-N}\Ker(d^{-k+N})=0.\]
-We conclude that $\Ker(d^k)$ is $T$-acyclic for $k\geq N+M$ or $k\leq -N-M$. Also, if $n\leq -N-2$, then $\H^n(X^\bullet)=0$ and $\H^{n+1}(X^\bullet)=0$,
-hence $\Coker(d^{n-1})\simeq\Ker(d^{n+1})$. So the two statements of (v) hold for $n\geq N+M+2$.
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
 \end{proof}
+
+Note that the converse is true if the t-structure $t'$ is non-degenerate, but not in general.
+
+Lemma A.3.1(i) says that the full subcategory of $T$-acyclic objects is stable by extensions. In Lean, we 
+also need to prove the "obvious" facts that it is stable by isomorphisms, binary products and contains zero objects,
+hence is an additive category.
+
+\begin{lemma}
+\label{prop-acyclic-iso}
+\lean{CategoryTheory.Triangulated.AcyclicCategory.instIsClosedUnderIsomorphismsHeartAcyclic}
+\leanok 
+\uses{def-acyclic}
+The full subcategory of $T$-acyclic objects is closed under isomorphisms.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-acyclic-zero}
+\lean{CategoryTheory.Triangulated.AcyclicCategory.zero}
+\leanok 
+\uses{def-acyclic}
+Zero objects are $T$-acyclic.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-acyclic-prod}
+\lean{CategoryTheory.Triangulated.AcyclicCategory.prod}
+\leanok 
+\uses{def-acyclic}
+The full subcategory of $T$-acyclic objects is closed under binary products.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+%Lemma A.3.1(i)
+\label{prop-acyclic-extension}
+\lean{CategoryTheory.Triangulated.TStructure.extension_acyclic_of_acyclic}
+\leanok 
+\uses{def-acyclic}
+The full subcategory of $T$-acyclic objects is closed under extensions.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{definition}
+\label{def-hTh}
+\lean{CategoryTheory.Functor.fromHeartToHeart}
+The functor $T':\Df^\heart\to{\Df'}^\heart$ given by the restriction of $\H^0_{t'}\circ T$.
+
+\end{definition}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{definition}
+\label{def-fromAcyclic}
+\lean{CategoryTheory.Functor.fromAcyclic}
+The functor $T''$ from the full subcategory of $T$-acyclic objects to 
+${\Df'}^\heart$ given by the restriction of $T$.
+
+\end{definition}
+
+
+Lemma A.1.3(ii):
+
+\begin{lemma}
+%Lemma A.3.1(ii)
+\label{prop-acyclic-shortexact_aux}
+\lean{CategoryTheory.Functor.map_shortExact_exact}
+\leanok 
+\uses{def-hTh, def-acyclic}
+The image by the functor $T'$ of Definition~\ref{def-hTh} of a short exact complex of $T$-acyclic objects
+is an exact complex in ${\Df'}^\heart$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{remark}
+Lemma A.3.1(ii) actually says that the image is short exact, which we do not prove yet.
+See the next statements.
+
+\end{remark}
+
+
+\begin{lemma}
+\label{prop-mono_map_of_mono_and_acyclicCokernel}
+\lean{CategoryTheory.mono_map_of_mono_and_acyclicCokernel}
+\leanok 
+\uses{def-hTh, def-acyclic}
+The image by the functor $T'$ of Definition~\ref{def-hTh} of a monomorphism with an acyclic 
+cokernel is a monomorphism.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-epi_map_of_epi_and_acyclicKernel}
+\lean{CategoryTheory.epi_map_of_epi_and_acyclicKernel}
+\leanok 
+\uses{def-hTh, def-acyclic}
+The image by the functor $T'$ of Definition~\ref{def-hTh} of an epimorphism with an acyclic 
+kernel is an epimorphism.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+%Lemma A.3.1(ii)
+\label{prop-acyclic-shortexact}
+\lean{CategoryTheory.Functor.map_shortExact_of_shortExact_and_acyclic}
+\leanok 
+\uses{def-hTh, def-acyclic}
+The image by the functor $T'$ of Definition~\ref{def-hTh} of a short exact complex of $T$-acyclic objects
+is a short exact complex in ${\Df'}^\heart$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+For the proof of Lemma A.1.3(iii), we need a number of facts about preservation of kernels/cokernels/etc.
+First we prove a statement about preservation of images.
+
+\begin{definition}
+\label{def-acyclic-image}
+\lean{CategoryTheory.Functor.isoImageOfAcyclic}
+\leanok 
+\uses{def-hTh, def-acyclic}
+If a map $f$ in $\Df^\heart$ has an acyclic kernel and an acyclic cokernel, then
+the functor $T'$ of Definition~\ref{def-hTh} preserves the image of `$f$.
+
+\end{definition}
+
+\begin{remark}
+This isomorphism is not given by \url{CategoryTheory.PreservesImage.iso}, because we do not yet know at this 
+point that the kernel and the cokernel of $f$ are preserved. So we actually construct an image factorization of
+$T'(f)$ by hand in \url{imageFactorisation_map_of_acyclic_ker_coker} which has the desired image. Then we need
+to check that the isomorphism of Definition~\ref{def-acyclic-image} is compatible with \url{Abelian.image.ι}
+and \url{Abelian.factorThruImage}, this is done in \url{CategoryTheory.Functor.isoImageOfAcyclic_comp_ι}
+and \url{CategoryTheory.Functor.factorThruImage_comp_isoImageOfAcyclic}.
+
+\end{remark}
+
+We then look at the preservation of kernels and cokernels.
+
+\begin{lemma}
+\label{prop-mono_kernelComparison_of_acyclic_image}
+\lean{CategoryTheory.Functor.mono_kernelComparison_of_acyclic_image}
+\leanok 
+\uses{def-hTh, def-acyclic}
+If $f$ is a morphism in $\Df.heart$ with an acyclic image, then its kernel comparison morphism
+for the functor $T'$ of Definition~\ref{def-hTh} is a mono.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-epi_kernelComparison_of_acyclic_homology}
+\lean{CategoryTheory.Functor.epi_kernelComparison_of_acyclic_homology}
+\leanok 
+\uses{def-hTh, def-acyclic}
+If $f$ is a morphism in $\Df.heart$ with a $T$-acyclic image, a $T$-acyclic kernel and a $T$-acyclic cokernel,
+then its kernel comparison morphism
+for the functor $T'$ of Definition~\ref{def-hTh} is an epi.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-isIso_kernelComparison_of_acyclic_homology}
+\lean{CategoryTheory.Functor.isIso_kernelComparison_of_acyclic_homology}
+\leanok 
+\uses{def-hTh, def-acyclic}
+If $f$ is a morphism in $\Df.heart$ with a $T$-acyclic image, a $T$-acyclic kernel and a $T$-acyclic cokernel,
+then its kernel comparison morphism
+for the functor $T'$ of Definition~\ref{def-hTh} is an isomorphism.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-epi_cokernelComparison_of_acyclic_image}
+\lean{CategoryTheory.Functor.epi_cokernelComparison_of_acyclic_image}
+\leanok 
+\uses{def-hTh, def-acyclic}
+If $f$ is a morphism in $\Df.heart$ with an acyclic image, then its cokernel comparison morphism
+for the functor $T'$ of Definition~\ref{def-hTh} is an epi.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-mono_cokernelComparison_of_acyclic_homology}
+\lean{CategoryTheory.Functor.mono_cokernelComparison_of_acyclic_homology}
+\leanok 
+\uses{def-hTh, def-acyclic}
+If $f$ is a morphism in $\Df.heart$ with a $T$-acyclic image, a $T$-acyclic kernel and a $T$-acyclic cokernel,
+then its cokernel comparison morphism
+for the functor $T'$ of Definition~\ref{def-hTh} is a mono.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-isIso_cokernelComparison_of_acyclic_homology}
+\lean{CategoryTheory.Functor.isIso_cokernelComparison_of_acyclic_homology}
+\leanok 
+\uses{def-hTh, def-acyclic}
+If $f$ is a morphism in $\Df.heart$ with a $T$-acyclic image, a $T$-acyclic kernel and a $T$-acyclic cokernel,
+then its cokernel comparison morphism
+for the functor $T'$ of Definition~\ref{def-hTh} is an isomorphism.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{definition}
+\label{def-shortExact_connecting_iso}
+\lean{CategoryTheory.Functor.shortExact_connecting_iso}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a short exact sequence in $\Df^\heart$ whose second object $S.X_2$ is $T$-acyclic. Then, for every 
+$n\in\Z$, the connecting
+morphism in the long exact sequence of homology of the distinguished triangle in $\Df'$ image of $S$ by $T$
+(i.e. given by \url{CategoryTheory.Functor.shortExactComplex_to_triangle}) is an isomorphism from $n$th homology of
+$T(S.X_3)$ to the $(n + 1)$st homology of $T(S.X_1)$.
+\end{definition}
+
+Lemma A.1.3(iii):
+
+\begin{definition}
+%Lemma A.1.3(iii)
+\label{def-iso_cohomology_of_acyclic_and_exact}
+\lean{CategoryTheory.Functor.iso_cohomology_of_acyclic_and_exact}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a cochain complex in $\Df^\heart$, and let $r\in\Z$. 
+Suppose that $S$ is exact in degree $r + 1$ and that
+the $r$th entry of $S$ is $T$-acyclic. Then, for every $n\in\Z$ different from $0$ and $-1$, we have
+an isomorphism between the $n$th cohomology of $T(\Ker (S.d^{r+1}))$ and the
+$(n + 1)$st homology of $T(\Ker (S.d^r))$.
+\end{definition}
+
+We turn to the proof of Lemma A.1.3(iv).
+
+\begin{lemma}
+\label{prop-rightAcyclic_ker_of_bounded_complex}
+\lean{CategoryTheory.Functor.rightAcyclic_ker_of_bounded_complex}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a cochain complex in $\Df^\heart$, and let $k\in\Z$. 
+Suppose that $S$ is exact in degree $\le k$, and that
+the entries of $S$ are $T$-acyclic in degree $\le k$ and zero in small enough degree.
+
+Then the homology of $T(\Ker (S.d^r))$ is zero in positive degree.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-rightAcyclic_ker_of_bounded_functor}
+\lean{CategoryTheory.Functor.rightAcyclic_ker_of_bounded_functor}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Suppose that $T$ has finite cohomological dimension (relative to the t-structures $t$ and $t'$).
+Let $S$ be a cochain complex in $\Df^\heart$, and let $k\in\Z$. 
+Suppose that $S$ is exact in degree $\le k$, and that
+the entries of $S$ are $T$-acyclic in degree $\le k$.
+
+Then the homology of $T(\Ker (S.d^r))$ is zero in positive degree.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-leftAcyclic_ker_of_bounded_complex}
+\lean{CategoryTheory.Functor.leftAcyclic_ker_of_bounded_complex}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a cochain complex in $\Df^\heart$, and let $k\in\Z$. 
+Suppose that $S$ is exact in degree $> k$, and that
+the entries of $S$ are $T$-acyclic in degree $\ge k$ and zero in large enough degree.
+
+Then the homology of $T(\Ker (S.d^r))$ is zero in negative degree.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-leftAcyclic_ker_of_bounded_functor}
+\lean{CategoryTheory.Functor.leftAcyclic_ker_of_bounded_functor}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Suppose that $T$ has finite cohomological dimension (relative to the t-structures $t$ and $t'$).
+Let $S$ be a cochain complex in $\Df^\heart$, and let $k\in\Z$. 
+Suppose that $S$ is exact in degree $> k$, and that
+the entries of $S$ are $T$-acyclic in degree $\ge k$.
+
+Then the homology of $T(\Ker (S.d^r))$ is zero in negative degree.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+From now on, we suppose that the t-structure $t'$ on $\Df'$ is non-degenerate.
+
+\begin{lemma}
+\label{prop-acyclic_ker_of_bounded_exact_acyclic_complex}
+\lean{CategoryTheory.Functor.acyclic_ker_of_bounded_exact_acyclic_complex}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact, and that
+the entries of $S$ are $T$-acyclic in every degree and zero outside of a bounded interval.
+
+Then $\Ker (S.d^r)$ is $T$-acyclic for every $k\in\Z$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-acyclic_ker_of_exact_acyclic_complex_and_bounded_functor}
+\lean{CategoryTheory.Functor.acyclic_ker_of_exact_acyclic_complex_and_bounded_functor}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Suppose that $T$ has finite cohomological dimension (relative to the t-structures $t$ and $t'$).
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact  and that
+the entries of $S$ are $T$-acyclic in every degree.
+
+Then $\Ker (S.d^r)$ is $T$-acyclic for every $k\in\Z$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-acyclic_image_of_bounded_exact_acyclic_complex}
+\lean{CategoryTheory.Functor.acyclic_image_of_bounded_exact_acyclic_complex}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact, and that
+the entries of $S$ are $T$-acyclic in every degree and zero outside of a bounded interval.
+
+Then $\Ima (S.d^r)$ is $T$-acyclic for every $k\in\Z$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-acyclic_image_of_exact_acyclic_complex_and_bounded_functor}
+\lean{CategoryTheory.Functor.acyclic_image_of_exact_acyclic_complex_and_bounded_functor}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Suppose that $T$ has finite cohomological dimension (relative to the t-structures $t$ and $t'$).
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact  and that
+the entries of $S$ are $T$-acyclic in every degree.
+
+Then $\Ima (S.d^r)$ is $T$-acyclic for every $k\in\Z$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-acyclic_coker_of_bounded_exact_acyclic_complex}
+\lean{CategoryTheory.Functor.acyclic_coker_of_bounded_exact_acyclic_complex}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact, and that
+the entries of $S$ are $T$-acyclic in every degree and zero outside of a bounded interval.
+
+Then $\Coker (S.d^r)$ is $T$-acyclic for every $k\in\Z$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+\begin{lemma}
+\label{prop-acyclic_coker_of_exact_acyclic_complex_and_bounded_functor}
+\lean{CategoryTheory.Functor.acyclic_coker_of_exact_acyclic_complex_and_bounded_functor}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Suppose that $T$ has finite cohomological dimension (relative to the t-structures $t$ and $t'$).
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact  and that
+the entries of $S$ are $T$-acyclic in every degree.
+
+Then $\Coker (S.d^r)$ is $T$-acyclic for every $k\in\Z$.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+Lemma A.3.1(iv)(a) :
+
+\begin{lemma}
+%Lemma A.3.1(iv)(a)
+\label{prop-exact_map_of_exact_bounded_acyclic_complex}
+\lean{CategoryTheory.CochainComplex.exact_map_of_exact_bounded_acyclic_complex}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact, and that
+the entries of $S$ are $T$-acyclic in every degree and zero outside of a bounded interval.
+
+Then the image of $S$ by the functor $T'$ of Definition~\ref{def-hTh} is exact.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+Lemma A.3.1(iv)(b):
+
+\begin{lemma}
+%Lemma A.3.1(iv)(b)
+\label{prop-exact_map_of_exact_acyclic_complex_and_bounded_functor}
+\lean{CategoryTheory.CochainComplex.exact_map_of_exact_acyclic_complex_and_bounded_functor}
+\leanok 
+\uses{def-hTh, def-acyclic}
+Suppose that $T$ has finite cohomological dimension (relative to the t-structures $t$ and $t'$).
+Let $S$ be a cochain complex in $\Df^\heart$.
+Suppose that $S$ is exact  and that
+the entries of $S$ are $T$-acyclic in every degree.
+
+Then the image of $S$ by the functor $T'$ of Definition~\ref{def-hTh} is exact.
+
+\end{lemma}
+
+\begin{proof}
+\leanok
+%  \uses{thm:open_ample, lem:open_ample_immersion}
+\end{proof}
+
+
+There is no explicit formalization of Lemma A.3.1(v).
 
 
 \subsection{Functor reconstruction}
 
-The following proposition is essentially proved in Section~A.7 of \cite{Be1} .
+We keep the notation of the previous subsection, and we assume that the t-structure $t'$ on $\Df'$ is 
+non-degenerate. We also assume that we have filtered triangulated categories $\DF$ over $\Df$ and 
+$\DF'$ over $\Df'$, equipped with compatible t-structures $tF$ and $tF'$, as well as a filtered triangulated 
+functor $FT:\DF\to\DF'$ lifing $T:\Df\to\Df'$; this is condition (a) of Proposition A.3.2.
 
-\begin{proposition} 
-Let $\Df,\Df'$ be triangulated categories, and let $\DF$ (resp. $\DF'$) be an f-category over $\Df$ (resp. $\Df'$).
-Suppose that we are given compatible t-structures $(\Df^{\leq 0},\Df^{\geq 0})$ and $(\DF^{\leq 0},\DF^{\geq 0})$ (resp. $({\Df'}^{\leq 0},{\Df'}^{\geq 0})$
-and $({\DF'}^{\leq 0},{\DF'}^{\geq 0})$) on $\Df$ and $\DF$ (resp. $\Df'$ and $\DF'$), and denote the hearts of this t-structures 
-by $\Cf$ and $\Cf_F$ (resp. $\Cf'$ and $\Cf'_F$). Suppose also that the t-structure on $\Df'$ is non-degenerate.
+Condition (b) of Proposition A.3.2 says that the "obvious" functor from the bounded homotopy category of
+complexes of $T$-acyclic objects in the heart $\Df$ to the derived category of the heart of $\Df$
+is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms).
 
-Let $T\colon \Df\ra\Df'$ be a triangulated functor. Suppose that the following conditions are satisfied:
-\begin{itemize}
-\item[(a)] The functor $T$ admits an f-lifting $FT\colon \DF\ra\DF'$.
+First statement of Proposition A.3.2:
+\begin{proposition}
+\label{prop-AcyclicComplexAcyclic_image}
+\lean{CategoryTheory.FilteredTriangulated.AcyclicComplexAcyclic_image}
+\leanok 
+\uses{def-acyclic, def-FilteredLifting, def-compatible}
 
-\item[(b)] Let $\If:=\{X\in\Cf\mid T(X)\in\Cf'\}$ be the full subcategory of $T$-acyclic objects of $\Cf$. Then the functor
-$\Kb(\If)/\Nb(\If)\ra\Db(\Cf)$ is an equivalence, where $\Kb(\If)$ is the category of bounded complexes of objects of $\If$ up to
-homotopy and $\Nb(\If)$ is its full subcategory of exact complexes.
+The functor on the bounded homotopy categories induced by the functor $T''$ of 
+Definition~\ref{def-fromAcyclic}
+sends a (bounded) exact complex of $T$-acyclic objects to an exact complex.
 
-\end{itemize}
-
-Then the functor $\Kb(\If)\xra{\Kb(T)}\Kb(\Cf')\ra\Db(\Cf')$ sends $\Nb(\If)$ to $0$, hence induces a functor
-$DT\colon \Db(\Cf)\ra\Db(\Cf')$, and the following diagram commutes up to natural isomorphism:
-%\[\xymatrix{\Db(\Cf)\ar[r]^-{DT}\ar[d]_{\real} & \Db(\Cf')\ar[d]^{\real} \\
-%\Df\ar[r]_-{T} & \Df'}\]
-
-\label{prop_der_fil}
 \end{proposition}
 
-\begin{proof} 
-The first statement follows from point (iv) of Lemma~\ref{lemma_der_fil}.
+\begin{definition}
+\label{def-derived}
+\lean{CategoryTheory.FilteredTriangulated.DerivedFunctor}
+\leanok 
+\uses{prop-AcyclicComplexAcyclic_image}
 
-We prove the second statement. 
-In Theorem~\ref{thm_real}, we defined equivalences $G\colon \Cf_F\ra\Cb(\Cf)$ and $G'\colon \Cf'_F\ra\Cb(\Cf')$.
-By point (ii) of the same theorem, the functor $\omega\circ G^{-1}\colon \Cb(\Cf)\ra\Df$ (resp. $\omega\circ {G'}^{-1}\colon \Cb(\Df')\ra\Df'$) sends exact complexes to $0$, hence
-induces a functor $\Db(\Cf)\ra\Df$ (resp. $\Db(\Cf')\ra\Df'$), which is the realization functor $\real$.
-Now let $\If_F$ be the full subcategory of $\Cf_F$ whose objects are the $X$ such that $\Gra^iX[i]\in\Ob\If$ for every $i\in\Z$, i.e. such that $G(X)$
-is in $\Cb(\If)$. Proposition~\ref{prop_f_lifting} implies that $FT$ sends
-$\If_F$ to $\Cf'_F$, and that the restrictions of $G'\circ FT$ and $\Cb(T)\circ G$ to $\If_F$ are isomorphic. So we get an isomorphism of functors on $\Cb(\If)$:
-\[T\circ\omega\circ G^{-1}\simeq\omega\circ FT\circ G^{-1}\simeq\omega\circ{G'}^{-1}\circ\Cb(T).\]
-This gives the isomorphism $T\circ\real\simeq\real\circ DT$.
-\end{proof}
+The functor $DT:\Db(\Df^\heart)\to\Db({\Df'}^\heart)$ given by the universal property of the 
+localization functor of condition (b) above, and the property proved in Proposition~\ref{prop-AcyclicComplexAcyclic_image}.
+
+\end{definition}
+
+Second statement of Proposition A.3.2:
+
+\begin{definition}
+\label{def-derived_comp}
+\lean{CategoryTheory.FilteredTriangulated.DerivedFunctor_comp}
+\leanok 
+\uses{def-derived}
+
+There is an isomorphism of functors $\real'\circ DT\iso T\circ\real$.
+
+\end{definition}
+
+\begin{tikzcd}
+\Db(\Df^\heart)\ar[r, "DT"]\ar[d, "\real"'] &\Db({\Df'}^\heart)\ar[d, "\real'"]
+\\
+\Df\ar[r, "T"'] &\Df'
+\end{tikzcd}
+
 
 \begin{remark}
-Suppose that we are in the situation of Proposition~\ref{prop_der_fil}.
+Suppose that we are in the situation of Proposition~A.3.2.
 If moreover $T\colon \Df\ra\Df'$ is left t-exact and if $\If$ is cogenerating in $\Cf$ (i.e. every object of $\Cf$ has a monomorphism into an object of $\If$), then the functor
 $\H^0(T)\colon \Cf\ra\Cf'$ admits a right derived functor $RT\colon \Dpl(\Cf)\ra\Dpl(\Cf')$ by Proposition~13.3.5 of~\cite{KS1}, and the construction of $RT$ in that proposition shows that
 $RT$ sends that $\Db(\Cf)$ to $\Db(\Cf')$ and that $DT$ is the restriction of $RT$ to $\Db(\Cf)$. We have a similar statement if $T$ is right t-exact and $\If$ is generating in $\Cf$.
@@ -128,7 +657,7 @@ $RT$ sends that $\Db(\Cf)$ to $\Db(\Cf')$ and that $DT$ is the restriction of $R
 \end{remark}
 
 \begin{remark}
-By Proposition~10.2.7 of~\cite{KS1}, to check assumption (b) in the statement of Proposition~\ref{prop_der_fil}, it suffices to find triangulated subcategories
+By Proposition~10.2.7 of~\cite{KS1}, to check assumption (b) of Proposition~A.3.2, it suffices to find triangulated subcategories
 $\Df_0=\Kb(\Cf)\supset\Df_1\supset\ldots\supset\Df_r=\Kb(\If)$ of $\Kb(\Cf)$ such that, for every $i\in\{1,\ldots,r-1\}$, one of the following conditions holds:
 \begin{itemize}
 \item For every $X\in\Ob\Df_i$, there exists a quasi-isomorphism $X\ra Y$ with $Y\in\Ob\Df_{i+1}$.

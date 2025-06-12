@@ -9,4 +9,4 @@
 \contentsline {subsection}{\numberline {2.2}Realization}{11}{subsection.0.2.2}%
 \contentsline {section}{\numberline {3}Section A.3: homological algebra calculations and functor reconstruction}{11}{section.0.3}%
 \contentsline {subsection}{\numberline {3.1}$T$-acyclic objects}{11}{subsection.0.3.1}%
-\contentsline {subsection}{\numberline {3.2}Functor reconstruction}{13}{subsection.0.3.2}%
+\contentsline {subsection}{\numberline {3.2}Functor reconstruction}{15}{subsection.0.3.2}%

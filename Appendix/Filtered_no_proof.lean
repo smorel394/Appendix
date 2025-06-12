@@ -1171,6 +1171,26 @@ instance (n : ℤ) : (Gr L n).IsTriangulated := by
 def Gr_vs_Gr : Gr L n ≅ truncGELE n n ⋙ shiftFunctor₂ C (-n) ⋙ ForgetFiltration L := sorry
 -- Use `ForgetFiltration_commShift`.
 
+lemma Gr_bounded_above (X : C) : ∃ (n : ℤ), ∀ (m : ℤ), n < m →
+    IsZero ((Gr L m).obj X) := by
+  obtain ⟨n, hn⟩ := FilteredTriangulated.LE_exhaustive X
+  have : FilteredTriangulated.IsLE X n := {le := hn}
+  use n
+  intro m hm
+  refine (ForgetFiltration L).map_isZero ?_
+  dsimp [FilteredTriangulated.truncGELE]
+  exact FilteredTriangulated.isZero _ n m hm
+
+lemma Gr_bounded_below (X : C) : ∃ (n : ℤ), ∀ (m : ℤ), m < n →
+    IsZero ((Gr L m).obj X) := by
+  obtain ⟨n, hn⟩ := FilteredTriangulated.GE_exhaustive X
+  have : FilteredTriangulated.IsGE X n := {ge := hn}
+  use n
+  intro m hm
+  refine (ForgetFiltration L).map_isZero ?_
+  dsimp [FilteredTriangulated.truncGELE]
+  exact FilteredTriangulated.isZero _ m n hm
+
 -- Proposition A.1.5(i).
 
 -- Again, the isomorphisms are explicit.

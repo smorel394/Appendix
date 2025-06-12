@@ -73,7 +73,7 @@ local instance : L₂.functor.CommShift ℤ := L₂.commShift
 local instance : L₂.functor.IsTriangulated := L₂.triangulated
 
 
-namespace Triangulated.Filtered
+namespace FilteredTriangulated
 
 local instance : HasDerivedCategory t₁.Heart := HasDerivedCategory.standard _
 
@@ -99,15 +99,14 @@ def AcyclicComplexAcyclic : Triangulated.Subcategory
   (HomotopyCategory.bounded _).ι ⋙ HomotopyCategory.homologyFunctor
   t₁.Heart (ComplexShape.up ℤ) 0).homologicalKernel
 
--- A complex in the homotopy category of `AcyclicCategory T t₁ t₂` is acyclic if and only
--- if its image in the homotopy category of `t₁.Heart` ia acyclic.
-
 instance : ObjectProperty.IsClosedUnderIsomorphisms (AcyclicComplexAcyclic t₁ t₂ T).P :=
   Functor.instIsClosedUnderIsomorphismsPHomologicalKernel
   (Functor.mapHomotopyCategoryBounded (Acyclic T t₁ t₂).ι ⋙
   (HomotopyCategory.bounded _).ι ⋙ HomotopyCategory.homologyFunctor
   t₁.Heart (ComplexShape.up ℤ) 0)
 
+-- A complex in the homotopy category of `AcyclicCategory T t₁ t₂` is acyclic if and only
+-- if its image in the homotopy category of `t₁.Heart` is exact.
 lemma AcyclicComplexAcyclic_iff (K : HomotopyCategory.Bounded (Acyclic T t₁ t₂).FullSubcategory) :
     (AcyclicComplexAcyclic t₁ t₂ T).P K ↔ (HomotopyCategory.Bounded.subcategoryAcyclic t₁.Heart).P
     (((Acyclic T t₁ t₂).ι.mapHomotopyCategoryBounded).obj K) := sorry
@@ -520,6 +519,6 @@ def DerivedFunctor_comp :
     ≪≫ (Functor.associator tF₁.ιHeart (ForgetFiltration L₁) T).symm
   exact isoWhiskerLeft tF₁.ιHeart (lifting_forgetFiltrating_comm L₁ L₂ FT)
 
-end Triangulated.Filtered
+end FilteredTriangulated
 
 end CategoryTheory

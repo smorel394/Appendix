@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1749744130.1795 "/home/sophie/lean4/Appendix/blueprint/src/print.tex" "print.pdf" "print" 1749744132.43192 0
+["pdflatex"] 1749754999.75763 "/home/sophie/lean4/Appendix/blueprint/src/print.tex" "print.pdf" "print" 1749755008.87442 0
   "/etc/texmf/web2c/texmf.cnf" 1730460179.73442 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/sophie/lean4/Appendix/blueprint/src/print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -154,15 +154,15 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1745826768 10844494 b27f5ab6a2b0a9f8a9c8cfa46549b55f ""
   "content.tex" 1749743144.01979 1728 5c6ff748d604e0d2695391a9c5260317 ""
-  "der.tex" 1749743348.60702 9008 99d60cda588ae45d5b58a5c6be23483c ""
-  "ftri.tex" 1749743303.20897 32588 d06f343ad545720c9ede599c23672bfe ""
-  "macros/common.tex" 1749733976.20009 4178 563317c51a042d1058e4c4b083e2bcdb ""
+  "der.tex" 1749754988.16754 20368 18b3bd05d16851116d177d9c143d2fbc ""
+  "ftri.tex" 1749754711.98825 33043 43c5d841efbeef7647c779d32c99e592 ""
+  "macros/common.tex" 1749752777.47218 4252 f1fd0d9af60933ac62afaa99eaf05d06 ""
   "macros/print.tex" 1749672939.61511 1101 87627b2ec24fef68edc71c13f43f7bab ""
-  "print.aux" 1749744132.29897 6776 7ba9261c0abc900b05adf902b460459a "pdflatex"
-  "print.out" 1749744132.29997 3061 c39d597ac653f7f13f82190902a91050 "pdflatex"
+  "print.aux" 1749755008.46157 10125 5e8aeabcab84c9c9a62bba1f3bc9c8f7 "pdflatex"
+  "print.out" 1749755008.46657 3061 c39d597ac653f7f13f82190902a91050 "pdflatex"
   "print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""
-  "print.toc" 1749744132.29997 1243 d08bb4f0c16d558eae9c5304b1319317 "pdflatex"
-  "tstruct.tex" 1749744129.98497 3511 249cae156d569acc4a8d89db326f211c ""
+  "print.toc" 1749755008.46757 1243 4aa0b222e7548b8f45b0dcede7e0187f "pdflatex"
+  "tstruct.tex" 1749748503.85839 5890 8b8d0ccae8a7a2cd1f13c468ed051599 ""
   (generated)
   "print.aux"
   "print.log"

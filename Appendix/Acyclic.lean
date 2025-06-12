@@ -27,11 +27,17 @@ variable (F : C ⥤ D) (t₁ : TStructure C) (t₂ : TStructure D)
 local instance : t₁.HasHeart := hasHeartFullSubcategory t₁
 local instance : t₂.HasHeart := hasHeartFullSubcategory t₂
 
+namespace Triangulated
+
+namespace TStructure
+
 /--
 An object of `t₁.heart` is called `F`-acyclic if its image by `F` is concentrated in degree
 `0` (for `t₂`).
 -/
 def Acyclic : ObjectProperty t₁.Heart := fun X ↦ t₂.heart (F.obj X.1)
+
+end Triangulated.TStructure
 
 namespace Functor
 
@@ -47,9 +53,11 @@ abbrev fromAcyclic : (Acyclic F t₁ t₂).FullSubcategory ⥤ t₂.Heart := by
 instance [F.Additive] : Functor.Additive (t₁.ιHeart ⋙ F) where
   map_add := by
     intro X Y f g
-    simp only [comp_obj, comp_map, map_add]
+    simp
 
 end Functor
+
+namespace Triangulated
 
 namespace AcyclicCategory
 
@@ -108,7 +116,8 @@ instance [F.Additive] : HasFiniteBiproducts (Acyclic F t₁ t₂).FullSubcategor
 instance [F.Additive] : HasBinaryBiproducts (Acyclic F t₁ t₂).FullSubcategory :=
   hasBinaryBiproducts_of_finite_biproducts _
 
-end AcyclicCategory
+end Triangulated.AcyclicCategory
+
 
 instance [F.Additive] : Functor.Additive (F.fromAcyclic t₁ t₂) where
   map_add := by
@@ -121,7 +130,7 @@ instance : Functor.Additive (Acyclic F t₁ t₂).ι where
     intro X Y f g
     simp
 
-section Triangulated
+namespace Triangulated.TStructure
 
 variable [IsTriangulated C] [F.CommShift ℤ] [F.IsTriangulated]
 
@@ -148,7 +157,7 @@ lemma shortExactComplex_to_triangle_distinguished {S : ShortComplex t₁.Heart}
     (he : S.ShortExact) : shortExactComplex_to_triangle F t₁ he ∈ distinguishedTriangles :=
   F.map_distinguished _ (heartShortExactTriangle_distinguished t₁ _ he)
 
-end Triangulated
+end Triangulated.TStructure
 
 section Triangulated
 
@@ -169,6 +178,8 @@ noncomputable abbrev fromHeartToHeart : t₁.Heart ⥤ t₂.Heart :=
 
 end Functor
 
+namespace Triangulated.TStructure
+
 /--
 If `X : t₁.heart` is acyclic, then the homology of `F.obj X` in nonzero degrees is zero.
 -/
@@ -181,7 +192,11 @@ lemma isZero_homology_of_acyclic {X : t₁.Heart} (hX : Acyclic F t₁ t₂ X) (
   · have := hX.2
     exact t₂.isZero_homology_of_isGE (F.obj X.1) n 0 (lt_iff_not_ge.mpr h)
 
-variable [IsTriangulated C] [F.CommShift ℤ] [F.IsTriangulated ]
+end Triangulated.TStructure
+
+variable [CategoryTheory.IsTriangulated C] [F.CommShift ℤ] [F.IsTriangulated ]
+
+namespace Functor
 
 /--
 If `S` is a short exact triangle in `t₁.heart`, then its image by `F.fromHeartToHeart`
@@ -373,7 +388,7 @@ lemma epi_kernelComparison_of_acyclic_homology {X Y : t₁.Heart} (f : X ⟶ Y)
 If `f` is a morphism in `t₁.heart` with an acyclic image, an acyclic kernel and an acyclic cokernel,
 then its kernel comparison morphism for the functor `F.fromHeartToHeart` is an iso.
 -/
-noncomputable def isIso_kernelComparison_of_acyclic_homology {X Y : t₁.Heart} (f : X ⟶ Y)
+lemma isIso_kernelComparison_of_acyclic_homology {X Y : t₁.Heart} (f : X ⟶ Y)
     (h₁ : Acyclic F t₁ t₂ (cokernel f)) (h₂ : Acyclic F t₁ t₂ (kernel f))
     (h₃ : Acyclic F t₁ t₂ (Abelian.image f)) :
     IsIso (kernelComparison f (F.fromHeartToHeart t₁ t₂)) :=
@@ -442,7 +457,7 @@ noncomputable def isIso_cokernelComparison_of_acyclic_homology {X Y : t₁.Heart
 
 /--
 Let `S` be a short exact sequence in `t₁.heart` such that `S.X₂` is acyclic. Then the connecting
-morphism in the long exact sequence of homology of the exact triangle in `D` "image of `S` by `F`"
+morphism in the long exact sequence of homology of the distinguished triangle in `D` "image of `S` by `F`"
 (i.e. given by `shortExactComplex_to_triangle`) is an isomorphism from `n`th homology of
 `F.obj S.X₃` to the `(n + 1)`st homology of `F.obj S.X₁`.
 -/
@@ -478,9 +493,9 @@ noncomputable def shortExact_connecting_iso {S : ShortComplex t₁.Heart} (hS : 
   exact @asIso _ _ _ _ f ((isIso_iff_mono_and_epi f).mpr ⟨h₁, h₂⟩)
 
 /--
-Let `S` ba a cochain complex in `t₁.heart`. Suppose that `S` is exact in degree `r + 1`, and that
+Let `S` be a cochain complex in `t₁.heart`. Suppose that `S` is exact in degree `r + 1`, and that
 the `r`th entry of `S` is acyclic. Then, for every `n` different from `0` and `-1`, we have
-an isomorphism betweem the `n`th cohomology of `F.obj (kernel (S.d (r + 1) (r + 2)))` and the
+an isomorphism between the `n`th cohomology of `F.obj (kernel (S.d (r + 1) (r + 2)))` and the
 `(n + 1)`st homology of `F.obj (kernel (S.d r (r + 1)))`.
 -/
 noncomputable def iso_cohomology_of_acyclic_and_exact (S : CochainComplex t₁.Heart ℤ) (r k l m : ℤ)
@@ -565,7 +580,7 @@ noncomputable def leftAcyclic_ker_aux (S : CochainComplex t₁.Heart ℤ) {r k l
 
 /--
 Let `S` be a cochain complex in `t₁.heart`. Suppose that `S` is exact in degree `> k`,
-and that the entries of `S` are acyclic in degree `≤ k` and zero in large enough degree.
+and that the entries of `S` are acyclic in degree `≥ k` and zero in large enough degree.
 Then the homology of `F.obj (kernel (S.d k (k + 1)))` is zero in negative degree.
 -/
 lemma leftAcyclic_ker_of_boundedComplex (S : CochainComplex t₁.Heart ℤ) {r k l : ℤ}
@@ -803,9 +818,10 @@ noncomputable def preservesLeftHomology_of_acyclic (S : ShortComplex t₁.Heart)
   refine Functor.PreservesLeftHomologyOf.mk' (F.fromHeartToHeart t₁ t₂)
     (ShortComplex.LeftHomologyData.ofAbelian S)
 
+end Functor
+
 namespace ShortComplex
 
-omit [t₂.NonDegenerate] in
 /--
 Let `S` be a short complex in `t₁.heart`.  If `S` is exact, `S.f` has an acyclic kernel,
 and `S.g` has an acyclic kernel, an acyclic cokernel and an acyclic image, then
@@ -828,7 +844,7 @@ Let `S` be a cochain complex in `t₁.heart`. Suppose that `S` is exact and that
 of `S` are acyclic and zero outside of a bounded interval.
 Then the image of `S` by `F.fromHeartToHeart` is exact.
 -/
-lemma exact_map_of_exact_bounded_acyclic_complex (S : CochainComplex t₁.Heart ℤ) {a b : ℤ}
+lemma exact_map_of_exact_bounded_acyclic_complex [t₂.NonDegenerate] (S : CochainComplex t₁.Heart ℤ) {a b : ℤ}
     (hexact : ∀ (i : ℤ), S.ExactAt i)
     (hacy : ∀ (i : ℤ), Acyclic F t₁ t₂ (S.X i))
     (ha : ∀ (j : ℤ), j ≤ a → IsZero (S.X j))
@@ -854,7 +870,8 @@ Let `S` be a cochain complex in `t₁.heart`. Suppose that `S` is exact and that
 of `S` are acyclic.
 Then the image of `S` by `F.fromHeartToHeart` is exact.
 -/
-lemma exact_map_of_exact_acyclic_complex_and_bounded_functor (S : CochainComplex t₁.Heart ℤ)
+lemma exact_map_of_exact_acyclic_complex_and_bounded_functor [t₂.NonDegenerate]
+    (S : CochainComplex t₁.Heart ℤ)
     {a b: ℤ} (hexact : ∀ (i : ℤ), S.ExactAt i)
     (hacy : ∀ (i : ℤ), Acyclic F t₁ t₂ (S.X i))
     (ha : ∀ (X : t₁.Heart) (j : ℤ), j ≤ a → IsZero ((t₂.homology j).obj (F.obj X.1)))

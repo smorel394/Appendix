@@ -126,7 +126,7 @@ section Realization
 -- Theorem A.2.3
 -- First we need to construct the functor `H_F : C → CochainComplex t.Heart ℤ`.
 -- In the paper, the `n`th degree of `H_F X` is defined as
--- `(t.homology n).obj ((Gr L n).obj X)`. Using `ForgetFiltration_for_Gr`, we can reformulate
+-- `(t.homology n).obj ((Gr L n).obj X)`. Given the new definition of `Gr`, we can rewrite
 -- this as `(t.homology n).obj ((ForgetFiltration L).obj ((truncGELE n n).obj X))`, which
 -- is useful to construct the differentials.
 
@@ -248,28 +248,6 @@ def FilteredToComplexObj : CochainComplex (C ⥤ t.Heart) ℤ :=
 
 def FilteredToComplex : C ⥤ CochainComplex t.Heart ℤ := (FilteredToComplexObj L t).asFunctor
 
-omit [IsTriangulated C] [IsTriangulated A] in
-lemma Gr_bounded_above (X : C) : ∃ (n : ℤ), ∀ (m : ℤ), n < m →
-    IsZero ((Gr L m).obj X) := by
-  obtain ⟨n, hn⟩ := FilteredTriangulated.LE_exhaustive X
-  have : FilteredTriangulated.IsLE X n := {le := hn}
-  use n
-  intro m hm
-  refine (ForgetFiltration L).map_isZero ?_
-  dsimp [FilteredTriangulated.truncGELE]
-  exact FilteredTriangulated.isZero _ n m hm
-
-omit [IsTriangulated C] [IsTriangulated A] in
-lemma Gr_bounded_below (X : C) : ∃ (n : ℤ), ∀ (m : ℤ), m < n →
-    IsZero ((Gr L m).obj X) := by
-  obtain ⟨n, hn⟩ := FilteredTriangulated.GE_exhaustive X
-  have : FilteredTriangulated.IsGE X n := {ge := hn}
-  use n
-  intro m hm
-  refine (ForgetFiltration L).map_isZero ?_
-  dsimp [FilteredTriangulated.truncGELE]
-  exact FilteredTriangulated.isZero _ m n hm
-
 omit [IsTriangulated C] in
 lemma FilteredToComplex_isBounded (X : C) :
     CochainComplex.bounded t.Heart ((FilteredToComplex L t).obj X) := by
@@ -309,7 +287,7 @@ def HomologyFunctor_iso :
 
 -- Theorem A.2.3(ii):
 -- We want the functor to send quasi-isomorphisms to isomorphisms.
-def Realization_aux :
+lemma Realization_aux :
     (CochainComplex.Bounded.quasiIso (C := t.Heart)).IsInvertedBy
     ((tF.ιHeart ⋙ FilteredToBoundedComplex L t).inv ⋙ tF.ιHeart ⋙
     (ForgetFiltration L)) := sorry
