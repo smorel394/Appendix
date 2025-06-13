@@ -158,7 +158,7 @@ and of $\iota$.
 \leanok
 \uses{{def-truncLE}}
 
-For every $n\in\Z$, we denote by $truncLEπ n : 𝟭 \DF \ra \sigma_{\le n}$ the unit of the adjunction.
+For every $n\in\Z$, we denote by $truncLEπ\ n : {\ungras}_{\DF} \ra \sigma_{\le n}$ the unit of the adjunction.
 
 \end{definition}
 
@@ -181,7 +181,6 @@ and of $\iota$.
 \leanok
 \uses{def-truncGE}
 
-For every $n\in\Z$, we denote by $truncGEι n : \sigma_{\ge n} \ra 𝟭 \DF$ the counit of the adjunction.
 
 \end{definition}
 
@@ -434,7 +433,7 @@ Now we write the existence statement of Proposition A.1.3(ii).
 \label{def-truncLEGE}
 \lean{CategoryTheory.FilteredTriangulated.truncLEGE}
 \leanok
-\uses{def-truncLE, def-truncGE}LEGE
+\uses{def-truncLE, def-truncGE}
 
 For $a,b\in\Z$, we define $\sigma'_{[a,b]} : \DF\ra\DF$ as $\sigma_{\leq b}\circ\sigma_{\geq a}$.
 

@@ -600,7 +600,9 @@ non-degenerate. We also assume that we have filtered triangulated categories $\D
 $\DF'$ over $\Df'$, equipped with compatible t-structures $tF$ and $tF'$, as well as a filtered triangulated 
 functor $FT:\DF\to\DF'$ lifing $T:\Df\to\Df'$; this is condition (a) of Proposition A.3.2.
 
-Condition (b) of Proposition A.3.2 says that the "obvious" functor from the bounded homotopy category of
+Condition (b) of Proposition A.3.2 says that the "obvious" functor 
+\[Q:\Kb(\If) \to \Db(\Df^\heart)\]
+from the bounded homotopy category of
 complexes of $T$-acyclic objects in the heart $\Df$ to the derived category of the heart of $\Df$
 is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms).
 
@@ -611,7 +613,9 @@ First statement of Proposition A.3.2:
 \leanok 
 \uses{def-acyclic, def-FilteredLifting, def-compatible}
 
-The functor on the bounded homotopy categories induced by the functor $T''$ of 
+The functor 
+\[\Kb(T''):\Kb(\If)\to\Kb({\Df'}^\heart)\]
+on the bounded homotopy categories induced by the functor $T''$ of 
 Definition~\ref{def-fromAcyclic}
 sends a (bounded) exact complex of $T$-acyclic objects to an exact complex.
 
@@ -626,7 +630,14 @@ sends a (bounded) exact complex of $T$-acyclic objects to an exact complex.
 The functor $DT:\Db(\Df^\heart)\to\Db({\Df'}^\heart)$ given by the universal property of the 
 localization functor of condition (b) above, and the property proved in Proposition~\ref{prop-AcyclicComplexAcyclic_image}.
 
+\begin{tikzcd}
+\Kb(\If)\ar[r, "\Kb(T'')"]\ar[d, "Q"'] &\Kb({\Df'}^\heart)\ar[d, "Q"]
+\\
+\Db(\Df^\heart)\ar[r, dotted, "DT"'] &\Db({\Df'}^\heart)
+\end{tikzcd}
+
 \end{definition}
+
 
 Second statement of Proposition A.3.2:
 

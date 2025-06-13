@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1749762537.95654 "/home/sophie/lean4/Appendix/blueprint/src/print.tex" "print.pdf" "print" 1749762540.68556 0
+["pdflatex"] 1749806266.80455 "/home/sophie/lean4/Appendix/blueprint/src/print.tex" "print.pdf" "print" 1749806270.54978 0
   "/etc/texmf/web2c/texmf.cnf" 1730460179.73442 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/sophie/lean4/Appendix/blueprint/src/print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -154,14 +154,14 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1745826768 10844494 b27f5ab6a2b0a9f8a9c8cfa46549b55f ""
   "content.tex" 1749755587.16348 1773 a9435a907ccb43a6350adb86d88b7d5a ""
-  "der.tex" 1749762537.71554 21396 c689587e2ee189d9b423c1cf8d7828a5 ""
-  "ftri.tex" 1749762388.92578 33099 d249f82a64cc13be94879af523fba655 ""
+  "der.tex" 1749806262.17542 21636 d3d44d65f5a4f6f6acf8ee59127f7fa1 ""
+  "ftri.tex" 1749770685.06559 32996 04f964efa5a1027986acf7f7956f59b3 ""
   "macros/common.tex" 1749760270.57067 4252 427c68c2e31c873653a6ea76743d8b89 ""
   "macros/print.tex" 1749672939.61511 1101 87627b2ec24fef68edc71c13f43f7bab ""
-  "print.aux" 1749762540.54753 10046 fe49c10c37d91a9f96be472a4f7a480d "pdflatex"
-  "print.out" 1749762540.54853 2992 446799e6cde558c5fc743f8e1ba4725c "pdflatex"
+  "print.aux" 1749806270.23239 10046 0efea1a0f975c8a31a6f5ee1fa5c416d "pdflatex"
+  "print.out" 1749806270.23539 2992 446799e6cde558c5fc743f8e1ba4725c "pdflatex"
   "print.tex" 1749716584.63018 1130 629b9907a7d92b99af317e3d8686cc99 ""
-  "print.toc" 1749762540.54953 1166 4180fdd6b85844fb59b6ddff0887751f "pdflatex"
+  "print.toc" 1749806270.23539 1166 4180fdd6b85844fb59b6ddff0887751f "pdflatex"
   "tstruct.tex" 1749762452.57768 5884 f9bee65fea998d978786ca61520e3437 ""
   (generated)
   "print.aux"

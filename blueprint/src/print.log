@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.4.28)  12 JUN 2025 23:08
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.4.28)  13 JUN 2025 11:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -822,7 +822,7 @@ Chapter 1.
 [3
 
 ] [4] [5] [6] [7] [8] [9]
-Overfull \hbox (13.70299pt too wide) in paragraph at lines 880--880
+Overfull \hbox (13.70299pt too wide) in paragraph at lines 879--879
 []\TU/lmr/bx/n/14.4 Compatibility with filtered triangulated functors (Propo-
  []
 
@@ -860,10 +860,10 @@ Package rerunfilecheck Info: File `print.out' has not changed.
 (rerunfilecheck)             Checksum: 446799E6CDE558C5FC743F8E1BA4725C;2992.
  ) 
 Here is how much of TeX's memory you used:
- 28790 strings out of 474878
- 575183 string characters out of 5762516
- 1943627 words of memory out of 5000000
- 50384 multiletter control sequences out of 15000+600000
+ 28834 strings out of 474878
+ 576337 string characters out of 5762516
+ 1948627 words of memory out of 5000000
+ 50428 multiletter control sequences out of 15000+600000
  564433 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  116i,15n,121p,584b,1312s stack positions out of 10000i,1000n,20000p,200000b,200000s

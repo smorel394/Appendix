@@ -1122,7 +1122,11 @@
 <p>There is no explicit formalization of Lemma A.3.1(v). </p>
 <h1 id="a0000000031"> Functor reconstruction</h1>
 <p>We keep the notation of the previous subsection, and we assume that the t-structure \(t'\) on \(\mathcal{D}'\) is non-degenerate. We also assume that we have filtered triangulated categories \(\DF \) over \(\mathcal{D}\) and \(\DF '\) over \(\mathcal{D}'\), equipped with compatible t-structures \(tF\) and \(tF'\), as well as a filtered triangulated functor \(FT:\DF \to \DF '\) lifing \(T:\mathcal{D}\to \mathcal{D}'\); this is condition (a) of Proposition A.3.2. </p>
-<p>Condition (b) of Proposition A.3.2 says that the "obvious" functor from the bounded homotopy category of complexes of \(T\)-acyclic objects in the heart \(\mathcal{D}\) to the derived category of the heart of \(\mathcal{D}\) is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms). </p>
+<p>Condition (b) of Proposition A.3.2 says that the "obvious" functor </p>
+<div class="displaymath" id="a0000000092">
+  \[ Q:\Kb (\mathcal{I}) \to \Db (\mathcal{D}^\heartsuit ) \]
+</div>
+<p> from the bounded homotopy category of complexes of \(T\)-acyclic objects in the heart \(\mathcal{D}\) to the derived category of the heart of \(\mathcal{D}\) is a localization functor for the class of morphisms with acyclic cone (i.e. quasi-isomorphisms). </p>
 <p>First statement of Proposition A.3.2: <div class="proposition_thmwrapper " id="prop-AcyclicComplexAcyclic_image">
   <div class="proposition_thmheading">
     <span class="proposition_thmcaption">
@@ -1132,7 +1136,11 @@
   </div>
   <div class="proposition_thmcontent">
   <p> CategoryTheory.FilteredTriangulated.AcyclicComplexAcyclic_image def-acyclic, def-FilteredLifting, def-compatible </p>
-<p>The functor on the bounded homotopy categories induced by the functor \(T''\) of Definition&#160;<a href="sect0003.html#def-fromAcyclic">.8</a> sends a (bounded) exact complex of \(T\)-acyclic objects to an exact complex. </p>
+<p>The functor </p>
+<div class="displaymath" id="a0000000093">
+  \[ \Kb (T''):\Kb (\mathcal{I})\to \Kb ({\mathcal{D}’}^\heartsuit ) \]
+</div>
+<p> on the bounded homotopy categories induced by the functor \(T''\) of Definition&#160;<a href="sect0003.html#def-fromAcyclic">.8</a> sends a (bounded) exact complex of \(T\)-acyclic objects to an exact complex. </p>
 
   </div>
 </div> </p>
@@ -1146,6 +1154,11 @@
   <div class="definition_thmcontent">
   <p> CategoryTheory.FilteredTriangulated.DerivedFunctor prop-AcyclicComplexAcyclic_image </p>
 <p>The functor \(DT:\Db (\mathcal{D}^\heartsuit )\to \Db ({\mathcal{D}’}^\heartsuit )\) given by the universal property of the localization functor of condition (b) above, and the property proved in Proposition&#160;<a href="sect0003.html#prop-AcyclicComplexAcyclic_image">.1</a>. </p>
+<p><div class="tikzcd" id="a0000000094">
+    <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
+</div> (I)[r, "(T”)"][d, "Q“] (D’^\(\heartsuit \))[d, "Q"] <br />(D^\(\heartsuit \))[r, dotted, "DT“] (D’^\(\heartsuit \)) <div class="tikzcd" id="a0000000095">
+    <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
+</div> </p>
 
   </div>
 </div> </p>
@@ -1163,9 +1176,9 @@
 
   </div>
 </div> </p>
-<p><div class="tikzcd" id="a0000000092">
+<p><div class="tikzcd" id="a0000000096">
     <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
-</div> (D^\(\heartsuit \))[r, "DT"][d, "“] (D’^\(\heartsuit \))[d, "’"] <br />D[r, "T“] D’ <div class="tikzcd" id="a0000000093">
+</div> (D^\(\heartsuit \))[r, "DT"][d, "“] (D’^\(\heartsuit \))[d, "’"] <br />D[r, "T“] D’ <div class="tikzcd" id="a0000000097">
     <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
 </div> </p>
 <p><div class="remark_thmwrapper " id="rmk_der_fil1">
@@ -1185,7 +1198,7 @@
 
   </div>
 </div> </p>
-<p><div class="remark_thmwrapper " id="a0000000094">
+<p><div class="remark_thmwrapper " id="a0000000098">
   <div class="remark_thmheading">
     <span class="remark_thmcaption">
     Remark
@@ -1208,7 +1221,7 @@
 
   </div>
 </div> </p>
-<p><div class="remark_thmwrapper " id="a0000000095">
+<p><div class="remark_thmwrapper " id="a0000000099">
   <div class="remark_thmheading">
     <span class="remark_thmcaption">
     Remark
@@ -1218,13 +1231,13 @@
   <div class="remark_thmcontent">
   <p>The statement of Definition&#160;<a href="sect0003.html#def-derived_comp">.3</a> is not sufficient for our purposes, as we need the isomorphism to have some compatibilities, in at least the following ways: </p>
 <ul class="itemize">
-  <li><p>If we have a commutative (up to isomorphism) diagram <div class="tikzcd" id="a0000000096">
+  <li><p>If we have a commutative (up to isomorphism) diagram <div class="tikzcd" id="a0000000100">
     <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
-</div> _1[r, "U"][d, "FT_1“] _2[d, "FT_2"] <br />_1’[r, "U’“] _2’ <div class="tikzcd" id="a0000000097">
+</div> _1[r, "U"][d, "FT_1“] _2[d, "FT_2"] <br />_1’[r, "U’“] _2’ <div class="tikzcd" id="a0000000101">
     <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
-</div> (probably with t-exact functors \(U\) and \(U'\)), then we want to get a commutative (up to isomorphism) diagram <div class="tikzcd" id="a0000000098">
+</div> (probably with t-exact functors \(U\) and \(U'\)), then we want to get a commutative (up to isomorphism) diagram <div class="tikzcd" id="a0000000102">
     <img src="images/img-0001.svg" class="tikzcd-vector" alt="\begin{tikzcd} \end{tikzcd}" />
-</div> (D_1^\(\heartsuit \))[d, "DT_1“][r, "U"] (D_2^\(\heartsuit \))[d, "DT_2"] <br />(D_1’^\(\heartsuit \))[r, "U’“]  (D_2’^\(\heartsuit \)) <div class="tikzcd" id="a0000000099">
+</div> (D_1^\(\heartsuit \))[d, "DT_1“][r, "U"] (D_2^\(\heartsuit \))[d, "DT_2"] <br />(D_1’^\(\heartsuit \))[r, "U’“]  (D_2’^\(\heartsuit \)) <div class="tikzcd" id="a0000000103">
     <img src="images/img-0002.svg" class="tikzcd-vector" alt="\end{tikzcd}" />
 </div> </p>
 </li>
